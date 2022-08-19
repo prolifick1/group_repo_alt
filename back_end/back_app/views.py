@@ -18,7 +18,7 @@ def send_the_homepage(request):
 @api_view(['POST'])
 def sign_up(request):
     try:
-        AppUser.objects.create_user(name=request.data['name'], username=request.data['email'], password=request.data['password'], email=request.data['email'])
+        AppUser.objects.create_user(name=request.data['name'], last_name= request.data['lastName'], job_title=request.data['jobTitle'], username=request.data['email'], password=request.data['password'], email=request.data['email'])
     except Exception as e:
         print(str(e))
     return HttpResponse('Youve signed up')
