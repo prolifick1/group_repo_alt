@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import Test from './components/Test';
 import './App.css'
 
 
