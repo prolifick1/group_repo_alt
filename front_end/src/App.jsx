@@ -25,7 +25,7 @@ axios.defaults.headers.common['X-CSRFToken']= csrftoken
 
 function App() {
   const [user, setUser] = useState(null)
-
+  console.log(user)
   function signOut(){
     event.preventDefault()
     axios.post('/sign_out').then((respone)=>{
