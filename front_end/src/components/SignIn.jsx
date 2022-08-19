@@ -15,8 +15,10 @@ function SignIn(){
     }
     return (
         <div>
-            <input id='emailSignIn' />
-            <input id='passwordSignIn' type='password' />
+            <input id='emailSignIn' placeholder='EMAIL' />
+            <br/>
+            <input id='passwordSignIn' type='password' placeholder='PASSWORD' />
+            <br/>
             <button onClick={singIn}>Sign In</button>
         </div>
     )
