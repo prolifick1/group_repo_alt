@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
-import Test from './components/Test';
 import './App.css'
-
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home'
+import NotFound from './pages/NotFound'
 
 function getCookie(name) {
   let cookieValue = null;
@@ -25,6 +24,7 @@ axios.defaults.headers.common['X-CSRFToken']= csrftoken
 
 function App() {
   const [user, setUser] = useState(null)
+<<<<<<< HEAD
   console.log(user)
   function signOut(){
     event.preventDefault()
@@ -32,6 +32,9 @@ function App() {
       window.location.href=""
     })
   }
+=======
+
+>>>>>>> b18397e266aea944e3b9db377326aba2ce8781e9
 
   async function curr_user(){
     const response = await axios.get('curr_user')
@@ -44,13 +47,12 @@ function App() {
   },[])
 
   return (
-    <div className="App">
-      <Test />
-      {user && <p>Welcome, {user.name}</p>}
-      <SignUp />
-      <SignIn />
-      <button onClick={signOut}>Sign Out</button>
-    </div>
+    <HashRouter>
+      <Routes>
+        <Route exact path='/' element={<Home /> } />
+        <Route path='*' element={<NotFound /> } />
+      </Routes>
+    </HashRouter>
   )
 }
 
