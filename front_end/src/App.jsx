@@ -45,6 +45,7 @@ function App() {
 
   return (
     <div className="App">
+      <Test />
       {user && <p>Welcome, {user.name}</p>}
       <SignUp />
       <SignIn />
