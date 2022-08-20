@@ -1,0 +1,26 @@
+[
+    {
+        "model": "back_app.AppliedJobs",
+        "pk": 1,
+        "fields": {
+            "deadline": "2022-11-10",
+            "company_name": "Chase",
+            "description": "blaahsd  alksjaf l skfalsa df lkdsf al aksdj falkdfja falk dfjalkdf ja akfjaldfj a dfslaj ldsk",
+            "user": 1,
+            "job_title": "Software Engineer",
+            "company_link": "google.com"
+        }
+    },
+    {
+        "model": "back_app.AppliedJobs",
+        "pk": 2,
+        "fields": {
+            "deadline": "2022-11-12",
+            "company_name": "DRW",
+            "description": "blaahsd  alksjaf l skfalsa df lkdsf al aksdj falkdfja falk dfjalkdf ja akfjaldfj a dfslaj ldsk",
+            "user": 2,
+            "job_title": "Software Engineer",
+            "company_link": "google.com"
+        }
+    }
+]

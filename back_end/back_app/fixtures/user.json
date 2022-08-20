@@ -1,0 +1,26 @@
+[
+    {
+        "model": "back_app.AppUser",
+        "pk": 1,
+        "fields": {
+            "first_name": "Rex",
+            "last_name": "Wiafe",
+            "email": "rex@gmail.com",
+            "username": "rex@gmail.com",
+            "job_title": "Software Engineer",
+            "password": "letsGoo"
+        }
+    },
+    {
+        "model": "back_app.AppUser",
+        "pk": 2,
+        "fields": {
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "email": "jane@gmail.com",
+            "username": "jane@gmail.com",
+            "job_title": "Carpenter",
+            "password": "password"
+        }
+    }
+]
