@@ -4,6 +4,8 @@ import './App.css'
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+import Dashboard from './pages/Dashboard';
+import NavBar from './components/NavBar';
 
 function getCookie(name) {
   let cookieValue = null;
@@ -26,12 +28,12 @@ function App() {
   const [user, setUser] = useState(null)
   console.log(user)
 
-  function signOut(){
-    event.preventDefault()
-    axios.post('/sign_out').then((respone)=>{
-      window.location.href=""
-    })
-  }
+  // function signOut(){
+  //   event.preventDefault()
+  //   axios.post('/sign_out').then((respone)=>{
+  //     window.location.href=""
+  //   })
+  // }
 
 
   async function curr_user(){
@@ -45,12 +47,18 @@ function App() {
   },[])
 
   return (
+    <div>
+
+    <NavBar user={user} />
     <HashRouter>
       <Routes>
-        <Route exact path='/' element={<Home signOut={signOut}/> } />
+        <Route exact path='/' element={<Home /> } />
+        <Route exact path='/dashboard' element={<Dashboard user={user} /> } />
+
         <Route path='*' element={<NotFound /> } />
       </Routes>
     </HashRouter>
+    </div>
   )
 }
 
