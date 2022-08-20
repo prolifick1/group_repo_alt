@@ -24,17 +24,15 @@ axios.defaults.headers.common['X-CSRFToken']= csrftoken
 
 function App() {
   const [user, setUser] = useState(null)
-<<<<<<< HEAD
   console.log(user)
+
   function signOut(){
     event.preventDefault()
     axios.post('/sign_out').then((respone)=>{
       window.location.href=""
     })
   }
-=======
 
->>>>>>> b18397e266aea944e3b9db377326aba2ce8781e9
 
   async function curr_user(){
     const response = await axios.get('curr_user')
@@ -49,7 +47,7 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route exact path='/' element={<Home /> } />
+        <Route exact path='/' element={<Home signOut={signOut}/> } />
         <Route path='*' element={<NotFound /> } />
       </Routes>
     </HashRouter>

@@ -1,11 +1,12 @@
 import Test from '../components/Test'
 import SignUp from '../components/SignUp'
 import SignIn from '../components/SignIn'
+import axios from 'axios'
 
 export default function Home({user}) {
   function signOut(){
     event.preventDefault()
-    axios.post('/sign_out').then((respone)=>{
+    axios.post('sign_out').then((respone)=>{
       window.location.href=""
     })
   }
@@ -19,4 +20,6 @@ export default function Home({user}) {
     </div>
   )
 }
+
+
 

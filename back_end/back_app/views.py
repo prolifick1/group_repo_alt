@@ -42,6 +42,7 @@ def log_in(request):
     
 @api_view(['POST'])
 def log_out(request):
+    print('here')
     logout(request)
     return HttpResponse('Logged Out')
 
