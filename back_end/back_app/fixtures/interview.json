@@ -1,0 +1,20 @@
+[
+    {
+        "model": "back_app.Interview",
+        "pk": 1,
+        "fields": {
+            "interview_date": "2022-11-10",
+            "company_name": "Chase",
+            "user": 1
+        }
+    },
+    {
+        "model": "back_app.Interview",
+        "pk": 2,
+        "fields": {
+            "interview_date": "2022-11-12",
+            "company_name": "DRW",
+            "user": 2
+        }
+    }
+]
