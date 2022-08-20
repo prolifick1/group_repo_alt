@@ -1,0 +1,26 @@
+[
+    {
+        "model": "back_app.Forum",
+        "pk": 1,
+        "fields": {
+            "date_created": "2022-11-10",
+            "company_name": "Chase",
+            "description": "this is a forum blaahsd  alksjaf l skfalsa df lkdsf al aksdj falkdfja falk dfjalkdf ja akfjaldfj a dfslaj ldsk",
+            "user": 1,
+            "job_title": "Software Engineer",
+            "title": "This company is Awesome"
+        }
+    },
+    {
+        "model": "back_app.Forum",
+        "pk": 2,
+        "fields": {
+            "date_created": "2022-11-12",
+            "company_name": "DRW",
+            "description": "this is a forum blaahsd  alksjaf l skfalsa df lkdsf al aksdj falkdfja falk dfjalkdf ja akfjaldfj a dfslaj ldsk",
+            "user": 2,
+            "job_title": "Software Engineer",
+            "title": "I dont like this job"
+        }
+    }
+]
