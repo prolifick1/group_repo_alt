@@ -14,10 +14,6 @@ def send_the_homepage(request):
     return HttpResponse(theIndex)
 
 
-def send_the_homepage(request):
-    theIndex = open('static/index.html').read()
-    return HttpResponse(theIndex)
-
 # This will create a signup route NOTE: this doesnt render anything instead it's specifically
 # dedicated to altering the datbase by creating new users that can sign in or out
 
@@ -104,6 +100,18 @@ def jobs_applied_for(request):
             if request.data['completed']:
                 completed = request.data['completed']
                 new_job(completed=completed)
+                new_job.save()
+            if request.data['salry']:
+                salary = request.data['salry']
+                new_job(salary=salary)
+                new_job.save()
+            if request.data['color']:
+                color = request.data['color']
+                new_job(color = color)
+                new_job.save()
+            if request.data['location']:
+                location = request.data['location']
+                new_job(location=location)
                 new_job.save()
             return Response({"message": "success"})
         except:
