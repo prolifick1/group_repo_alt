@@ -39,3 +39,69 @@
 .read-the-docs {
   color: #888;
 } */
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0px;
+  /* margin-left: 10%; */
+}
+
+.icon {
+  font-size: 25pt; 
+  color: black;
+}
+
+.section_header {
+  background-color: azure;
+  color: black;
+  padding-inline: 10%;
+  padding-block: 5%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-bottom: 20px;
+  border-bottom: solid 7px black;
+}
+
+.section_header h3 {
+  margin-top: -5px;
+}
+
+.job_application {
+  border-radius: 10px;
+  background-color: azure;
+  color: black;
+  padding-inline: 20px;
+  padding-bottom: 3px;
+  margin-top: 15px;
+  border: solid 1px black;
+}
+
+.job_category_dashboard {
+  border: solid 3px black;
+  border-radius: 10px;
+  background-color: black;
+  /* padding-bottom: -20px; */
+}
+
+.dropdown {
+  display: block;
+  background-color: azure;
+  /* border: solid 1px black; */
+}
+
+.company_title {
+  margin-block: 0px;
+  padding-block: 0px;
+}
+
+.company_title2 {
+  margin-left: 5px;
+}
+
+.job_title {
+  margin-block: 0px;
+  padding-block: 0px;
+  justify-content: center;
+}

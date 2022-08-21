@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Dashboard from './pages/Dashboard';
 import NavBar from './components/NavBar';
+import TestPage from './pages/TestPage'
 
 function getCookie(name) {
   let cookieValue = null;
@@ -57,6 +58,7 @@ function App() {
         <Route exact path='/dashboard' element={<Dashboard user={user}  /> } />
 
         <Route path='*' element={<NotFound /> } />
+        <Route path='/test' element={<TestPage /> } />
       </Routes>
     </HashRouter>
     </div>

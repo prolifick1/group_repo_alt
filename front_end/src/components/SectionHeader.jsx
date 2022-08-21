@@ -1,37 +1,55 @@
-// import . from 'react-bootstrap'
+import React from 'react'
+import {Dropdown} from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
+
+{/* you'll need to do npm i bootstrap-icons */}
+
+
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+    <a
+      href=""
+      ref={ref}
+      onClick={e => {
+        e.preventDefault();
+        onClick(e);
+      }}
+    >
+      {children}
+      <Icon.ThreeDots className="icon"/>
+      
+    </a>
+  ));
 
 function SectionHeader(){
-//     return (
-//         <h1>test test test!</h1>
-//     )
-// }
-console.log('section header component')
+    // number just for example of bringing in prop
+    const number = 5
+
+
+    console.log('section header component')
     
     return (
-        <div>
-        <h1>test test test!</h1>
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                    <div class="card">
-                    <div class="card-body">
-                        <p>Type your note, and hit enter to add it</p>
-
-                        <div class="d-flex justify-content-between">
-                        <div class="d-flex flex-row align-items-center">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(32).webp" alt="avatar" width="25"
-                            height="25" />
-                            <p class="small mb-0 ms-2">Johny</p>
-                        </div>
-                        <div class="d-flex flex-row align-items-center">
-                            <p class="small text-muted mb-0">Upvote?</p>
-                            <i class="far fa-thumbs-up ms-2 fa-xs text-black" ></i>
-                        </div>
-                        </div>
-                </div>
-                </div>
+        <div className='section_header'>
+            <div className='container'>
+                <Icon.PlusCircle onClick={number} className="icon"/>
+                <h2 >Application Category</h2>
+                
+                <Dropdown>
+                    <Dropdown.Toggle as={CustomToggle} />
+                    
+                    <Dropdown.Menu className='dropdown' size="sm" title="">
+                    <Dropdown.Header>Options</Dropdown.Header>
+                    <div >
+                        <Dropdown.Item href="#/action-1">Delete All</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Move All</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Do Something else</Dropdown.Item>
+                    </div>
+                    </Dropdown.Menu>
+                </Dropdown>
+                    {/* <Icon.ThreeDots className="icon"/> */}
             </div>
+            <h3>{number} jobs</h3>
         </div>
-        </div>
+
     )
 }
 
