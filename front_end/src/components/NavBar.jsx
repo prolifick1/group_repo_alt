@@ -29,7 +29,7 @@ function NavBar(props) {
                     </Nav>
                 </Navbar.Collapse>
                 <Navbar.Brand>
-                    {props.user && <Button variant="outline-danger"  >Logout</Button>}
+                    {props.user && <Button variant="outline-danger" onClick={props.signOut} >Logout</Button>}
                 </Navbar.Brand>
             </Container>
         </Navbar>
