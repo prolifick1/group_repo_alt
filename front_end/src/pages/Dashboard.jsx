@@ -26,10 +26,10 @@ function Dashboard(props) {
 
     function addJob() {
         let job = {
-            companyName: companyName,
-            jobTitle: jobTitle,
+            company_name: companyName,
+            job_title: jobTitle,
             description: description,
-            companyLink: companyLink,
+            link: companyLink,
         }
         axios.post('/add', job)
             .then(request => (console.log('job added')))
