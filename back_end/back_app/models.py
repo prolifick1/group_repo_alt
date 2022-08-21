@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 class AppUser(AbstractUser):
-    fist_name = models.CharField(max_length=50, null=False, default='unkown')
+    first_name = models.CharField(max_length=50, null=False, default='unkown')
     last_name = models.CharField(max_length=50, null=False, default='unknown')
     job_title = models.CharField(max_length=100, null=False, default='unknown')
     email = models.EmailField(
