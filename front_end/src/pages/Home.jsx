@@ -1,22 +1,19 @@
 import Test from '../components/Test'
 import SignUp from '../components/SignUp'
 import SignIn from '../components/SignIn'
-import axios from 'axios'
+import NavBar from '../components/NavBar'
 
-export default function Home({user}) {
-  function signOut(){
-    event.preventDefault()
-    axios.post('sign_out').then((respone)=>{
-      window.location.href=""
-    })
-  }
+export default function Home({ user, checkLoginRedirect, proceed }) {
+
   return (
     <div className="App">
-      <Test />
-      {user && <p>Welcome, {user.name}</p>}
-      <SignUp />
-      <SignIn />
-      <button onClick={signOut}>Sign Out</button>
+      {checkLoginRedirect()}
+      {proceed &&
+        <div>
+          <NavBar />
+          <h4>{user && <h4>Welcome, {user.first_name}</h4>}</h4>
+        </div>
+      }
     </div>
   )
 }
