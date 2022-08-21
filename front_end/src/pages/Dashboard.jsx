@@ -1,7 +1,8 @@
 import axios from "axios"
-import React,{ useState } from "react"
+import React, { useState } from "react"
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
+import NavBar from "../components/NavBar";
 import { MDBBtn, MDBInput, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBIcon, MDBBadge, MDBContainer, MDBRow, MDBCol } from "mdbreact";
 
 function Dashboard(props) {
@@ -17,7 +18,7 @@ function Dashboard(props) {
 
     const toggleModal = () => {
         setModal(!modal);
-       };
+    };
 
     console.log(companyName)
     console.log(jobTitle)
@@ -52,6 +53,7 @@ function Dashboard(props) {
 
             </div> */}
             <React.Fragment>
+                <NavBar />
                 <MDBContainer>
                     <MDBRow>
                         <MDBCol md="9" className="mb-r">

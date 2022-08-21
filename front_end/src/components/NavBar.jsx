@@ -3,18 +3,26 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/esm/Button';
+import axios from 'axios';
 
 function NavBar(props) {
+
+    function signOut(event) {
+        event.preventDefault()
+        axios.post('sign_out').then((respone) => {
+            window.location.href = "#/signin"
+        })
+    }
 
     return (
         <Navbar className="brokenNavbar" bg="light" expand="lg">
             <Container>
-                <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#link">Link</Nav.Link>
+                        <Nav.Link href="/">Home</Nav.Link>
+                        <Nav.Link href="#/dashboard">Dashboard</Nav.Link>
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">
@@ -29,7 +37,7 @@ function NavBar(props) {
                     </Nav>
                 </Navbar.Collapse>
                 <Navbar.Brand>
-                    {props.user && <Button variant="outline-danger" onClick={props.signOut} >Logout</Button>}
+                    <Button variant="outline-danger" onClick={signOut} >Logout</Button>
                 </Navbar.Brand>
             </Container>
         </Navbar>
