@@ -13,6 +13,8 @@ function Dashboard(props) {
 
     const [modal, setModal] = useState(false);
 
+    console.log(modal)
+
     const toggleModal = () => {
         setModal(!modal);
        };
