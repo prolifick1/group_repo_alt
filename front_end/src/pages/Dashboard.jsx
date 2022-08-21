@@ -32,7 +32,7 @@ function Dashboard(props) {
             description: description,
             link: companyLink,
         }
-        axios.post('/add', job)
+        axios.post('jobs', job)
             .then(request => (console.log('job added')))
     }
 
