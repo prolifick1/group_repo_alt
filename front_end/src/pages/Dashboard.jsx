@@ -5,6 +5,7 @@ import "mdbreact/dist/css/mdb.css";
 import NavBar from "../components/NavBar";
 import { MDBBtn, MDBInput, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBIcon, MDBBadge, MDBContainer, MDBRow, MDBCol } from "mdbreact";
 import Board from 'react-trello'
+import AddButton from '../components/AddButton'
 
 const data = {
   lanes: [
@@ -41,11 +42,6 @@ function Dashboard(props) {
         setModal(!modal);
     };
 
-    console.log(companyName)
-    console.log(jobTitle)
-    console.log(description)
-    console.log(companyLink)
-
     function addJob() {
         let job = {
             company_name: companyName,
@@ -75,19 +71,7 @@ function Dashboard(props) {
             </div> */}
             <React.Fragment>
                 <NavBar />
-                <MDBContainer>
-                    <MDBRow>
-                        <MDBCol md="9" className="mb-r">
-                            <MDBRow className="mb-4">
-                                <MDBCol xl="3" md="6" className="mx-auto text-center">
-                                    <MDBBtn color="info" rounded onClick={toggleModal}>
-                                        Add Job
-                                    </MDBBtn>
-                                </MDBCol>
-                            </MDBRow>
-                        </MDBCol>
-                    </MDBRow>
-                </MDBContainer>
+                <AddButton toggleModal={toggleModal} />
                 <MDBModal isOpen={modal} toggle={toggleModal}>
                     <MDBModalHeader
                         className="text-center"
