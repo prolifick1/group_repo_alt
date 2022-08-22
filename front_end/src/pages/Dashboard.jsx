@@ -7,6 +7,8 @@ import { MDBBtn, MDBInput, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFoote
 import Board from 'react-trello'
 import AddButton from '../components/AddButton'
 import AddJobModal from "../components/AddJobModal";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 const data = {
   lanes: [
@@ -35,16 +37,20 @@ function Dashboard(props) {
     const [description, setDescription] = useState('')
     const [companyLink, setCompanyLink] = useState('')
     const [cardModalIsOpen, setCardModalIsOpen] = useState(false);
-
+    const [lgShow, setLgShow] = useState(false); 
+    const [smShow, setSmShow] = useState(false);
     const [modal, setModal] = useState(false);
     const toggleModal = () => {
         setModal(!modal);
     };
 
+    const toggleCardModal = () => {
+      setLgShow(!lgShow);
+    };
+
     const components = {
       AddCardLink: () => <button>New Card</button>,
     };
-
 
 
     const onCardClick = (cardId, metadata, laneId) => {
@@ -85,6 +91,58 @@ function Dashboard(props) {
               }
 
             </div> */}
+            <>
+                  <Modal
+                    size="sm"
+                    show={smShow}
+                    onHide={() => setSmShow(false)}
+                    aria-labelledby="example-modal-sizes-title-sm"
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title id="example-modal-sizes-title-sm">
+                        Small Modal
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>...</Modal.Body>
+                  </Modal>
+                  <Modal
+                    size="lg"
+                    show={lgShow}
+                    onHide={() => setLgShow(false)}
+                    aria-labelledby="example-modal-sizes-title-lg"
+                  >
+                  <Modal.Header closeButton>
+                      <Modal.Title id="example-modal-sizes-title-lg">
+                        Logo / Job Title / (subtitle: company name) ///// move|close
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <MDBModalBody>
+                            <form className="mx-3 grey-text">
+                              (tabs - job info | activities | notes | Docmuemtns | Company )
+                                <MDBInput type="text" label="company | job title | deadline (datepicker)"/>
+                                <MDBInput type="text" label="Post URL | salary | application" onChange={(e) => console.log('hint: setJobTitle(e.target.value)')} />
+                                <MDBInput type="text" label="Location | color (swatch)" onChange={(e) => console.log('hint: setDescription(e.target.value)')} />
+                                <MDBInput type="text" label="description (user input textbox)" onChange={(e) => console.log('hint: setCompanyLink(e.target.value)')} />
+                            </form>
+                        </MDBModalBody>
+
+
+                      </Modal.Body>
+
+                        <MDBModalFooter className="justify-content-center">
+                            <MDBBtn
+                                color="info"
+                                onClick={() => {
+                                    toggleModal();
+                                    console.log('saveJob function');
+                                }}
+                            >
+                                Add
+                            </MDBBtn>
+                        </MDBModalFooter>
+                  </Modal>
+                </>
             <React.Fragment>
                 <NavBar />
                 <AddButton toggleModal={toggleModal} />
@@ -95,15 +153,12 @@ function Dashboard(props) {
                   style={{backgroundColor: 'white'}}
                   editable
                   id="EditableBoard1"
-                  onCardAdd={function noRefCheck(){}}
-                  onCardClick={onCardClick}
-                  onCardDelete={function noRefCheck(){}}
-                  onDataChange={function noRefCheck(){}}
-
+                  onCardClick={toggleCardModal}
                 >
 
+                {/*
                   <React.Fragment>
-                    <MDBModal isOpen={cardModalIsOpen} >
+                    <MDBModal >
                         <MDBModalHeader
                             className="text-center"
                             titleClass="w-100 font-weight-bold"
@@ -118,19 +173,9 @@ function Dashboard(props) {
                                 <MDBInput type="text" label="Company Link" onChange={(e) => console.log('hint: setCompanyLink(e.target.value)')} />
                             </form>
                         </MDBModalBody>
-                        <MDBModalFooter className="justify-content-center">
-                            <MDBBtn
-                                color="info"
-                                onClick={() => {
-                                    toggleModal();
-                                    console.log('saveJob function');
-                                }}
-                            >
-                                Add
-                            </MDBBtn>
-                        </MDBModalFooter>
                     </MDBModal>
                 </React.Fragment>
+            */}
                 </Board> 
             </React.Fragment>
         </div>
