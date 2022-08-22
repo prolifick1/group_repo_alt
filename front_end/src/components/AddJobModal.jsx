@@ -1,7 +1,8 @@
 import React from 'react';
 import { MDBModal, MDBModalHeader, MDBBtn, MDBModalBody, MDBInput, MDBModalFooter } from "mdbreact";
+import axios from 'axios';
 
-export default function AddJobModal({modal, toggleModal, companyName, jobTitle, description, companyLink}) {
+export default function AddJobModal({modal, toggleModal, companyName, jobTitle, description, companyLink, setCompanyLink, setCompanyName, setDescription, setTitle, setAddedJob, addedJob}) {
   function addJob() {
       let job = {
           company_name: companyName,
@@ -37,6 +38,7 @@ export default function AddJobModal({modal, toggleModal, companyName, jobTitle, 
                   onClick={() => {
                       toggleModal();
                       addJob();
+                      setAddedJob(!addedJob)
                   }}
               >
                   Add

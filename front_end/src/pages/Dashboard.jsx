@@ -1,5 +1,5 @@
 import axios from "axios"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import NavBar from "../components/NavBar";
@@ -8,25 +8,6 @@ import Board from 'react-trello'
 import AddButton from '../components/AddButton'
 import AddJobModal from "../components/AddJobModal";
 
-const data = {
-  lanes: [
-    {
-      id: 'lane1',
-      title: 'Planned Tasks',
-      label: '2/2',
-      cards: [
-        {id: 'Card1', title: 'Write Blog', description: 'Can AI make memes', label: '30 mins', draggable: false},
-        {id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: {sha: 'be312a1'}}
-      ]
-    },
-    {
-      id: 'lane2',
-      title: 'Completed',
-      label: '0/0',
-      cards: []
-    }
-  ]
-}
 
 function Dashboard(props) {
 
@@ -35,8 +16,47 @@ function Dashboard(props) {
     const [description, setDescription] = useState('')
     const [companyLink, setCompanyLink] = useState('')
     const [cardModalIsOpen, setCardModalIsOpen] = useState(false);
-
+    // sets state of current jobs to empty list
+    const [currentJobs, setCurrentJobs] = useState([])
     const [modal, setModal] = useState(false);
+    const [addedJob, setAddedJob] = useState(false);
+
+    //sets state of current jobs to current list based on back end request
+    useEffect(()=>{
+      console.log(addedJob)
+      axios.get('jobs')
+      .then(response => setCurrentJobs(response.data.map(job => {
+        return { 
+            id: job.company_name,
+            title: job.company_name, 
+            description: job.job_title, 
+            label: job.company_link,
+            draggable: true
+        }
+          
+      })))
+
+    },[addedJob])
+
+
+    const data = {
+      lanes: [
+        {
+          id: 'lane1',
+          title: 'Interested',
+          label: '2/2',
+          cards: currentJobs
+                  
+        },
+        {
+          id: 'lane2',
+          title: 'Applied',
+          label: '0/0',
+          cards: []
+        }
+      ]
+    }
+    
     const toggleModal = () => {
         setModal(!modal);
     };
@@ -89,7 +109,9 @@ function Dashboard(props) {
                 <NavBar />
                 <AddButton toggleModal={toggleModal} />
                 <AddJobModal modal={modal} toggleModal={toggleModal} companyName={companyName} 
-                  jobTitle={jobTitle} description={description} companyLink={companyLink}/>
+                  jobTitle={jobTitle} description={description} companyLink={companyLink}
+                  setCompanyLink={setCompanyLink} setCompanyName={setCompanyName} setDescription={setDescription}
+                  setTitle={setTitle} setAddedJob={setAddedJob} addedJob={addedJob}/>
                 <Board components={components} 
                   data={data} 
                   style={{backgroundColor: 'white'}}
