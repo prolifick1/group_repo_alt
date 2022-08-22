@@ -1,0 +1,49 @@
+import React from 'react';
+import { MDBModal, MDBModalHeader, MDBBtn, MDBModalBody, MDBInput, MDBModalFooter } from "mdbreact";
+
+export default function AddJobModal({modal, toggleModal, companyName, jobTitle, description, companyLink}) {
+  function addJob() {
+      let job = {
+          company_name: companyName,
+          job_title: jobTitle,
+          description: description,
+          link: companyLink,
+      }
+      axios.post('jobs', job)
+          .then(request => (console.log('job added')))
+    }
+
+  return(
+    <React.Fragment>
+      <MDBModal isOpen={modal} toggle={toggleModal}>
+          <MDBModalHeader
+              className="text-center"
+              titleClass="w-100 font-weight-bold"
+              toggle={toggleModal}
+          >
+              Add new job
+          </MDBModalHeader>
+          <MDBModalBody>
+              <form className="mx-3 grey-text">
+                  <MDBInput type="text" label="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
+                  <MDBInput type="text" label="Job Title" value={jobTitle} onChange={(e) => setTitle(e.target.value)} />
+                  <MDBInput type="text" label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+                  <MDBInput type="text" label="Company Link" value={companyLink} onChange={(e) => setCompanyLink(e.target.value)} />
+              </form>
+          </MDBModalBody>
+          <MDBModalFooter className="justify-content-center">
+              <MDBBtn
+                  color="info"
+                  onClick={() => {
+                      toggleModal();
+                      addJob();
+                  }}
+              >
+                  Add
+              </MDBBtn>
+          </MDBModalFooter>
+      </MDBModal>
+
+    </React.Fragment>
+  )
+}
