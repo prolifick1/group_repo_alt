@@ -43,6 +43,9 @@ function Dashboard(props) {
         setModal(!modal);
     };
 
+    const components = {
+      AddCardLink: () => <button>New Card</button>,
+    };
 
 
     return (
@@ -65,7 +68,17 @@ function Dashboard(props) {
                 <AddButton toggleModal={toggleModal} />
                 <AddJobModal modal={modal} toggleModal={toggleModal} companyName={companyName} 
                   jobTitle={jobTitle} description={description} companyLink={companyLink}/>
-                <Board data={data} style={{backgroundColor: 'white' }}/>
+                <Board components={components} 
+                  data={data} 
+                  style={{backgroundColor: 'white'}}
+                  editable
+                  id="EditableBoard1"
+                  onCardAdd={function noRefCheck(){}}
+                  onCardClick={function noRefCheck(){}}
+                  onCardDelete={function noRefCheck(){}}
+                  onDataChange={function noRefCheck(){}}
+
+                />
             </React.Fragment>
         </div>
     )
