@@ -70,13 +70,11 @@ function App() {
 
   useEffect(() => {
     curr_user()
-<<<<<<< HEAD
   }, [])
 
-=======
-  },[])
+
   console.log('hi');
->>>>>>> 847d609 (test: working off master branch and adding a comment)
+
   return (
     <div>
       <HashRouter>
