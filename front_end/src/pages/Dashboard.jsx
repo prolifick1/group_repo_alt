@@ -34,11 +34,9 @@ function Dashboard(props) {
     const [jobTitle, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [companyLink, setCompanyLink] = useState('')
+    const [cardModalIsOpen, setCardModalIsOpen] = useState(false);
 
     const [modal, setModal] = useState(false);
-
-    console.log(modal)
-
     const toggleModal = () => {
         setModal(!modal);
     };
@@ -48,11 +46,18 @@ function Dashboard(props) {
     };
 
 
+
+    const onCardClick = (cardId, metadata, laneId) => {
+      console.log('clicked card in', laneId);
+      console.log('state of cardModalIsOpen?', cardModalIsOpen);
+      setCardModalIsOpen(!cardModalIsOpen);
+    }
+
+
     return (
         <div>
 
             {/* <div>
-                <button>Test Button</button>
                 <form onSubmit={() => addJob()} action="">
                     <input type="text" placeholder="Comapny Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
                     <input type="text" placeholder="Job Title" value={jobTitle} onChange={(e) => setTitle(e.target.value)} />
@@ -61,6 +66,23 @@ function Dashboard(props) {
                     <MDBBtn>submit</MDBBtn>
                 </form>
 
+              class foo extends React.Component{
+              state={isOpen: false}
+
+              onCardClick = (cardId, metadata, laneId) => {
+              this.setState((prevState) => {
+                   return {isOpen: !prevState.isOpen}
+              });
+              }
+                render() {
+                   const {isOpen} = this.state;
+                    return(
+                      <Board>
+                        <Modal open={isOpen} />
+                     </Board>
+                      );
+                   }
+              }
 
             </div> */}
             <React.Fragment>
@@ -74,11 +96,42 @@ function Dashboard(props) {
                   editable
                   id="EditableBoard1"
                   onCardAdd={function noRefCheck(){}}
-                  onCardClick={function noRefCheck(){}}
+                  onCardClick={onCardClick}
                   onCardDelete={function noRefCheck(){}}
                   onDataChange={function noRefCheck(){}}
 
-                />
+                >
+
+                  <React.Fragment>
+                    <MDBModal isOpen={cardModalIsOpen} >
+                        <MDBModalHeader
+                            className="text-center"
+                            titleClass="w-100 font-weight-bold"
+                        >
+                            Add new job
+                        </MDBModalHeader>
+                        <MDBModalBody>
+                            <form className="mx-3 grey-text">
+                                <MDBInput type="text" label="Company Name"/>
+                                <MDBInput type="text" label="Job Title" onChange={(e) => console.log('hint: setJobTitle(e.target.value)')} />
+                                <MDBInput type="text" label="Description" onChange={(e) => console.log('hint: setDescription(e.target.value)')} />
+                                <MDBInput type="text" label="Company Link" onChange={(e) => console.log('hint: setCompanyLink(e.target.value)')} />
+                            </form>
+                        </MDBModalBody>
+                        <MDBModalFooter className="justify-content-center">
+                            <MDBBtn
+                                color="info"
+                                onClick={() => {
+                                    toggleModal();
+                                    console.log('saveJob function');
+                                }}
+                            >
+                                Add
+                            </MDBBtn>
+                        </MDBModalFooter>
+                    </MDBModal>
+                </React.Fragment>
+                </Board> 
             </React.Fragment>
         </div>
     )
