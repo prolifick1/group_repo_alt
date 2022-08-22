@@ -4,6 +4,27 @@ import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import NavBar from "../components/NavBar";
 import { MDBBtn, MDBInput, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBIcon, MDBBadge, MDBContainer, MDBRow, MDBCol } from "mdbreact";
+import Board from 'react-trello'
+
+const data = {
+  lanes: [
+    {
+      id: 'lane1',
+      title: 'Planned Tasks',
+      label: '2/2',
+      cards: [
+        {id: 'Card1', title: 'Write Blog', description: 'Can AI make memes', label: '30 mins', draggable: false},
+        {id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: {sha: 'be312a1'}}
+      ]
+    },
+    {
+      id: 'lane2',
+      title: 'Completed',
+      label: '0/0',
+      cards: []
+    }
+  ]
+}
 
 function Dashboard(props) {
 
@@ -95,13 +116,10 @@ function Dashboard(props) {
                         </MDBBtn>
                     </MDBModalFooter>
                 </MDBModal>
+                <Board data={data} style={{backgroundColor: 'white' }}/>
             </React.Fragment>
         </div>
-
-
     )
-
-
 }
 
 export default Dashboard

@@ -8,5 +8,8 @@ export default defineConfig({
     outDir: '../back_end/static',
     emptyOutDir: true,
   },
+  define: {
+    "process.env": {},
+  },
   plugins: [react()]
 })
