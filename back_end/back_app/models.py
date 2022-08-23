@@ -1,4 +1,6 @@
 from operator import mod
+from turtle import title
+from xml.etree.ElementTree import Comment
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.http import HttpResponse
@@ -61,3 +63,17 @@ class Forum(models.Model):
 
     def __str__(self):
         return f"Forum: {self.title} for {self.user}"
+
+
+class Comments_To_Forum(models.Model):
+    title = models.CharField(max_length=150, default="New Forum")
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(default=datetime.now())
+    description = models.TextField()
+    forum= models.ForeignKey(Forum, on_delete=models.CASCADE)
+    
+class Replies_To_Comment(models.Model):
+    comment = models.ForeignKey(Comments_To_Forum, on_delete=models.CASCADE)
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(default=datetime.now())
+    description = models.TextField()
