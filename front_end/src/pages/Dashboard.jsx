@@ -36,8 +36,8 @@ function Dashboard(props) {
         return { 
             id: job.company_name,
             title: job.company_name, 
-            description: job.job_title, 
-            label: job.company_link,
+            description: job.company_link, 
+            label: job.job_title,
             draggable: true
         }
           
@@ -58,6 +58,18 @@ function Dashboard(props) {
         {
           id: 'lane2',
           title: 'Applied',
+          label: '0/0',
+          cards: []
+        },
+        {
+          id: 'lane3',
+          title: 'Interview Scheduled',
+          label: '0/0',
+          cards: []
+        },
+        {
+          id: 'lane4',
+          title: 'Received Offer',
           label: '0/0',
           cards: []
         }
@@ -82,6 +94,13 @@ function Dashboard(props) {
       console.log('state of cardModalIsOpen?', cardModalIsOpen);
       setCardModalIsOpen(!cardModalIsOpen);
     }
+
+    const deleteJob = () => {
+      console.log('job deleted');
+    };
+    // const editJob = () => {
+    //   console.log('job edited');
+    // };
 
 
     return (
@@ -180,6 +199,8 @@ function Dashboard(props) {
                   editable
                   id="EditableBoard1"
                   onCardClick={toggleCardModal}
+                  onCardDelete={deleteJob}
+                  // onDataChange={editJob}
                 >
 
                 {/*

@@ -18,6 +18,18 @@ const SearchResult = () => {
             })
     }, [jobName])
 
+    //sends request to back end to create job from search
+    function addJobfromSearch(item) {
+        let job = {
+            company_name: item.company_name,
+            job_title: item.title,
+            description: item.description,
+            link: item.detail_url,
+        }
+        axios.post('jobs', job)
+            .then(request => (console.log('job added')))
+      }
+
     return (
         <div>
             <NavBar />
@@ -39,6 +51,7 @@ const SearchResult = () => {
                                     <td>{item.title}</td>
                                     <td>{item.city}, {item.state} </td>
                                     <td><a href={item.detail_url} target="blank"><button>More Info</button></a></td>
+                                    <td><button onClick={()=>addJobfromSearch(item)}>Interested</button></td>
                                 </tr>
                             ))
                             }
