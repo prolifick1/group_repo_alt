@@ -1,9 +1,13 @@
 from django.http import HttpResponse, JsonResponse
-from .models import *
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.core import serializers
+from dotenv import load_dotenv
+from .models import *
+import json
+import requests
+import os
 
 
 # Create your views here.
@@ -107,7 +111,7 @@ def jobs_applied_for(request):
                 new_job.save()
             if request.data['color']:
                 color = request.data['color']
-                new_job(color = color)
+                new_job(color=color)
                 new_job.save()
             if request.data['location']:
                 location = request.data['location']
@@ -170,3 +174,19 @@ def check_authentication(request):
         return Response({'message': 'yes'})
     else:
         return Response({'message': 'no'})
+
+
+@api_view(['GET'])
+def job_search(request, jobName):
+    load_dotenv()
+    url = "https://job-search4.p.rapidapi.com/monster/search"
+    querystring = {"query": jobName, "state": "IL", "page": "1"}
+
+    headers = {
+        "X-RapidAPI-Key": os.environ['rapidKey'],
+        "X-RapidAPI-Host": "job-search4.p.rapidapi.com"
+    }
+
+    response = requests.request(
+        "GET", url, headers=headers, params=querystring)
+    return Response(json.loads(response.text)["jobs"])

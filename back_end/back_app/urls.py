@@ -12,5 +12,6 @@ urlpatterns = [
     path('jobs', views.jobs_applied_for, name='jobs_of_user'),
     path('interviews', views.interviews, name='interviews_of_user'),
     path('forums', views.forums, name='forums_for_user'),
-    path('userAuthenticated', views.check_authentication)
+    path('userAuthenticated', views.check_authentication),
+    path('jobSearch/<str:jobName>', views.job_search)
 ]
