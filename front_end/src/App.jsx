@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import TestPage from './pages/TestPage'
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
+import Forums from './Pages/Forums';
 
 function getCookie(name) {
   let cookieValue = null;
@@ -103,6 +104,8 @@ function App() {
           />
           <Route path='/dashboard'
             element={<Dashboard user={user} />} />
+          <Route path='/forums'
+            element={<Forums user={user} />} />
           <Route path='*' element={<NotFound />} />
           <Route path='/test' element={<TestPage />} />
         </Routes>
