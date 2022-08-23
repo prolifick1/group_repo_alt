@@ -154,10 +154,10 @@ def interviews(request):
 
 
 @api_view(["GET", "POST"])
-def forums(request):
+def posts(request):
     if request.method == "GET":
-        job= request.data['job']
-        current = Forum.objects.filter(job = job)
+        company= request.data['company']
+        current = Post.objects.filter(company_name = company)
         return Response(list(current))
     if request.method == "POST":
         try:
@@ -166,12 +166,12 @@ def forums(request):
             company_name = request.data['company_name']
             job_title = request.data['job_title']
             description = request.data['description']
-            forum = Forum.objects.create(
+            post = Post.objects.create(
                 title=title, user=user, company_name=company_name, job_title=job_title, description=description)
-            forum.save()
-            return Response({"message": "new post of job forum"})
+            post.save()
+            return Response({"message": "new post of job post"})
         except:
-            return Response({"message": "forum creation failed"})
+            return Response({"message": "post creation failed"})
 
 
 @api_view(['GET'])
@@ -205,16 +205,16 @@ def comments(request):
             title = request.data['title']
             user = request.user
             description = request.data['description']
-            forum=request.data['forum']
-            comment =Comments_To_Forum.objects.create(
-                title=title, user=user,description=description, forum = forum)
+            post=request.data['post']
+            comment =Comments_To_Post.objects.create(
+                title=title, user=user,description=description, post = post)
             comment.save()
-            return Response({"message": "new comment for this forum"})
+            return Response({"message": "new comment for this Post"})
         except:
             return Response({"message": "comment creation failed"})
     if request.method == "GET":
-        forum = request.data['forum']
-        comment = Comments_To_Forum.objects.filter(forum = forum)
+        post = request.data['post']
+        comment = Comments_To_Post.objects.filter(post = post)
         return Response(list(comment))
   
 @api_view(["GET", "POST"])

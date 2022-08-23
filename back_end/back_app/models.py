@@ -53,7 +53,7 @@ class Interview(models.Model):
         return f"Interviewing company: {self.company_name} for {self.user}"
 
 
-class Forum(models.Model):
+class Post(models.Model):
     title = models.CharField(max_length=150, default="New Forum")
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     date_created = models.DateTimeField(default=datetime.now())
@@ -65,15 +65,15 @@ class Forum(models.Model):
         return f"Forum: {self.title} for {self.user}"
 
 
-class Comments_To_Forum(models.Model):
+class Comments_To_Post(models.Model):
     title = models.CharField(max_length=150, default="New Forum")
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     date_created = models.DateTimeField(default=datetime.now())
     description = models.TextField()
-    forum= models.ForeignKey(Forum, on_delete=models.CASCADE)
+    forum= models.ForeignKey(Post, on_delete=models.CASCADE)
     
 class Replies_To_Comment(models.Model):
-    comment = models.ForeignKey(Comments_To_Forum, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comments_To_Post, on_delete=models.CASCADE)
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     date_created = models.DateTimeField(default=datetime.now())
     description = models.TextField()
