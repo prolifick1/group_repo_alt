@@ -8,7 +8,6 @@ import {
 import 'react-bootstrap-icons';
 
 export default function Comment({comment, replies}) {
-  console.log(replies);
   return( 
     <div className="comment">
       <MDBCard >
@@ -34,6 +33,7 @@ export default function Comment({comment, replies}) {
           <MDBCardText className="comment-text">
             {comment.body} 
           </MDBCardText>
+          Reply Edit Delete
           <MDBCardGroup>
             <i class="bi bi-heart" style={{ fontSize: 18 }}></i>
             <i class="bi bi-chat" style={{ fontSize: 18 }}></i>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Comment from '../components/Comment'
+import Comment from '../components/Comment';
+import CommentForm from '../components/CommentForm';
 
 let commentsMocks = [
     {
       id: "1",
-      body: "First comment",
+      description: "First comment",
       username: "Jack",
       userId: "1",
       parentId: null,
@@ -12,7 +13,7 @@ let commentsMocks = [
     },
     {
       id: "2",
-      body: "Second comment",
+      description: "Second comment",
       username: "Alice",
       userId: "2",
       parentId: null,
@@ -20,7 +21,7 @@ let commentsMocks = [
     },
     {
       id: "3",
-      body: "First comment first child",
+      description: "First comment first child",
       username: "Bob",
       userId: "2",
       parentId: "1",
@@ -28,7 +29,7 @@ let commentsMocks = [
     },
     {
       id: "4",
-      body: "Second comment second child",
+      description: "Second comment second child",
       username: "Sally",
       userId: "2",
       parentId: "2",
@@ -37,15 +38,10 @@ let commentsMocks = [
   ];
 
 
-function CommentForm () {
-  return (
-    <div>the form</div>
-  )
-}
-
-export default function Forums() {
+export default function Forums({user}) {
 
   const [commentsList, setCommentsList] = useState([]);
+  const [text, setText] = useState('');
 
   const getReplies = commentId => {
     return commentsMocks.filter((comment) => {
@@ -57,17 +53,39 @@ export default function Forums() {
 
   useEffect(() => {
     setCommentsList(commentsMocks);
+    //create call to db here and use dependencies array
   }, [])
 
   const rootComments = commentsMocks.filter((comment) => {
     return comment.parentId === null;
   });
 
+  const addComment = async(text, parentId=null) => {
+    let post_id = 1 + commentsList.length;
+    let newComment = {
+      'id': `${post_id}`,
+      'user': `${user.id}`, 
+      'username': `${user.first_name} ${user.last_name}`,
+      'description': text, 
+      'parentId': parentId,
+      'createdAt': new Date().toISOString()
+    };
+    try {
+      //urlpath for forums could look like '/forum/<str: company_name>'
+      await axios.post('forums', newComment, { params: { company_name: company_name}});
+      setCommentsList([newComment, ...commentsList]);
+    }
+    catch(error) {
+        console.error(error);
+    }
+  }
+
   return(
 
    <div className="comments">
       <h3 className="comments-title">Raytheon Forums</h3>
       <div className="comment-form-title">Write a comment</div>
+      <CommentForm submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} />
       <div className="comments-container">
         {rootComments.map((rootComment) => { 
           return <Comment key={rootComment.key} comment={rootComment} replies={getReplies(rootComment.id)} />
