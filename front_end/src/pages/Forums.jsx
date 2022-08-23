@@ -66,8 +66,7 @@ export default function Forums() {
   return(
 
    <div className="comments">
-    <h1>Hello chumbo</h1>
-      <h3 className="comments-title">Comments</h3>
+      <h3 className="comments-title">Raytheon Forums</h3>
       <div className="comment-form-title">Write a comment</div>
       <div className="comments-container">
         {rootComments.map((rootComment) => { 
