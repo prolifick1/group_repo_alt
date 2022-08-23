@@ -121,6 +121,12 @@ def jobs_applied_for(request):
         except:
             return Response({"message": "failed to post new job application"})
 
+@api_view(["DELETE"])
+def delete_job(request):
+    specific_job=request.data("job")
+    job=AppliedJobs.objects.filter(job_title = specific_job)
+    job.delete()
+    return Respone({"msg":"This job was deleted"})
 
 @api_view(["GET", "POST"])
 def interviews(request):
@@ -148,9 +154,10 @@ def interviews(request):
 
 
 @api_view(["GET", "POST"])
-def forums(request):
+def posts(request):
     if request.method == "GET":
-        current = Forum.objects.all()
+        company= request.data['company']
+        current = Post.objects.filter(company_name = company)
         return Response(list(current))
     if request.method == "POST":
         try:
@@ -159,12 +166,12 @@ def forums(request):
             company_name = request.data['company_name']
             job_title = request.data['job_title']
             description = request.data['description']
-            forum = Forum.objects.create(
+            post = Post.objects.create(
                 title=title, user=user, company_name=company_name, job_title=job_title, description=description)
-            forum.save()
-            return Response({"message": "new post of job forum"})
+            post.save()
+            return Response({"message": "new post of job post"})
         except:
-            return Response({"message": "forum creation failed"})
+            return Response({"message": "post creation failed"})
 
 
 @api_view(['GET'])
@@ -190,3 +197,41 @@ def job_search(request, jobName):
     response = requests.request(
         "GET", url, headers=headers, params=querystring)
     return Response(json.loads(response.text)["jobs"])
+
+@api_view(["GET", "POST"])
+def comments(request):
+    if request.method == "POST":
+        try:
+            title = request.data['title']
+            user = request.user
+            description = request.data['description']
+            post=request.data['post']
+            comment =Comments_To_Post.objects.create(
+                title=title, user=user,description=description, post = post)
+            comment.save()
+            return Response({"message": "new comment for this Post"})
+        except:
+            return Response({"message": "comment creation failed"})
+    if request.method == "GET":
+        post = request.data['post']
+        comment = Comments_To_Post.objects.filter(post = post)
+        return Response(list(comment))
+  
+@api_view(["GET", "POST"])
+def replies_to_comments(request):
+    if request.method == "POST":
+        try:
+            user = request.user
+            description = request.data['description']
+            comment=request.data['comment']
+            reply =Replies_To_Comment.objects.create(user=user, description=description, comment = comment)
+            reply.save()
+            return Response({"message": "new reply for this comment"})
+        except:
+            return Response({"message": "reply creation failed"})
+    if request.method == "GET":
+        comment = request.data['comment']
+        replies = Replies_To_Comment.objects.filter(comment = comment)
+        return Response(list(replies))
+      
+    
