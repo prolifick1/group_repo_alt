@@ -153,7 +153,7 @@ def interviews(request):
             return Response({"message": "interview creation failed"})
 
 
-@api_view(["GET", "POST"])
+@api_view(["GET", "POST", "PUT", "DELETE"])
 def posts(request):
     # for now we will only have 1 social page and it will return all posts
     if request.method == "GET":
@@ -174,6 +174,13 @@ def posts(request):
         db_post = Posts.objects.get(id=post.id);
         json_post = serializers.serialize('json', {db_post})
         return JsonResponse(json_post, safe=False)
+    if(request.method == "PUT"):
+        print(f"user_id: {request.body['id']} description: {request.body['description']}")
+        return Response('edited post as json');
+
+    if(request.method == "DELETE"):
+        print(request.data['id']);
+        return Response('all posts after deletion as json: ');
 
 
 @api_view(['GET'])

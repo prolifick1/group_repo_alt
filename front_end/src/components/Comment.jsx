@@ -12,21 +12,28 @@ import useState from 'react';
 export default function Comment({
   user, id, post, 
   activePost, setActivePost,
+  postsList, 
+  text, setText,
+  handleTextEntry,
   isEditing, setIsEditing,
   replies}) {
 
 
-  const handleEditPost = async(e) => {
+  const handleEditClick = async(e) => {
     setIsEditing(!isEditing);
     setActivePost(post.id);
     console.log('hi');
     console.log(e.target.parentElement);
-    let edited = await axios.put('forums');
 
   }
+  const editPost = async() => {    
+    let edited = await axios.put('forums', { params : { id: id, description: post.description } } );
+
+  };
+
   const deletePost = async(e) => {
     if(window.confirm('are you sure you want to delete?')) {
-      let deleted = await axios.delete('forums', { data: { id: id} });
+      let remaining = await axios.delete('forums', { data: { id: id} });
       postsList.filter((post) => {
         return post.id !== id;
       });
@@ -56,15 +63,15 @@ export default function Comment({
           <MDBCardText className="comment-text">
             { activePost===id && isEditing &&
             <div>
-              <CommentForm submitLabel="edit" initialText={post.body}/> 
+              <CommentForm submitLabel="edit" initialText={post.description} text={text} setText={setText} onChange={handleTextEntry} handleSubmit={editPost}/> 
             </div>
             }
             {
-              !isEditing && <div>{post.body}</div>
+              !isEditing && <div>{post.description}</div>
             }
           </MDBCardText>
           <span class="post-reply">Reply</span>
-            <span class="post-edit" onClick={handleEditPost}>Edit</span>
+            <span class="post-edit" onClick={handleEditClick}>Edit</span>
           <span id="post-delete" onClick={deletePost}>Delete</span>
           <MDBCardGroup>
           
