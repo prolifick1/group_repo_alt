@@ -16,28 +16,34 @@ export default function Comment({
   text, setText,
   handleTextEntry,
   isEditing, setIsEditing,
+  editText, setEditText,
+  handleEditChange,
   replies}) {
 
 
   
   function EditForm() {
+
       const onSubmit = e => {
         e.preventDefault();
-        handleSubmit(text);
-        setText("");
       }
 
+    const editPost = async() => {
+      console.log('active post', activePost);
+      console.log('new edit:', editText);
+    }
 
-    const [editText, setEditText] = ('');
+
 
       return (
         <form onSubmit={onSubmit}>
-          <textarea class="form-control" id="comment-form-textarea" initialText={post.description} onChange={handleEditChange} value={editText} onChange={(e) => setEditText(e.target.value)} handleSubmit={editPost}></textarea>
-          <button type="submit" class="btn btn-primary btn-block mb-4 comment-form-button">Edit</button>
+          <textarea class="form-control" id="comment-form-textarea" initialText={post.description} onChange={handleEditChange} value={editText} ></textarea>
+          <button type="submit" class="btn btn-primary btn-block mb-4 comment-form-button" onClick={editPost}>Edit</button>
         </form>
       )
 
   }
+
   
   const handleEditClick = async(e) => {
     setIsEditing(!isEditing);
@@ -83,7 +89,7 @@ export default function Comment({
           <MDBCardText className="comment-text">
             { activePost===id && isEditing &&
             <div>
-              <EditForm />
+              <EditForm editText={editText} setEditText={setEditText} onChange={handleEditChange}/>
             </div>
             }
             {

@@ -41,6 +41,7 @@ let commentsMocks = [
 export default function Forums({user}) {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
+  const [editText, setEditText] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [activePost, setActivePost] = useState(null);
   const [postsList, setPostsList] = useState([]);
@@ -108,6 +109,11 @@ export default function Forums({user}) {
     }
   }
 
+  const handleEditChange = (e) => {
+    console.log(e.target.value); 
+    setEditText(e.target.value);
+  }
+
   const handleTitleEntry = (e) => {
     setTitle(e.target.value);
   }
@@ -136,7 +142,9 @@ export default function Forums({user}) {
           onChange={handleTextEntry} text={text} setText={setText} 
           post={post} setActivePost={setActivePost}
           activePost={activePost} 
-          user={user} id={post.id} key={post.id} />
+          user={user} id={post.id} key={post.id} 
+          editText={editText} setEditText={setEditText} handleEditChange={handleEditChange}
+          />
           })
         }
 
