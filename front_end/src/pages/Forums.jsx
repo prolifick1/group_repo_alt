@@ -45,6 +45,8 @@ export default function Forums({user}) {
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
 
+  
+
   //only used for mocking data
   const getReplies = commentId => {
     return commentsMocks.filter((comment) => {
@@ -54,15 +56,16 @@ export default function Forums({user}) {
     });
   }
 
-  //todo: use db data
   useEffect(() => {
-    setCommentsList(commentsMocks);
-    //create call to db here and use dependencies array
+    //setCommentsList(commentsMocks);
+    console.log('Forum.jsx called useeffect w/ empty dependency array'); 
+  }, [])
+
     async() => {
       let response = await axios.get('forums')
+      console.log('get response from forums', response);
       setCommentsList(response);
     }
-  }, [])
 
   //used for mocking data
   const rootComments = commentsMocks.filter((comment) => {
@@ -74,6 +77,7 @@ export default function Forums({user}) {
     let newComment = {
       'description': text,
       'title': title,
+      'job_title': user.job_title,
       //parent id might be used for later iterations
       //'parentId': parentId,
       'company_name': "Google",
