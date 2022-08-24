@@ -159,7 +159,7 @@ def posts(request):
     if request.method == "GET":
         company= request.data['company_name']
         #current = Post.objects.filter(company_name = company)
-        all_posts = Post.objects.all()
+        all_posts = Posts.objects.all()
         return Response(list(all_posts))
     if request.method == "POST":
         title = request.data['title']
@@ -170,7 +170,9 @@ def posts(request):
         post = Posts.objects.create(
             title=title, user=user, company_name=company_name, job_title=job_title, description=description)
         post.save()
-        json_post = serializers.serialize('json', [post])
+        print('postid:>>>>>>>>>>>>>>>>>>>>', post.id)
+        db_post = Posts.objects.get(id=post.id);
+        json_post = serializers.serialize('json', {db_post})
         return JsonResponse(json_post, safe=False)
 
 

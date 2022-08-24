@@ -42,6 +42,7 @@ export default function Forums({user}) {
   const [postsList, setPostsList] = useState([]);
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
+  const [isEditing, setIsEditing] = useState('false');
 
   //only used for mocking data
   //  const getReplies = commentId => {
@@ -85,6 +86,7 @@ export default function Forums({user}) {
     try {
       let serializedPost = await axios.post('forums', newPost);
       let post = JSON.parse(serializedPost.data);
+      console.log(post);
       let fields = post[0].fields;
       let companyName = fields['company_name'];
       let createdAt = fields['date_created'];
@@ -93,7 +95,9 @@ export default function Forums({user}) {
       let title = fields['title'];
       let userId = String(fields['user']);
       let parentId = null;
-      post =  {companyName, description, jobTitle, title, userId, parentId}
+      let id = post[0]['pk'];
+      console.log(id);
+      post =  {id, companyName, description, jobTitle, title, userId, parentId}
       setPostsList([post, ...postsList]);
       //need response object to include this data + timeCreated, photo and user 
       //(or first and last name)
@@ -122,7 +126,8 @@ export default function Forums({user}) {
       <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} />
       <div className="comments-container">
         { [...postsList].reverse().map((post) => {
-            return <Comment key={post.key} post={post} />
+          return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
+           user={user} id={post.id} key={post.id} post={post} />
           })
         }
 

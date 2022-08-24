@@ -6,8 +6,30 @@ import {
   MDBCardGroup
 } from 'mdb-react-ui-kit';
 import 'react-bootstrap-icons';
+import axios from 'axios';
+import CommentForm from './CommentForm';
+import useState from 'react';
+export default function Comment({
+  user, id, post, 
+  isEditing, setIsEditing,
+  replies}) {
 
-export default function Comment({post, replies}) {
+
+  const handleEditPost = async(e) => {
+    setIsEditing(!isEditing);
+    console.log('hi');
+    console.log(e.target.parentElement);
+    let edited = await axios.put('forums');
+
+  }
+  const deletePost = async(e) => {
+    if(window.confirm('are you sure you want to delete?')) {
+      let deleted = await axios.delete('forums', { data: { id: id} });
+      postsList.filter((post) => {
+        return post.id !== id;
+      });
+    }
+  }
   return( 
     <div className="comment">
       <MDBCard >
@@ -28,12 +50,22 @@ export default function Comment({post, replies}) {
             </MDBCardGroup>
 
           </MDBCardGroup>
-          <MDBCardTitle className="comments-title">Card title</MDBCardTitle>
+          <MDBCardTitle className="comments-title">{post.title}</MDBCardTitle>
           <MDBCardText className="comment-text">
-            {post.body} 
+            { isEditing &&
+            <div>
+              <CommentForm submitLabel="edit" initialText={post.body}/> 
+            </div>
+            }
+            {
+              !isEditing && <div>{post.body}</div>
+            }
           </MDBCardText>
-          Reply Edit Delete
+          <span class="post-reply">Reply</span>
+            <span class="post-edit" onClick={handleEditPost}>Edit</span>
+          <span id="post-delete" onClick={deletePost}>Delete</span>
           <MDBCardGroup>
+          
             <i class="bi bi-heart" style={{ fontSize: 18 }}></i>
             <i class="bi bi-chat" style={{ fontSize: 18 }}></i>
             <i class="bi bi-bookmark" style={{ fontSize: 18 }}></i>
