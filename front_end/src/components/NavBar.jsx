@@ -28,6 +28,7 @@ function NavBar() {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="#/forums">Forums</Nav.Link>
                     <Nav.Link href="#/dashboard">Dashboard</Nav.Link>
                     <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                         <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -37,7 +38,6 @@ function NavBar() {
                         <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item href="#action/3.4">
-                            Separated link
                         </NavDropdown.Item>
                     </NavDropdown>
                 </Nav>

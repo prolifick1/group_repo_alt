@@ -1,5 +1,4 @@
 from operator import mod
-from turtle import title
 from xml.etree.ElementTree import Comment
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -53,7 +52,7 @@ class Interview(models.Model):
         return f"Interviewing company: {self.company_name} for {self.user}"
 
 
-class Post(models.Model):
+class Posts(models.Model):
     title = models.CharField(max_length=150, default="New Forum")
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     date_created = models.DateTimeField(default=datetime.now())
@@ -62,7 +61,7 @@ class Post(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return f"Forum: {self.title} for {self.user}"
+        return f"Comment: {self.title} for {self.user}"
 
 
 class Comments_To_Post(models.Model):
@@ -70,7 +69,7 @@ class Comments_To_Post(models.Model):
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     date_created = models.DateTimeField(default=datetime.now())
     description = models.TextField()
-    forum= models.ForeignKey(Post, on_delete=models.CASCADE)
+    forum= models.ForeignKey(Posts, on_delete=models.CASCADE)
     
 class Replies_To_Comment(models.Model):
     comment = models.ForeignKey(Comments_To_Post, on_delete=models.CASCADE)

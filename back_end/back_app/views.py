@@ -155,10 +155,12 @@ def interviews(request):
 
 @api_view(["GET", "POST"])
 def posts(request):
+    # for now we will only have 1 social page and it will return all posts
     if request.method == "GET":
-        company= request.data['company']
-        current = Post.objects.filter(company_name = company)
-        return Response(list(current))
+        company= request.data['company_name']
+        #current = Post.objects.filter(company_name = company)
+        all_posts = Post.objects.all()
+        return Response(list(all_posts))
     if request.method == "POST":
         try:
             title = request.data['title']
@@ -169,7 +171,8 @@ def posts(request):
             post = Post.objects.create(
                 title=title, user=user, company_name=company_name, job_title=job_title, description=description)
             post.save()
-            return Response({"message": "new post of job post"})
+            json_post = serializers.serialize('json', post);
+            return JsonResponse(json_post)
         except:
             return Response({"message": "post creation failed"})
 
