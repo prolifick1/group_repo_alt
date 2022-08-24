@@ -7,7 +7,7 @@ import {
 } from 'mdb-react-ui-kit';
 import 'react-bootstrap-icons';
 
-export default function Comment({comment, replies}) {
+export default function Comment({post, replies}) {
   return( 
     <div className="comment">
       <MDBCard >
@@ -22,8 +22,7 @@ export default function Comment({comment, replies}) {
                 width="35"
               />
               <MDBCardGroup className="d-inline-flex flex-column text-meta">
-                <div>{comment.username}</div>
-                <div>{comment.createdAt}</div>
+                <div>{post.createdAt}</div>
               </MDBCardGroup>
 
             </MDBCardGroup>
@@ -31,7 +30,7 @@ export default function Comment({comment, replies}) {
           </MDBCardGroup>
           <MDBCardTitle className="comments-title">Card title</MDBCardTitle>
           <MDBCardText className="comment-text">
-            {comment.body} 
+            {post.body} 
           </MDBCardText>
           Reply Edit Delete
           <MDBCardGroup>
@@ -40,11 +39,12 @@ export default function Comment({comment, replies}) {
             <i class="bi bi-bookmark" style={{ fontSize: 18 }}></i>
           </MDBCardGroup>
           <div>
-            { replies.length > 0 && 
+            {/*   { replies.length > 0 && 
               replies.map((reply) => {
                 return <Comment comment={reply} key={reply.id} replies={[]} />     
               })
             }
+            */}
           </div>
         </MDBCardBody>
       </MDBCard>

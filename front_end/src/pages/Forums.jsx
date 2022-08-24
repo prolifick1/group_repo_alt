@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import axios from 'axios';
-
 let commentsMocks = [
   {
     id: "1",
@@ -38,53 +37,64 @@ let commentsMocks = [
   },
 ];
 
-
 export default function Forums({user}) {
 
-  const [commentsList, setCommentsList] = useState([]);
+  const [postsList, setPostsList] = useState([]);
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
 
-  
-
   //only used for mocking data
-  const getReplies = commentId => {
-    return commentsMocks.filter((comment) => {
-      return comment.parentId === commentId;
-    }).sort((a, b) => {
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-    });
-  }
+  //  const getReplies = commentId => {
+  //    return commentsMocks.filter((comment) => {
+  //      return comment.parentId === commentId;
+  //    }).sort((a, b) => {
+  //      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+  //    });
+  //  }
 
   useEffect(() => {
-    //setCommentsList(commentsMocks);
+    console.log('postsList updated', postsList);
+  }, [postsList] );
+
+  useEffect(() => {
+    //setPostsList(commentsMocks);
+    async() => {
+      let response = await axios.get('forums')
+      setPostsList(response);
+      console.log('posts in db');
+    }
     console.log('Forum.jsx called useeffect w/ empty dependency array'); 
   }, [])
 
-    async() => {
-      let response = await axios.get('forums')
-      console.log('get response from forums', response);
-      setCommentsList(response);
-    }
 
   //used for mocking data
-  const rootComments = commentsMocks.filter((comment) => {
-    return comment.parentId === null;
-  });
+  //  const rootComments = commentsMocks.filter((comment) => {
+  //    return comment.parentId === null;
+  //  });
 
 
   const addComment = async(text) => {
-    let newComment = {
+    let newPost = {
       'description': text,
       'title': title,
       'job_title': user.job_title,
-      //parent id might be used for later iterations
+      //parent id might be used for later iterations for nesting
       //'parentId': parentId,
       'company_name': "Google",
     };
     try {
-      await axios.post('forums', newComment);
-      setCommentsList([newComment, ...commentsList]);
+      let serializedPost = await axios.post('forums', newPost);
+      let post = JSON.parse(serializedPost.data);
+      let fields = post[0].fields;
+      let companyName = fields['company_name'];
+      let createdAt = fields['date_created'];
+      let description = fields['description'];
+      let jobTitle = fields['job_title'];
+      let title = fields['title'];
+      let userId = String(fields['user']);
+      let parentId = null;
+      post =  {companyName, description, jobTitle, title, userId, parentId}
+      setPostsList([post, ...postsList]);
       //need response object to include this data + timeCreated, photo and user 
       //(or first and last name)
     }
@@ -97,6 +107,12 @@ export default function Forums({user}) {
     setTitle(e.target.value);
   }
 
+  function renderPosts() {
+    postsList.map((post) => {
+      return <Comment comment={post} />
+    })
+  }
+
   return(
 
    <div className="comments">
@@ -105,9 +121,18 @@ export default function Forums({user}) {
       <input id="comment-title" value={title} onChange={handleTitleEntry} ></input>
       <CommentForm submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} />
       <div className="comments-container">
+        { [...postsList].reverse().map((post) => {
+            return <Comment key={post.key} post={post} />
+          })
+        }
+
+        {/*  
+
         {rootComments.map((rootComment) => { 
           return <Comment key={rootComment.key} comment={rootComment} replies={getReplies(rootComment.id)} />
-        } ) }
+        } ) } 
+
+        */}
       </div>
     </div>
   )
