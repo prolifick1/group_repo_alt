@@ -43,6 +43,7 @@ export default function Forums({user}) {
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
   const [isEditing, setIsEditing] = useState('false');
+  const [activePost, setActivePost] = useState(null);
 
   //only used for mocking data
   //  const getReplies = commentId => {
@@ -127,6 +128,7 @@ export default function Forums({user}) {
       <div className="comments-container">
         { [...postsList].reverse().map((post) => {
           return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
+           activePost={activePost} setActivePost={setActivePost}
            user={user} id={post.id} key={post.id} post={post} />
           })
         }

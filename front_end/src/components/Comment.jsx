@@ -11,12 +11,14 @@ import CommentForm from './CommentForm';
 import useState from 'react';
 export default function Comment({
   user, id, post, 
+  activePost, setActivePost,
   isEditing, setIsEditing,
   replies}) {
 
 
   const handleEditPost = async(e) => {
     setIsEditing(!isEditing);
+    setActivePost(post.id);
     console.log('hi');
     console.log(e.target.parentElement);
     let edited = await axios.put('forums');
@@ -52,7 +54,7 @@ export default function Comment({
           </MDBCardGroup>
           <MDBCardTitle className="comments-title">{post.title}</MDBCardTitle>
           <MDBCardText className="comment-text">
-            { isEditing &&
+            { activePost===id && isEditing &&
             <div>
               <CommentForm submitLabel="edit" initialText={post.body}/> 
             </div>
