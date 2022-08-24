@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
+import axios from 'axios';
 
 let commentsMocks = [
   {
@@ -44,6 +45,7 @@ export default function Forums({user}) {
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
 
+  //only used for mocking data
   const getReplies = commentId => {
     return commentsMocks.filter((comment) => {
       return comment.parentId === commentId;
@@ -52,30 +54,43 @@ export default function Forums({user}) {
     });
   }
 
+  //todo: use db data
   useEffect(() => {
     setCommentsList(commentsMocks);
     //create call to db here and use dependencies array
+    async() => {
+      let response = await axios.get('forums')
+      setCommentsList(response);
+    }
   }, [])
 
+  //used for mocking data
   const rootComments = commentsMocks.filter((comment) => {
     return comment.parentId === null;
   });
+
 
   const addComment = async(text) => {
     let newComment = {
       'description': text,
       'title': title,
-      //parent id might be used later for comment nesting
+      //parent id might be used for later iterations
       //'parentId': parentId,
       'company_name': "Google",
     };
     try {
       await axios.post('forums', newComment);
       setCommentsList([newComment, ...commentsList]);
+      //need response object to include this data + timeCreated, photo and user 
+      //(or first and last name)
     }
     catch(error) {
         console.error(error);
     }
+  }
+
+  const handleTitleEntry = (e) => {
+    setTitle(e.target.value);
   }
 
   return(
@@ -83,7 +98,7 @@ export default function Forums({user}) {
    <div className="comments">
       <h3 className="comments-title">Raytheon Forums</h3>
       <div className="comment-form-title">Write a comment</div>
-      <input id="comment-title" value={value} ></input>
+      <input id="comment-title" value={title} onChange={handleTitleEntry} ></input>
       <CommentForm submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} />
       <div className="comments-container">
         {rootComments.map((rootComment) => { 
