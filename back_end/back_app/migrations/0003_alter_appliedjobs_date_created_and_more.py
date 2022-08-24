@@ -7,33 +7,33 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('back_app', '0001_initial'),
+        ('back_app', '0002_alter_appliedjobs_date_created_and_more'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='appliedjobs',
             name='date_created',
-            field=models.DateTimeField(default=datetime.datetime(2022, 8, 24, 2, 27, 15, 108540)),
+            field=models.DateTimeField(default=datetime.datetime(2022, 8, 24, 2, 27, 33, 125244)),
         ),
         migrations.AlterField(
             model_name='comments_to_post',
             name='date_created',
-            field=models.DateTimeField(default=datetime.datetime(2022, 8, 24, 2, 27, 15, 111081)),
+            field=models.DateTimeField(default=datetime.datetime(2022, 8, 24, 2, 27, 33, 127518)),
         ),
         migrations.AlterField(
             model_name='interview',
             name='interview_date',
-            field=models.DateTimeField(default=datetime.datetime(2022, 8, 24, 2, 27, 15, 109702)),
+            field=models.DateTimeField(default=datetime.datetime(2022, 8, 24, 2, 27, 33, 126034)),
         ),
         migrations.AlterField(
             model_name='posts',
             name='date_created',
-            field=models.DateTimeField(default=datetime.datetime(2022, 8, 24, 2, 27, 15, 110296)),
+            field=models.DateTimeField(default=datetime.datetime(2022, 8, 24, 2, 27, 33, 126571)),
         ),
         migrations.AlterField(
             model_name='replies_to_comment',
             name='date_created',
-            field=models.DateTimeField(default=datetime.datetime(2022, 8, 24, 2, 27, 15, 111734)),
+            field=models.DateTimeField(default=datetime.datetime(2022, 8, 24, 2, 27, 33, 128156)),
         ),
     ]

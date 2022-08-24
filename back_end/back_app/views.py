@@ -25,17 +25,17 @@ def send_the_homepage(request):
 
 @api_view(['POST'])
 def sign_up(request):
-    try:
-        AppUser.objects.create_user(
+       user =  AppUser.objects.create_user(
             first_name=request.data['firstName'],
             last_name=request.data['lastName'],
             job_title=request.data['jobTitle'],
             username=request.data['email'],
             password=request.data['password'],
             email=request.data['email'])
-        return Response({"message": "success"})
-    except:
-        return Response({"message": "Failed to sign up user"})
+       print(user)
+       return Response({"message": "success"})
+  #  except:
+  #      return Response({"message": "Failed to sign up user"})
 
 
 @api_view(['POST'])
@@ -167,18 +167,16 @@ def posts(request):
         return Response(list(all_posts))
     if request.method == "POST":
         try:
-            title = request.data['title']
-            user = request.user
-            company_name = request.data['company_name']
-            job_title = request.data['job_title']
-            description = request.data['description']
-            post = Posts.objects.create(
-                title=title, user=user, company_name=company_name, job_title=job_title, description=description)
-            post.save()
-            json_post = serializers.serialize('json', post);
-            return JsonResponse(json_post)
-        except:
-            return Response({"message": "post creation failed"})
+        title = request.data['title']
+        user = request.user
+        company_name = request.data['company_name']
+        job_title = request.data['job_title']
+        description = request.data['description']
+        post = Posts.objects.create(
+            title=title, user=user, company_name=company_name, job_title=job_title, description=description)
+        post.save()
+        json_post = serializers.serialize('json', [post])
+        return JsonResponse(json_post, safe=False)
 
 
 @api_view(['GET'])
