@@ -19,6 +19,26 @@ export default function Comment({
   replies}) {
 
 
+  
+  function EditForm() {
+      const onSubmit = e => {
+        e.preventDefault();
+        handleSubmit(text);
+        setText("");
+      }
+
+
+    const [editText, setEditText] = ('');
+
+      return (
+        <form onSubmit={onSubmit}>
+          <textarea class="form-control" id="comment-form-textarea" initialText={post.description} onChange={handleEditChange} value={editText} onChange={(e) => setEditText(e.target.value)} handleSubmit={editPost}></textarea>
+          <button type="submit" class="btn btn-primary btn-block mb-4 comment-form-button">Edit</button>
+        </form>
+      )
+
+  }
+  
   const handleEditClick = async(e) => {
     setIsEditing(!isEditing);
     setActivePost(post.id);
@@ -63,7 +83,7 @@ export default function Comment({
           <MDBCardText className="comment-text">
             { activePost===id && isEditing &&
             <div>
-              <CommentForm submitLabel="edit" initialText={post.description} text={text} setText={setText} onChange={handleTextEntry} handleSubmit={editPost}/> 
+              <EditForm />
             </div>
             }
             {
