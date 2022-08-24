@@ -119,7 +119,7 @@ export default function Forums({user}) {
       <h3 className="comments-title">Raytheon Forums</h3>
       <div className="comment-form-title">Write a comment</div>
       <input id="comment-title" value={title} onChange={handleTitleEntry} ></input>
-      <CommentForm submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} />
+      <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} />
       <div className="comments-container">
         { [...postsList].reverse().map((post) => {
             return <Comment key={post.key} post={post} />
