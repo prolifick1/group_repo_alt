@@ -8,7 +8,8 @@ import Dashboard from './pages/Dashboard';
 import TestPage from './pages/TestPage'
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
-import Forums from './Pages/Forums';
+import Forums from './pages/Forums';
+import SearchResult from './pages/searchResult'
 
 function getCookie(name) {
   let cookieValue = null;
@@ -101,6 +102,9 @@ function App() {
               checkHomeRedirect={checkHomeRedirect}
             />
             }
+          />
+          <Route path='/searchResult/:jobName'
+            element={<SearchResult />}
           />
           <Route path='/dashboard'
             element={<Dashboard user={user} />} />
