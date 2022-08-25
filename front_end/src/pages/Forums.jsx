@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import axios from 'axios';
+import '../Forums.css';
+import NavBar from '../components/NavBar';
 
 let commentsMocks = [
   {
@@ -37,6 +39,10 @@ let commentsMocks = [
     createdAt: "2022-08-22T23:00:33.010+02:00",
   },
 ];
+
+function leftNavSidebar() {
+
+}
 
 export default function Forums({user}) {
   const [title, setTitle] = useState('');
@@ -88,7 +94,6 @@ export default function Forums({user}) {
     try {
       let serializedPost = await axios.post('forums', newPost);
       let post = JSON.parse(serializedPost.data);
-      console.log(post);
       let fields = post[0].fields;
       let companyName = fields['company_name'];
       let createdAt = fields['date_created'];
@@ -100,6 +105,7 @@ export default function Forums({user}) {
       let id = post[0]['pk'];
       console.log(id);
       post =  {id, companyName, description, jobTitle, title, userId, parentId}
+      setPost(post);
       setPostsList([post, ...postsList]);
       //need response object to include this data + timeCreated, photo and user 
       //(or first and last name)
@@ -126,33 +132,36 @@ export default function Forums({user}) {
   // }
 
   return(
-
-   <div className="comments">
-      <h3 className="comments-title">Raytheon Forums</h3>
-      <div className="comment-form-title">Write a comment</div>
-      <input id="comment-title" value={title} onChange={handleTitleEntry} ></input>
-      <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
-      <div className="comments-container d-flex flex-column-reverse">
-        { [...postsList].reverse().map((post) => {
-          return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
-          onChange={handleTextEntry} text={text} setText={setText} 
-          post={post} setActivePost={setActivePost}
-          activePost={activePost} 
-          user={user} id={post.id} key={post.id} 
-          editText={editText} setEditText={setEditText}
-          />
-          })
-        }
-
-        {/*  
-
-        {rootComments.map((rootComment) => { 
-          return <Comment key={rootComment.key} comment={rootComment} replies={getReplies(rootComment.id)} />
-        } ) } 
-
-        */}
-      </div>
+  <body class="HolyGrail">
+    <NavBar />
+    <header>…</header>
+    <div class="HolyGrail-body">
+      <main class="HolyGrail-content">
+       <div className="comments">
+          <h3 className="comments-title">Raytheon Forums</h3>
+          <div className="comment-form-title">Write a comment</div>
+          <input id="comment-title" value={title} onChange={handleTitleEntry} ></input>
+          <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
+          <div className="comments-container d-flex flex-column-reverse">
+            { [...postsList].reverse().map((post) => {
+              return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
+              onChange={handleTextEntry} text={text} setText={setText} 
+              post={post} setActivePost={setActivePost}
+              activePost={activePost} 
+              user={user} id={post.id} key={post.id} 
+              editText={editText} setEditText={setEditText}
+              />
+              })
+            }
+          </div>
+        </div>
+      </main>
+      <nav class="HolyGrail-nav">…</nav>
+      <aside class="HolyGrail-ads">…</aside>
     </div>
+    <footer>…</footer>
+  </body>
+
   )
 }
 

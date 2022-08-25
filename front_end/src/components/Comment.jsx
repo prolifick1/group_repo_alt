@@ -8,13 +8,11 @@ import {
 import 'react-bootstrap-icons';
 import axios from 'axios';
 import CommentForm from './CommentForm';
-import useState from 'react';
-
+import { useState }  from 'react';
 
 
 function EditForm({ activePost, post } ) {
-
-  //const [message, setMessage] = useState('');
+  const [message, setMessage]= useState(post.description);
 
   let regularVar = '';
     const onSubmit = e => {
@@ -22,24 +20,21 @@ function EditForm({ activePost, post } ) {
     }
 
   const handleEditChange = (e) => {
-    regularVar = e.target.value;
+    setMessage(e.target.value);
   }
 
   const editPost = async() => {
     console.log('active post', activePost);
-    console.log(regularVar);
     let editedPost = axios.put(`forums`, { id: activePost, description: regularVar } );
-    editedPost = '<response from db will go here>';
-    post.description = editedPost;
+    post.description = "whatever the backend return"  
   }
 
     return (
       <form onSubmit={onSubmit}>
-        <textarea class="form-control" id="comment-form-textarea" onChange={handleEditChange} ></textarea>
+        <textarea class="form-control" id="comment-form-textarea" defaultValue={message} onChange={handleEditChange} ></textarea>
         <button type="submit" class="btn btn-primary btn-block mb-4 comment-form-button" onClick={editPost}>Edit</button>
       </form>
     )
-
 }
 
 
@@ -51,8 +46,7 @@ export default function Comment({
   editText, setEditText,
   handleEditChange,
   replies}) {
-
-  
+ 
   const handleEditClick = async(e) => {
     setIsEditing(!isEditing);
     setActivePost(post.id);
