@@ -212,13 +212,19 @@ def update_post(request, postId):
         except:
             return Response({"msg": "Post NOT deleted"})
     if request.method == 'PUT':
-        post.title = request.data['title']
-        post.company_name = request.data['company_name']
-        post.job_title = request.data['job_title']
-        post.description = request.data['description']
-        post.save()
-        edited_post = Posts.objects.get(id=postId).values()
-        return Response(list(edited_post)[0])
+        try:
+            if request.data['title']:
+                post.title = request.data['title']
+            if request.data['company_name']:
+                post.company_name = request.data['company_name']
+            if request.data['job_title']:
+                post.job_title = request.data['job_title']
+            post.description = request.data['description']
+            post.save()
+            edited_post = Posts.objects.get(id=postId).values()
+            return Response(list(edited_post)[0])
+        except:
+            return Response('Post NOT edited')
 
 
 @api_view(['GET'])
