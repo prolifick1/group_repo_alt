@@ -13,220 +13,187 @@ import Modal from 'react-bootstrap/Modal';
 
 function Dashboard(props) {
 
-    const [companyName, setCompanyName] = useState('')
-    const [jobTitle, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [companyLink, setCompanyLink] = useState('')
-    const [cardModalIsOpen, setCardModalIsOpen] = useState(false);
+  const [companyName, setCompanyName] = useState('')
+  const [companyLink, setCompanyLink] = useState('')
+  const [jobTitle, setTitle] = useState('')
+  const [salary, setSalary] = useState('')
+  const [description, setDescription] = useState('')
+  const [location, setLocation] = useState('')
+  const [date, setDate] = useState('')
 
-    // sets state of current jobs to empty list
-    const [currentJobs, setCurrentJobs] = useState([])
 
-    const [lgShow, setLgShow] = useState(false); 
-    const [smShow, setSmShow] = useState(false);
+  const [cardModalIsOpen, setCardModalIsOpen] = useState(false);
 
-    const [modal, setModal] = useState(false);
-    const [addedJob, setAddedJob] = useState(false);
+  // sets state of current jobs to empty list
+  const [currentJobs, setCurrentJobs] = useState([])
 
-    //sets state of current jobs to current list based on back end request
-    useEffect(()=>{
-      console.log(addedJob)
-      axios.get('jobs')
+  const [lgShow, setLgShow] = useState(false);
+  const [smShow, setSmShow] = useState(false);
+
+  const [modal, setModal] = useState(false);
+  const [addedJob, setAddedJob] = useState(false);
+
+  //sets state of current jobs to current list based on back end request
+  useEffect(() => {
+    console.log(addedJob)
+    axios.get('jobs')
       .then(response => setCurrentJobs(response.data.map(job => {
-        return { 
-            id: job.company_name,
-            title: job.company_name, 
-            description: job.company_link, 
-            label: job.job_title,
-            draggable: true
+        return {
+          id: job.id,
+          title: job.company_name,
+          description: job.company_link,
+          label: job.job_title,
+          draggable: true
         }
-          
+
       })))
 
-    },[addedJob])
+  }, [addedJob])
 
 
-    const data = {
-      lanes: [
-        {
-          id: 'lane1',
-          title: 'Interested',
-          label: '2/2',
-          cards: currentJobs
-                  
-        },
-        {
-          id: 'lane2',
-          title: 'Applied',
-          label: '0/0',
-          cards: []
-        },
-        {
-          id: 'lane3',
-          title: 'Interview Scheduled',
-          label: '0/0',
-          cards: []
-        },
-        {
-          id: 'lane4',
-          title: 'Received Offer',
-          label: '0/0',
-          cards: []
-        }
-      ]
+  const data = {
+    lanes: [
+      {
+        id: 'lane1',
+        title: 'Interested',
+        label: currentJobs.length,
+        cards: currentJobs,
+        disallowAddingCard: true,
+
+      },
+      {
+        id: 'lane2',
+        title: 'Applied',
+        label: '0/0',
+        cards: [],
+        disallowAddingCard: true,
+      },
+      {
+        id: 'lane3',
+        title: 'Interview Scheduled',
+        label: '0/0',
+        cards: [],
+        disallowAddingCard: true,
+      },
+      {
+        id: 'lane4',
+        title: 'Received Offer',
+        label: '0/0',
+        cards: [],
+        disallowAddingCard: true,
+      }
+    ]
+  }
+
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+
+  const toggleCardModal = () => {
+    setLgShow(!lgShow);
+  };
+
+  const components = {
+    LaneFooter: function noRefCheck() { },
+
+  };
+
+
+  const onCardClick = (cardId, metadata, laneId) => {
+    console.log('clicked card in', laneId);
+    console.log('state of cardModalIsOpen?', cardModalIsOpen);
+    setCardModalIsOpen(!cardModalIsOpen);
+  }
+  const deleteJob = () => {
+    axios.delete(`jobs/${jobId}`)
+      .then(setCurrentJobs(currentJobs.filter(job => job.id != jobId)))
+      .then(console.log('job deleted'))
+  };
+  const editJob = () => {
+    let jobToEdit = {
+      company_name : companyName,
+      job_title : jobTitle,
+      salary : salary,
+      location : location,
     }
-    
-    const toggleModal = () => {
-        setModal(!modal);
-    };
+    console.log(jobToEdit)
+    // axios.put(`jobs/${jobId}`, jobToEdit)
+    // .then(console.log('job edited'))
 
-    const toggleCardModal = () => {
-      setLgShow(!lgShow);
-    };
-
-    const components = {
-      AddCardLink: () => <button>New Card</button>,
-    };
+    console.log('job edited');
+  };
 
 
-    const onCardClick = (cardId, metadata, laneId) => {
-      console.log('clicked card in', laneId);
-      console.log('state of cardModalIsOpen?', cardModalIsOpen);
-      setCardModalIsOpen(!cardModalIsOpen);
-    }
-
-    const deleteJob = () => {
-      console.log('job deleted');
-    };
-    // const editJob = () => {
-    //   console.log('job edited');
-    // };
-
-
-    return (
-        <div>
-
-            {/* <div>
-                <form onSubmit={() => addJob()} action="">
-                    <input type="text" placeholder="Comapny Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
-                    <input type="text" placeholder="Job Title" value={jobTitle} onChange={(e) => setTitle(e.target.value)} />
-                    <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-                    <input type="text" placeholder="Company Link" value={companyLink} onChange={(e) => setCompanyLink(e.target.value)} />
-                    <MDBBtn>submit</MDBBtn>
-                </form>
-
-              class foo extends React.Component{
-              state={isOpen: false}
-
-              onCardClick = (cardId, metadata, laneId) => {
-              this.setState((prevState) => {
-                   return {isOpen: !prevState.isOpen}
-              });
-              }
-                render() {
-                   const {isOpen} = this.state;
-                    return(
-                      <Board>
-                        <Modal open={isOpen} />
-                     </Board>
-                      );
-                   }
-              }
-
-            </div> */}
-            <>
-                  <Modal
-                    size="sm"
-                    show={smShow}
-                    onHide={() => setSmShow(false)}
-                    aria-labelledby="example-modal-sizes-title-sm"
-                  >
-                    <Modal.Header closeButton>
-                      <Modal.Title id="example-modal-sizes-title-sm">
-                        Small Modal
-                      </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>...</Modal.Body>
-                  </Modal>
-                  <Modal
-                    size="lg"
-                    show={lgShow}
-                    onHide={() => setLgShow(false)}
-                    aria-labelledby="example-modal-sizes-title-lg"
-                  >
-                  <Modal.Header closeButton>
-                      <Modal.Title id="example-modal-sizes-title-lg">
-                        Logo / Job Title / (subtitle: company name) ///// move|close
-                      </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <MDBModalBody>
-                            <form className="mx-3 grey-text">
-                              (tabs - job info | activities | notes | Docmuemtns | Company )
-                                <MDBInput type="text" label="company | job title | deadline (datepicker)"/>
-                                <MDBInput type="text" label="Post URL | salary | application" onChange={(e) => console.log('hint: setJobTitle(e.target.value)')} />
-                                <MDBInput type="text" label="Location | color (swatch)" onChange={(e) => console.log('hint: setDescription(e.target.value)')} />
-                                <MDBInput type="text" label="description (user input textbox)" onChange={(e) => console.log('hint: setCompanyLink(e.target.value)')} />
-                            </form>
-                        </MDBModalBody>
-
-
-                      </Modal.Body>
-
-                        <MDBModalFooter className="justify-content-center">
-                            <MDBBtn
-                                color="info"
-                                onClick={() => {
-                                    toggleModal();
-                                    console.log('saveJob function');
-                                }}
-                            >
-                                Add
-                            </MDBBtn>
-                        </MDBModalFooter>
-                  </Modal>
-                </>
-            <React.Fragment>
-                <NavBar />
-                <AddButton toggleModal={toggleModal} />
-                <AddJobModal modal={modal} toggleModal={toggleModal} companyName={companyName} 
-                  jobTitle={jobTitle} description={description} companyLink={companyLink}
-                  setCompanyLink={setCompanyLink} setCompanyName={setCompanyName} setDescription={setDescription}
-                  setTitle={setTitle} setAddedJob={setAddedJob} addedJob={addedJob}/>
-                <Board components={components} 
-                  data={data} 
-                  style={{backgroundColor: 'white'}}
-                  editable
-                  id="EditableBoard1"
-                  onCardClick={toggleCardModal}
-                  onCardDelete={deleteJob}
-                  // onDataChange={editJob}
+  return (
+    <div>
+      <>
+        <Modal
+          size="sm"
+          show={smShow}
+          onHide={() => setSmShow(false)}
+          aria-labelledby="example-modal-sizes-title-sm"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="example-modal-sizes-title-sm">
+              Small Modal
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>...</Modal.Body>
+        </Modal>
+        <Modal
+          size="lg"
+          show={lgShow}
+          onHide={() => setLgShow(false)}
+          aria-labelledby="example-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="example-modal-sizes-title-lg">
+              Additional Information
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <MDBModalBody>
+              <form className="mx-3 grey-text" onSubmit={()=>{
+                toggleCardModal()
+                editJob()
+              } }>
+                <MDBInput type="text" label="Company" onChange={(e) => setCompanyName(e.target.value)} />
+                <MDBInput type="text" label="Title" onChange={(e) => setTitle(e.target.value)} />
+                <MDBInput type="text" label="Salary" onChange={(e) => setSalary(e.target.value)} />
+                <MDBInput type="text" label="Location" onChange={(e) => setLocation(e.target.value)} />
+                <MDBInput type="text" label="Date Applied" onChange={(e) => setDate(e.target.value)} />
+                <MDBBtn
+                  color="info"
+                  type="submit"
                 >
+                  Save
+                </MDBBtn>
+              </form>
 
-                {/*
-                  <React.Fragment>
-                    <MDBModal >
-                        <MDBModalHeader
-                            className="text-center"
-                            titleClass="w-100 font-weight-bold"
-                        >
-                            Add new job
-                        </MDBModalHeader>
-                        <MDBModalBody>
-                            <form className="mx-3 grey-text">
-                                <MDBInput type="text" label="Company Name"/>
-                                <MDBInput type="text" label="Job Title" onChange={(e) => console.log('hint: setJobTitle(e.target.value)')} />
-                                <MDBInput type="text" label="Description" onChange={(e) => console.log('hint: setDescription(e.target.value)')} />
-                                <MDBInput type="text" label="Company Link" onChange={(e) => console.log('hint: setCompanyLink(e.target.value)')} />
-                            </form>
-                        </MDBModalBody>
-                    </MDBModal>
-                </React.Fragment>
-            */}
-                </Board> 
-            </React.Fragment>
-        </div>
-    )
+            </MDBModalBody>
+          </Modal.Body>
+        </Modal>
+      </>
+      <React.Fragment>
+        <NavBar />
+        <AddButton toggleModal={toggleModal} />
+        <AddJobModal modal={modal} toggleModal={toggleModal} companyName={companyName}
+          jobTitle={jobTitle} description={description} companyLink={companyLink}
+          setCompanyLink={setCompanyLink} setCompanyName={setCompanyName} setDescription={setDescription}
+          setTitle={setTitle} setAddedJob={setAddedJob} addedJob={addedJob} />
+        <Board components={components}
+          data={data}
+          style={{ backgroundColor: 'white' }}
+          editable
+          id="EditableBoard1"
+          onCardClick={toggleCardModal}
+          onCardDelete={deleteJob}
+          // onDataChange={editJob}
+        >
+        </Board>
+      </React.Fragment>
+    </div>
+  )
 }
 
 export default Dashboard
