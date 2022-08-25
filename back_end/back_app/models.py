@@ -1,5 +1,4 @@
 from operator import mod
-# from turtle import title
 from xml.etree.ElementTree import Comment
 from django.db import models
 from django.contrib.auth.models import AbstractUser
