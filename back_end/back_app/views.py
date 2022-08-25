@@ -167,17 +167,19 @@ def posts(request):
         return Response(list(all_posts))
     if request.method == "POST":
         try:
-        title = request.data['title']
-        user = request.user
-        company_name = request.data['company_name']
-        job_title = request.data['job_title']
-        description = request.data['description']
-        post = Posts.objects.create(
-            title=title, user=user, company_name=company_name, job_title=job_title, description=description)
-        post.save()
-        db_post = Posts.objects.get(id=post.id);
-        json_post = serializers.serialize('json', {db_post})
-        return JsonResponse(json_post, safe=False)
+            title = request.data['title']
+            user = request.user
+            company_name = request.data['company_name']
+            job_title = request.data['job_title']
+            description = request.data['description']
+            post = Posts.objects.create(
+                title=title, user=user, company_name=company_name, job_title=job_title, description=description)
+            post.save()
+            db_post = Posts.objects.get(id=post.id);
+            json_post = serializers.serialize('json', {db_post})
+            return JsonResponse(json_post, safe=False)
+        except(e):
+            print('error:', e)
     if request.method == "PUT":
         print('>>>>>>>>>>>>>>>>>>>>>>>post id to edit:', request.data['id'])
         print('>>>>>>>>>>>>>>>>>>>>><<new description:', request.data['description'])
