@@ -1,8 +1,5 @@
 from operator import mod
-<<<<<<< HEAD
-=======
 # from turtle import title
->>>>>>> bd42311 (added changes)
 from xml.etree.ElementTree import Comment
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -73,8 +70,9 @@ class Comments_To_Post(models.Model):
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     date_created = models.DateTimeField(default=datetime.now())
     description = models.TextField()
-    forum= models.ForeignKey(Posts, on_delete=models.CASCADE)
-    
+    forum = models.ForeignKey(Posts, on_delete=models.CASCADE)
+
+
 class Replies_To_Comment(models.Model):
     comment = models.ForeignKey(Comments_To_Post, on_delete=models.CASCADE)
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
