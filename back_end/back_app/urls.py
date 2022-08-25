@@ -13,6 +13,7 @@ urlpatterns = [
     path('jobs/<int:jobId>', views.update_job, name='updateJob'),
     path('interviews', views.interviews, name='interviews_of_user'),
     path('forums', views.posts, name='forums_for_user'),
+    path('posts/<int:postId>', views.update_post),
     path('userAuthenticated', views.check_authentication),
     path('jobSearch/<str:jobName>', views.job_search),
     path('comments', views.comments, name='comments'),

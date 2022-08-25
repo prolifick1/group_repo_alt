@@ -176,7 +176,7 @@ def interviews(request):
             return Response({"message": "interview creation failed"})
 
 
-@api_view(["GET", "POST", "PUT", "DELETE"])
+@api_view(["GET", "POST"])
 def posts(request):
     # for now we will only have 1 social page and it will return all posts
     if request.method == "GET":
@@ -199,15 +199,26 @@ def posts(request):
             return JsonResponse(json_post, safe=False)
         except(e):
             print('error:', e)
-    if request.method == "PUT":
-        print('>>>>>>>>>>>>>>>>>>>>>>>post id to edit:', request.data['id'])
-        print('>>>>>>>>>>>>>>>>>>>>><<new description:',
-              request.data['description'])
-        return Response('returns back the edited post as json')
 
-    if(request.method == "DELETE"):
-        print(request.data['id'])
-        return Response('all posts after deletion as json: ')
+
+@api_view(['PUT', 'DELETE'])
+def update_post(request, postId):
+    post = Posts.objects.get(id=postId)
+    if(request.method == 'DELETE'):
+        try:
+            post.delete()
+            posts = Posts.objects.all().values()
+            return Response(list(posts))
+        except:
+            return Response({"msg": "Post NOT deleted"})
+    if request.method == 'PUT':
+        post.title = request.data['title']
+        post.company_name = request.data['company_name']
+        post.job_title = request.data['job_title']
+        post.description = request.data['description']
+        post.save()
+        edited_post = Posts.objects.get(id=postId).values()
+        return Response(list(edited_post)[0])
 
 
 @api_view(['GET'])
