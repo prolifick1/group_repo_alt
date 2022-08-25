@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import axios from 'axios';
+
 let commentsMocks = [
   {
     id: "1",
@@ -38,10 +39,12 @@ let commentsMocks = [
 ];
 
 export default function Forums({user}) {
-
-  const [postsList, setPostsList] = useState([]);
-  const [text, setText] = useState('');
   const [title, setTitle] = useState('');
+  const [text, setText] = useState('');
+  const [editText, setEditText] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [activePost, setActivePost] = useState(null);
+  const [postsList, setPostsList] = useState([]);
 
   //only used for mocking data
   //  const getReplies = commentId => {
@@ -85,6 +88,7 @@ export default function Forums({user}) {
     try {
       let serializedPost = await axios.post('forums', newPost);
       let post = JSON.parse(serializedPost.data);
+      console.log(post);
       let fields = post[0].fields;
       let companyName = fields['company_name'];
       let createdAt = fields['date_created'];
@@ -93,7 +97,9 @@ export default function Forums({user}) {
       let title = fields['title'];
       let userId = String(fields['user']);
       let parentId = null;
-      post =  {companyName, description, jobTitle, title, userId, parentId}
+      let id = post[0]['pk'];
+      console.log(id);
+      post =  {id, companyName, description, jobTitle, title, userId, parentId}
       setPostsList([post, ...postsList]);
       //need response object to include this data + timeCreated, photo and user 
       //(or first and last name)
@@ -103,15 +109,21 @@ export default function Forums({user}) {
     }
   }
 
+
   const handleTitleEntry = (e) => {
     setTitle(e.target.value);
   }
 
-  function renderPosts() {
-    postsList.map((post) => {
-      return <Comment comment={post} />
-    })
+  const handleTextEntry = (e) => {
+    console.log('click clack');
+    setText(e.target.value);
   }
+
+  // function renderPosts() {
+  //   postsList.map((post) => {
+  //     return <Comment text={text} comment={post} handleTextEntry={handleTextEntry} />
+  //   })
+  // }
 
   return(
 
@@ -119,10 +131,16 @@ export default function Forums({user}) {
       <h3 className="comments-title">Raytheon Forums</h3>
       <div className="comment-form-title">Write a comment</div>
       <input id="comment-title" value={title} onChange={handleTitleEntry} ></input>
-      <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} />
+      <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
       <div className="comments-container">
         { [...postsList].reverse().map((post) => {
-            return <Comment key={post.key} post={post} />
+          return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
+          onChange={handleTextEntry} text={text} setText={setText} 
+          post={post} setActivePost={setActivePost}
+          activePost={activePost} 
+          user={user} id={post.id} key={post.id} 
+          editText={editText} setEditText={setEditText}
+          />
           })
         }
 
