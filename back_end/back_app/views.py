@@ -123,7 +123,7 @@ def jobs_applied_for(request):
             return Response({"message": "failed to post new job application"})
 
 
-@api_view(["DELETE, PUT"])
+@api_view(["DELETE", "PUT"])
 def update_job(request, jobId):
     job = AppliedJobs.objects.filter(id=jobId)
     if request.method == "DELETE":
