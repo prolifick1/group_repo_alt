@@ -170,13 +170,13 @@ def posts(request):
         post = Posts.objects.create(
             title=title, user=user, company_name=company_name, job_title=job_title, description=description)
         post.save()
-        print('postid:>>>>>>>>>>>>>>>>>>>>', post.id)
         db_post = Posts.objects.get(id=post.id);
         json_post = serializers.serialize('json', {db_post})
         return JsonResponse(json_post, safe=False)
-    if(request.method == "PUT"):
-        print(f"user_id: {request.body['id']} description: {request.body['description']}")
-        return Response('edited post as json');
+    if request.method == "PUT":
+        print('>>>>>>>>>>>>>>>>>>>>>>>post id to edit:', request.data['id'])
+        print('>>>>>>>>>>>>>>>>>>>>><<new description:', request.data['description'])
+        return Response('returns back the edited post as json');
 
     if(request.method == "DELETE"):
         print(request.data['id']);

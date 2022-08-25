@@ -12,25 +12,29 @@ import useState from 'react';
 
 
 
-function EditForm( activePost  ) {
+function EditForm({ activePost } ) {
 
+  //const [message, setMessage] = useState('');
+
+  let regularVar = '';
     const onSubmit = e => {
       e.preventDefault();
     }
 
   const handleEditChange = (e) => {
-    console.log(e.target.value); 
-    // setEditText(e.target.value);
+    regularVar = e.target.value;
   }
 
   const editPost = async() => {
     console.log('active post', activePost);
-    //console.log('new edit:', editText);
+    console.log(regularVar);
+    let editedPost = axios.put(`forums`, { id: activePost, description: regularVar } );
+    console.log(editedPost);
   }
 
     return (
       <form onSubmit={onSubmit}>
-        <textarea class="form-control" id="comment-form-textarea" onChange={handleEditChange} ></textarea>
+        <textarea class="form-control" id="comment-form-textarea" defaultValue="" onChange={handleEditChange} ></textarea>
         <button type="submit" class="btn btn-primary btn-block mb-4 comment-form-button" onClick={editPost}>Edit</button>
       </form>
     )
