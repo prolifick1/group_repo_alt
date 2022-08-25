@@ -109,10 +109,6 @@ export default function Forums({user}) {
     }
   }
 
-  const handleEditChange = (e) => {
-    console.log(e.target.value); 
-    setEditText(e.target.value);
-  }
 
   const handleTitleEntry = (e) => {
     setTitle(e.target.value);
@@ -143,7 +139,7 @@ export default function Forums({user}) {
           post={post} setActivePost={setActivePost}
           activePost={activePost} 
           user={user} id={post.id} key={post.id} 
-          editText={editText} setEditText={setEditText} handleEditChange={handleEditChange}
+          editText={editText} setEditText={setEditText}
           />
           })
         }

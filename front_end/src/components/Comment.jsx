@@ -9,6 +9,35 @@ import 'react-bootstrap-icons';
 import axios from 'axios';
 import CommentForm from './CommentForm';
 import useState from 'react';
+
+
+
+function EditForm( post, editText, activePost, setEditText  ) {
+
+    const onSubmit = e => {
+      e.preventDefault();
+    }
+
+  const handleEditChange = (e) => {
+    console.log(e.target.value); 
+    // setEditText(e.target.value);
+  }
+
+  const editPost = async() => {
+    console.log('active post', activePost);
+    console.log('new edit:', editText);
+  }
+
+    return (
+      <form onSubmit={onSubmit}>
+        <textarea class="form-control" id="comment-form-textarea" onChange={handleEditChange} ></textarea>
+        <button type="submit" class="btn btn-primary btn-block mb-4 comment-form-button" onClick={editPost}>Edit</button>
+      </form>
+    )
+
+}
+
+
 export default function Comment({
   user, id, post, 
   activePost, setActivePost,
@@ -19,30 +48,6 @@ export default function Comment({
   editText, setEditText,
   handleEditChange,
   replies}) {
-
-
-  
-  function EditForm() {
-
-      const onSubmit = e => {
-        e.preventDefault();
-      }
-
-    const editPost = async() => {
-      console.log('active post', activePost);
-      console.log('new edit:', editText);
-    }
-
-
-
-      return (
-        <form onSubmit={onSubmit}>
-          <textarea class="form-control" id="comment-form-textarea" initialText={post.description} onChange={handleEditChange} value={editText} ></textarea>
-          <button type="submit" class="btn btn-primary btn-block mb-4 comment-form-button" onClick={editPost}>Edit</button>
-        </form>
-      )
-
-  }
 
   
   const handleEditClick = async(e) => {
