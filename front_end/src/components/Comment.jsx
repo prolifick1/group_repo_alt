@@ -12,7 +12,7 @@ import useState from 'react';
 
 
 
-function EditForm( post, editText, activePost, setEditText  ) {
+function EditForm( activePost  ) {
 
     const onSubmit = e => {
       e.preventDefault();
@@ -25,7 +25,7 @@ function EditForm( post, editText, activePost, setEditText  ) {
 
   const editPost = async() => {
     console.log('active post', activePost);
-    console.log('new edit:', editText);
+    //console.log('new edit:', editText);
   }
 
     return (
@@ -42,8 +42,6 @@ export default function Comment({
   user, id, post, 
   activePost, setActivePost,
   postsList, 
-  text, setText,
-  handleTextEntry,
   isEditing, setIsEditing,
   editText, setEditText,
   handleEditChange,
@@ -94,7 +92,7 @@ export default function Comment({
           <MDBCardText className="comment-text">
             { activePost===id && isEditing &&
             <div>
-              <EditForm editText={editText} setEditText={setEditText} onChange={handleEditChange}/>
+              <EditForm activePost={activePost} />
             </div>
             }
             {
