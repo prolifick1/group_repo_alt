@@ -10,6 +10,7 @@ import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import Forums from './pages/Forums';
 import SearchResult from './pages/searchResult'
+import ProfilePage from './pages/ProfilePage'
 
 function getCookie(name) {
   let cookieValue = null;
@@ -43,6 +44,7 @@ function App() {
 
   async function curr_user() {
     const response = await axios.get('profile_page')
+    console.log(response.data, "hello")
     setUser(response.data)
   }
 
@@ -76,6 +78,9 @@ function App() {
 
 
   console.log('hi');
+  // let user_ = (() => {
+  //   curr_user()
+  // }, [])
 
   return (
     <div>
@@ -112,6 +117,7 @@ function App() {
             element={<Forums user={user} />} />
           <Route path='*' element={<NotFound />} />
           <Route path='/test' element={<TestPage />} />
+          <Route path='/profile' element={<ProfilePage user={user} />} />
         </Routes>
       </HashRouter>
     </div>
