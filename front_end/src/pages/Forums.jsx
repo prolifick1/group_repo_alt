@@ -65,6 +65,7 @@ export default function Forums({user}) {
   const [text, setText] = useState('');
   const [editText, setEditText] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [activePost, setActivePost] = useState(null);
   const [postsList, setPostsList] = useState([]);
 
@@ -161,8 +162,10 @@ export default function Forums({user}) {
           <div className="comments-container d-flex flex-column-reverse">
             { [...postsList].reverse().map((post) => {
               return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
+              isDeleting={isDeleting} setIsDeleting={setIsDeleting}
               onChange={handleTextEntry} text={text} setText={setText} 
               post={post} setActivePost={setActivePost}
+              postsList={postsList} setPostsList={setPostsList}
               activePost={activePost} 
               user={user} id={post.id} key={post.id} 
               editText={editText} setEditText={setEditText}

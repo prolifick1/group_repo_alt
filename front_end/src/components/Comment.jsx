@@ -8,7 +8,7 @@ import {
 import 'react-bootstrap-icons';
 import axios from 'axios';
 import CommentForm from './CommentForm';
-import { useState }  from 'react';
+import { useState, useEffect }  from 'react';
 
 
 function EditForm({ isEditing, setIsEditing, activePost, post } ) {
@@ -40,28 +40,41 @@ function EditForm({ isEditing, setIsEditing, activePost, post } ) {
 export default function Comment({
   user, id, post, 
   activePost, setActivePost,
-  postsList, 
+  postsList, setPostsList,
   isEditing, setIsEditing,
+  isDeleting, setIsDeleting,
   editText, setEditText,
   handleEditChange,
   replies}) {
+
  
   const handleEditClick = async(e) => {
     setIsEditing(!isEditing);
     setActivePost(post.id);
-    console.log('hi');
-    console.log(e.target.parentElement);
-
   }
+
+  const handleDeleteClick = async(e) => {
+    setActivePost(post.id);
+    setIsDeleting(true)
+  }
+
+  useEffect(() => {
+    isDeleting ? deletePost() : console.log('useState not deleting');
+  }, [isDeleting])
 
   const deletePost = async(e) => {
+    console.log(activePost);
     if(window.confirm('are you sure you want to delete?')) {
-      let remaining = await axios.delete('forums', { data: { id: id} });
-      postsList.filter((post) => {
-        return post.id !== id;
-      });
+      let postId = activePost;
+      console.log('postslist', postsList);
+      let remaining = await axios.delete(`posts/${postId}`);
+      setPostsList(postsList.filter((post) => {
+        return post.id !== postId ;
+      }))
     }
+    setIsDeleting(false);
   }
+
   return( 
     <div className="comment">
       <MDBCard >
@@ -95,7 +108,7 @@ export default function Comment({
           </MDBCardText>
           <span class="post-reply">Reply</span>
             <span class="post-edit" onClick={handleEditClick}>Edit</span>
-          <span id="post-delete" onClick={deletePost}>Delete</span>
+          <span id="post-delete" onClick={handleDeleteClick}>Delete</span>
           <MDBCardGroup>
           
             <i class="bi bi-heart" style={{ fontSize: 18 }}></i>
