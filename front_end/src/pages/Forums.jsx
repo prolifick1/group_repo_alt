@@ -61,6 +61,7 @@ export default function Forums({user}) {
   //    });
   //  }
 
+
   useEffect(() => {
     console.log('postsList updated', postsList);
   }, [postsList] );
@@ -155,7 +156,19 @@ export default function Forums({user}) {
           </div>
         </div>
       </main>
-      <nav class="HolyGrail-nav">…</nav>
+      <nav class="HolyGrail-nav">
+        <div class="sticky top-[var(--c-top-bar-height)] max-h-[calc(100vh-var(--c-top-bar-height)-var(--frame-top-offset))] scrollbar-hide overscroll-contain w-[var(--frame-navigation-width)] shrink-0 mr-4 pr-1 hidden lg:block">
+          <div class="flex flex-col space-y-8 isolate w-full block-main-menu">
+            <div class="space-y-1" role="group">
+              <a class="cursor-pointer transition duration-100 ease-in-out group flex items-center leading-5 rounded-md w-full bg-main-200 text-basicMain-900 px-3 py-2">
+                <span className="flex-grow truncate">
+                  Home
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
       <aside class="HolyGrail-ads">…</aside>
     </div>
     <footer>…</footer>
