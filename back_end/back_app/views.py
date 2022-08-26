@@ -25,15 +25,15 @@ def send_the_homepage(request):
 
 @api_view(['POST'])
 def sign_up(request):
-       user =  AppUser.objects.create_user(
-            first_name=request.data['firstName'],
-            last_name=request.data['lastName'],
-            job_title=request.data['jobTitle'],
-            username=request.data['email'],
-            password=request.data['password'],
-            email=request.data['email'])
-       print(user)
-       return Response({"message": "success"})
+    user = AppUser.objects.create_user(
+        first_name=request.data['firstName'],
+        last_name=request.data['lastName'],
+        job_title=request.data['jobTitle'],
+        username=request.data['email'],
+        password=request.data['password'],
+        email=request.data['email'])
+    print(user)
+    return Response({"message": "success"})
   #  except:
   #      return Response({"message": "Failed to sign up user"})
 
@@ -122,15 +122,34 @@ def jobs_applied_for(request):
         except:
             return Response({"message": "failed to post new job application"})
 
-@api_view(["DELETE"])
-def delete_job(request, jobId):
-    try:
-        job=AppliedJobs.objects.filter(id = jobId )
-        job.delete()
-        return Response({"msg":"This job was deleted"})
-    except Exception as e:
-        print(e)
-        return Response (e)
+
+@api_view(["DELETE", "PUT"])
+def update_job(request, jobId):
+    job = AppliedJobs.objects.filter(id=jobId)
+    if request.method == "DELETE":
+        try:
+            job.delete()
+            return Response({"msg": "Job deleted"})
+        except:
+            return Response({"msg": "Job NOT deleted"})
+
+    if request.method == "PUT":
+        try:
+            job.company_link = request.data['link']
+            job.description = request.data['description']
+            job.company_name = request.data['company_name']
+            job.job_title = request.data['job_title']
+            if request.data['salary']:
+                job.salary = request.data['salary']
+            if request.data['location']:
+                job.location = request.data['location']
+            if request.data['date']:
+                job.date_completed = request.data['date']
+            job.save()
+            return Response({'msg', 'Job updated'})
+        except:
+            return Response({'msg', 'Job NOT updated'})
+
 
 @api_view(["GET", "POST"])
 def interviews(request):
@@ -157,11 +176,11 @@ def interviews(request):
             return Response({"message": "interview creation failed"})
 
 
-@api_view(["GET", "POST", "PUT", "DELETE"])
+@api_view(["GET", "POST"])
 def posts(request):
     # for now we will only have 1 social page and it will return all posts
     if request.method == "GET":
-        company= request.data['company_name']
+        company = request.data['company_name']
         #current = Post.objects.filter(company_name = company)
         all_posts = Posts.objects.all()
         return Response(list(all_posts))
@@ -175,19 +194,40 @@ def posts(request):
             post = Posts.objects.create(
                 title=title, user=user, company_name=company_name, job_title=job_title, description=description)
             post.save()
-            db_post = Posts.objects.get(id=post.id);
+            db_post = Posts.objects.get(id=post.id)
             json_post = serializers.serialize('json', {db_post})
             return JsonResponse(json_post, safe=False)
         except(e):
             print('error:', e)
-    if request.method == "PUT":
-        print('>>>>>>>>>>>>>>>>>>>>>>>post id to edit:', request.data['id'])
-        print('>>>>>>>>>>>>>>>>>>>>><<new description:', request.data['description'])
-        return Response('returns back the edited post as json');
 
-    if(request.method == "DELETE"):
-        print(request.data['id']);
-        return Response('all posts after deletion as json: ');
+
+@api_view(['PUT', 'DELETE'])
+def update_post(request, postId):
+    post = Posts.objects.get(id=postId)
+    if(request.method == 'DELETE'):
+        try:
+            post.delete()
+            posts = Posts.objects.all().values()
+            return Response(list(posts))
+        except:
+            return Response({"msg": "Post NOT deleted"})
+    if request.method == 'PUT':
+#        if request.data['title']:
+#            post.title = request.data['title']
+#        if request.data['company_name']:
+#            post.company_name = request.data['company_name']
+#        if request.data['job_title']:
+#            post.job_title = request.data['job_title']
+#       post.description = request.data['description']
+#       edited_post = Posts.objects.get(id=postId).values()
+#       return Response(list(edited_post)[0])
+        try:
+            post = Posts.objects.filter(id=request.data['postId'])
+            post.update(description=request.data['description'])
+            data = list(post.values())[0]
+            return JsonResponse(data)
+        except Exception as e:
+            print(e);
 
 
 @api_view(['GET'])
@@ -214,6 +254,7 @@ def job_search(request, jobName):
         "GET", url, headers=headers, params=querystring)
     return Response(json.loads(response.text)["jobs"])
 
+
 @api_view(["GET", "POST"])
 def comments(request):
     if request.method == "POST":
@@ -221,33 +262,33 @@ def comments(request):
             title = request.data['title']
             user = request.user
             description = request.data['description']
-            post=request.data['post']
-            comment =Comments_To_Post.objects.create(
-                title=title, user=user,description=description, post = post)
+            post = request.data['post']
+            comment = Comments_To_Post.objects.create(
+                title=title, user=user, description=description, post=post)
             comment.save()
             return Response({"message": "new comment for this Post"})
         except:
             return Response({"message": "comment creation failed"})
     if request.method == "GET":
         post = request.data['post']
-        comment = Comments_To_Post.objects.filter(post = post)
+        comment = Comments_To_Post.objects.filter(post=post)
         return Response(list(comment))
-  
+
+
 @api_view(["GET", "POST"])
 def replies_to_comments(request):
     if request.method == "POST":
         try:
             user = request.user
             description = request.data['description']
-            comment=request.data['comment']
-            reply =Replies_To_Comment.objects.create(user=user, description=description, comment = comment)
+            comment = request.data['comment']
+            reply = Replies_To_Comment.objects.create(
+                user=user, description=description, comment=comment)
             reply.save()
             return Response({"message": "new reply for this comment"})
         except:
             return Response({"message": "reply creation failed"})
     if request.method == "GET":
         comment = request.data['comment']
-        replies = Replies_To_Comment.objects.filter(comment = comment)
+        replies = Replies_To_Comment.objects.filter(comment=comment)
         return Response(list(replies))
-      
-    

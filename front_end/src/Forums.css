@@ -1,0 +1,31 @@
+
+
+.HolyGrail {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+
+.HolyGrail-body {
+  display: flex;
+  flex: 1;
+  background-color: #F3F3F3; 
+}
+
+.HolyGrail-content {
+  flex: 1;
+}
+
+
+.HolyGrail-ads {
+
+  flex: 0 0 18em;
+}
+
+
+.HolyGrail-nav {
+  /* put the nav on the left */
+  flex: 0 0 22em;
+  order: -1;
+}

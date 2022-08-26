@@ -10,11 +10,12 @@ urlpatterns = [
     path('curr_user', views.curr_user, name='curr_user'),
     path('profile_page', views.profile_page, name='profile_page'),
     path('jobs', views.jobs_applied_for, name='jobs_of_user'),
+    path('jobs/<int:jobId>', views.update_job, name='updateJob'),
     path('interviews', views.interviews, name='interviews_of_user'),
     path('forums', views.posts, name='forums_for_user'),
+    path('posts/<int:postId>', views.update_post),
     path('userAuthenticated', views.check_authentication),
     path('jobSearch/<str:jobName>', views.job_search),
     path('comments', views.comments, name='comments'),
     path('replies', views.replies_to_comments, name='replies'),
-    path('deleteJob/<int:jobId>', views.delete_job, name='deleteJob')
 ]

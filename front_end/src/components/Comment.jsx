@@ -8,38 +8,32 @@ import {
 import 'react-bootstrap-icons';
 import axios from 'axios';
 import CommentForm from './CommentForm';
-import useState from 'react';
+import { useState }  from 'react';
 
 
+function EditForm({ isEditing, setIsEditing, activePost, post } ) {
+  const [message, setMessage]= useState(post.description);
 
-function EditForm({ activePost, post } ) {
-
-  //const [message, setMessage] = useState('');
-
-  let regularVar = '';
     const onSubmit = e => {
       e.preventDefault();
     }
 
   const handleEditChange = (e) => {
-    regularVar = e.target.value;
+    setMessage(e.target.value);
   }
 
   const editPost = async() => {
-    console.log('active post', activePost);
-    console.log(regularVar);
-    let editedPost = axios.put(`forums`, { id: activePost, description: regularVar } );
-    editedPost = '<response from db will go here>';
-    post.description = editedPost;
+    let editedPost = await axios.put(`posts/${activePost}`, { postId: activePost, description: message } );
+    post.description = editedPost.data.description;
+    setIsEditing(!isEditing);
   }
 
     return (
       <form onSubmit={onSubmit}>
-        <textarea class="form-control" id="comment-form-textarea" onChange={handleEditChange} ></textarea>
-        <button type="submit" class="btn btn-primary btn-block mb-4 comment-form-button" onClick={editPost}>Edit</button>
+        <textarea class="form-control" id="comment-form-textarea" defaultValue={message} onChange={handleEditChange} ></textarea>
+        <button type="submit" class="btn btn-primary btn-block mb-4 comment-form-button" onClick={editPost}>MAKE EDIT</button>
       </form>
     )
-
 }
 
 
@@ -51,8 +45,7 @@ export default function Comment({
   editText, setEditText,
   handleEditChange,
   replies}) {
-
-  
+ 
   const handleEditClick = async(e) => {
     setIsEditing(!isEditing);
     setActivePost(post.id);
@@ -60,10 +53,6 @@ export default function Comment({
     console.log(e.target.parentElement);
 
   }
-  const editPost = async() => {    
-    let edited = await axios.put('forums', { params : { id: id, description: post.description } } );
-
-  };
 
   const deletePost = async(e) => {
     if(window.confirm('are you sure you want to delete?')) {
@@ -97,7 +86,7 @@ export default function Comment({
           <MDBCardText className="comment-text">
             { activePost===id && isEditing &&
             <div>
-              <EditForm activePost={activePost} post={post} />
+              <EditForm isEditing={isEditing} setIsEditing={setIsEditing} activePost={activePost} post={post} />
             </div>
             }
             {
