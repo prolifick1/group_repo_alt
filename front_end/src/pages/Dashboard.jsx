@@ -32,7 +32,7 @@ function Dashboard(props) {
 
   const [modal, setModal] = useState(false);
   const [addedJob, setAddedJob] = useState(false);
-
+console.log(currentJobs)
   //sets state of current jobs to current list based on back end request
   useEffect(() => {
     console.log(addedJob)
@@ -41,8 +41,8 @@ function Dashboard(props) {
         return {
           id: job.id,
           title: job.company_name,
-          description: job.company_link,
-          label: job.job_title,
+          description: job.job_title,
+          label:  <a href={job.company_link} target="_blank"><button type="button" class="btn-sm btn-primary btn-rounded">apply</button></a>,
           draggable: true
         }
 
@@ -104,7 +104,7 @@ function Dashboard(props) {
     console.log('state of cardModalIsOpen?', cardModalIsOpen);
     setCardModalIsOpen(!cardModalIsOpen);
   }
-  const deleteJob = () => {
+  const deleteJob = (jobId) => {
     axios.delete(`jobs/${jobId}`)
       .then(setCurrentJobs(currentJobs.filter(job => job.id != jobId)))
       .then(console.log('job deleted'))
@@ -154,7 +154,7 @@ function Dashboard(props) {
           <Modal.Body>
             <MDBModalBody>
               <form className="mx-3 grey-text" onSubmit={()=>{
-                toggleCardModal()
+                // toggleCardModal()
                 editJob()
               } }>
                 <MDBInput type="text" label="Company" onChange={(e) => setCompanyName(e.target.value)} />
@@ -186,7 +186,7 @@ function Dashboard(props) {
           style={{ backgroundColor: 'white' }}
           editable
           id="EditableBoard1"
-          onCardClick={toggleCardModal}
+          // onCardClick={toggleCardModal}
           onCardDelete={deleteJob}
           // onDataChange={editJob}
         >
