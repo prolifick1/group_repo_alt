@@ -105,7 +105,6 @@ export default function Forums({user}) {
       let id = post[0]['pk'];
       console.log(id);
       post =  {id, companyName, description, jobTitle, title, userId, parentId}
-      setPost(post);
       setPostsList([post, ...postsList]);
       //need response object to include this data + timeCreated, photo and user 
       //(or first and last name)

@@ -24,9 +24,8 @@ function EditForm({ activePost, post } ) {
   }
 
   const editPost = async() => {
-    console.log('active post', activePost);
-    let editedPost = axios.put(`forums`, { id: activePost, description: regularVar } );
-    post.description = "whatever the backend return"  
+    let editedPost = await axios.put(`posts/${activePost}`, { postId: activePost, description: message } );
+    post.description = editedPost.data.description;
   }
 
     return (
