@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import axios from 'axios';
+import '../Forums.css';
+import NavBar from '../components/NavBar';
 
 let commentsMocks = [
   {
@@ -38,6 +40,26 @@ let commentsMocks = [
   },
 ];
 
+function leftNavSidebar() {
+
+}
+
+function ProfileSidebar({user}) {
+  return (
+    <div class="hidden web:col-span-12 lg:block lg:order-2 web:lg:col-span-4">
+      <ul class="flex flex-col -my-2.5">
+        <div class="bg-surface-50 text-basicSurface-500 shadow flex flex-col justify-between sm:rounded-lg overflow-hidden block-welcome-member">
+          
+        </div>
+        <div class="flex-1 px-4 py-5 sm:p-6 overflow-hidden text-center">
+          <div class="text-sm mb-5 text-basicSurface-400">Good morning,</div>
+          <div class="text-xl mb-1 text-basicSurface-900 font-medium truncate"><a href="/member/DcCEolocve">{user && user.first_name}</a></div>
+        </div>
+      </ul>
+    </div>
+  )
+}
+
 export default function Forums({user}) {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
@@ -54,6 +76,7 @@ export default function Forums({user}) {
   //      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
   //    });
   //  }
+
 
   useEffect(() => {
     console.log('postsList updated', postsList);
@@ -88,7 +111,6 @@ export default function Forums({user}) {
     try {
       let serializedPost = await axios.post('forums', newPost);
       let post = JSON.parse(serializedPost.data);
-      console.log(post);
       let fields = post[0].fields;
       let companyName = fields['company_name'];
       let createdAt = fields['date_created'];
@@ -126,33 +148,50 @@ export default function Forums({user}) {
   // }
 
   return(
-
-   <div className="comments">
-      <h3 className="comments-title">Raytheon Forums</h3>
-      <div className="comment-form-title">Write a comment</div>
-      <input id="comment-title" value={title} onChange={handleTitleEntry} ></input>
-      <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
-      <div className="comments-container d-flex flex-column-reverse">
-        { [...postsList].reverse().map((post) => {
-          return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
-          onChange={handleTextEntry} text={text} setText={setText} 
-          post={post} setActivePost={setActivePost}
-          activePost={activePost} 
-          user={user} id={post.id} key={post.id} 
-          editText={editText} setEditText={setEditText}
-          />
-          })
-        }
-
-        {/*  
-
-        {rootComments.map((rootComment) => { 
-          return <Comment key={rootComment.key} comment={rootComment} replies={getReplies(rootComment.id)} />
-        } ) } 
-
-        */}
-      </div>
+  <body class="HolyGrail">
+    <NavBar />
+    <header>…</header>
+    <div class="HolyGrail-body">
+      <main class="HolyGrail-content">
+       <div className="comments">
+          <h3 className="comments-title">Raytheon Forums</h3>
+          <div className="comment-form-title">Write a comment</div>
+          <input id="comment-title" value={title} onChange={handleTitleEntry} ></input>
+          <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
+          <div className="comments-container d-flex flex-column-reverse">
+            { [...postsList].reverse().map((post) => {
+              return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
+              onChange={handleTextEntry} text={text} setText={setText} 
+              post={post} setActivePost={setActivePost}
+              activePost={activePost} 
+              user={user} id={post.id} key={post.id} 
+              editText={editText} setEditText={setEditText}
+              />
+              })
+            }
+          </div>
+        </div>
+      </main>
+      <nav class="HolyGrail-nav">
+        <div class="sticky top-[var(--c-top-bar-height)] max-h-[calc(100vh-var(--c-top-bar-height)-var(--frame-top-offset))] scrollbar-hide overscroll-contain w-[var(--frame-navigation-width)] shrink-0 mr-4 pr-1 hidden lg:block">
+          <div class="flex flex-col space-y-8 isolate w-full block-main-menu">
+            <div class="space-y-1" role="group">
+              <a class="cursor-pointer transition duration-100 ease-in-out group flex items-center leading-5 rounded-md w-full bg-main-200 text-basicMain-900 px-3 py-2">
+                <span className="flex-grow truncate">
+                  Home
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <aside class="HolyGrail-ads">
+        <ProfileSidebar user={user} />
+      </aside>
     </div>
+    <footer>…</footer>
+  </body>
+
   )
 }
 
