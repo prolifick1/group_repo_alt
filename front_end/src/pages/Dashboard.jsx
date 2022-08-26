@@ -119,7 +119,7 @@ console.log(currentJobs)
       return job.id === activeCard;
     })
 
-    console.log(jobEditing);
+    console.log('object being edited', jobEditing);
 
     let jobToEdit = {
       company_name : companyName,
