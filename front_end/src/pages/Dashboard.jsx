@@ -20,6 +20,7 @@ function Dashboard(props) {
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('')
   const [date, setDate] = useState('')
+  const [activeCard, setActiveCard] = useState(null);
 
 
   const [cardModalIsOpen, setCardModalIsOpen] = useState(false);
@@ -102,7 +103,10 @@ console.log(currentJobs)
   const onCardClick = (cardId, metadata, laneId) => {
     console.log('clicked card in', laneId);
     console.log('state of cardModalIsOpen?', cardModalIsOpen);
+    console.log('cardId:', cardId, 'metadata', metadata);
+    setActiveCard(cardId);
     setCardModalIsOpen(!cardModalIsOpen);
+    toggleCardModal();
   }
   const deleteJob = (jobId) => {
     axios.delete(`jobs/${jobId}`)
@@ -110,6 +114,13 @@ console.log(currentJobs)
       .then(console.log('job deleted'))
   };
   const editJob = () => {
+    console.log('editign card', activeCard);
+    var jobEditing = currentJobs.find(job => {
+      return job.id === activeCard;
+    })
+
+    console.log(jobEditing);
+
     let jobToEdit = {
       company_name : companyName,
       job_title : jobTitle,
@@ -153,8 +164,9 @@ console.log(currentJobs)
           </Modal.Header>
           <Modal.Body>
             <MDBModalBody>
-              <form className="mx-3 grey-text" onSubmit={()=>{
-                // toggleCardModal()
+              <form className="mx-3 grey-text" onSubmit={(e)=>{
+                e.preventDefault(); 
+                toggleCardModal()
                 editJob()
               } }>
                 <MDBInput type="text" label="Company" onChange={(e) => setCompanyName(e.target.value)} />
@@ -186,7 +198,7 @@ console.log(currentJobs)
           style={{ backgroundColor: 'white' }}
           editable
           id="EditableBoard1"
-          // onCardClick={toggleCardModal}
+          onCardClick={onCardClick}
           onCardDelete={deleteJob}
           // onDataChange={editJob}
         >

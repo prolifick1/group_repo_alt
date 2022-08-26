@@ -44,6 +44,22 @@ function leftNavSidebar() {
 
 }
 
+function ProfileSidebar({user}) {
+  return (
+    <div class="hidden web:col-span-12 lg:block lg:order-2 web:lg:col-span-4">
+      <ul class="flex flex-col -my-2.5">
+        <div class="bg-surface-50 text-basicSurface-500 shadow flex flex-col justify-between sm:rounded-lg overflow-hidden block-welcome-member">
+          
+        </div>
+        <div class="flex-1 px-4 py-5 sm:p-6 overflow-hidden text-center">
+          <div class="text-sm mb-5 text-basicSurface-400">Good morning,</div>
+          <div class="text-xl mb-1 text-basicSurface-900 font-medium truncate"><a href="/member/DcCEolocve">{user && user.first_name}</a></div>
+        </div>
+      </ul>
+    </div>
+  )
+}
+
 export default function Forums({user}) {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
@@ -169,7 +185,9 @@ export default function Forums({user}) {
           </div>
         </div>
       </nav>
-      <aside class="HolyGrail-ads">…</aside>
+      <aside class="HolyGrail-ads">
+        <ProfileSidebar user={user} />
+      </aside>
     </div>
     <footer>…</footer>
   </body>
