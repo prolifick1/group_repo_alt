@@ -86,7 +86,7 @@ export default function Forums({user}) {
     //setPostsList(commentsMocks);
     async() => {
       let response = await axios.get('forums')
-      setPostsList(response);
+      setPostsList(response); 
       console.log('posts in db');
     }
     console.log('Forum.jsx called useeffect w/ empty dependency array'); 
