@@ -8,7 +8,7 @@ import {
 import 'react-bootstrap-icons';
 import axios from 'axios';
 import CommentForm from './CommentForm';
-import { useState }  from 'react';
+import { useState, useEffect }  from 'react';
 
 
 function EditForm({ isEditing, setIsEditing, activePost, post } ) {
@@ -40,31 +40,43 @@ function EditForm({ isEditing, setIsEditing, activePost, post } ) {
 export default function Comment({
   user, id, post, 
   activePost, setActivePost,
-  postsList, 
+  postsList, setPostsList,
   isEditing, setIsEditing,
+  isDeleting, setIsDeleting,
   editText, setEditText,
   handleEditChange,
   replies}) {
+
  
   const handleEditClick = async(e) => {
     setIsEditing(!isEditing);
     setActivePost(post.id);
-    console.log('hi');
-    console.log(e.target.parentElement);
-
   }
 
-  const deletePost = async(e) => {
-    if(window.confirm('are you sure you want to delete?')) {
-      let remaining = await axios.delete('forums', { data: { id: id} });
-      postsList.filter((post) => {
-        return post.id !== id;
-      });
+  const handleDeleteClick = async(e) => {
+    setActivePost(post.id);
+    setIsDeleting(true);
+  }
+
+  useEffect(() => {
+    console.log(isDeleting, activePost === id);
+    if(isDeleting && activePost === id) {
+      const deleteAtId = async() => {
+          console.log('delete state var changed, hook calling deletePost');
+          let postId = activePost;
+          let { data: remaining } = await axios.delete(`posts/${postId}`, { data: {postId: postId}});
+          console.log('remaining:', remaining);
+          setPostsList(remaining);
+        }
+        deleteAtId();
+        setIsDeleting(false);
     }
-  }
+  }, [isDeleting])
+
+
   return( 
     <div className="comment">
-      <MDBCard >
+      <MDBCard className="card">
         <MDBCardBody>
           <MDBCardGroup className="top d-flex-column align-items-center">
             <MDBCardGroup className="meta">
@@ -95,7 +107,7 @@ export default function Comment({
           </MDBCardText>
           <span class="post-reply">Reply</span>
             <span class="post-edit" onClick={handleEditClick}>Edit</span>
-          <span id="post-delete" onClick={deletePost}>Delete</span>
+            <span id="post-delete" onClick={handleDeleteClick}>Delete</span>
           <MDBCardGroup>
           
             <i class="bi bi-heart" style={{ fontSize: 18 }}></i>
