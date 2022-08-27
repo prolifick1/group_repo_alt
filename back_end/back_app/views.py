@@ -180,10 +180,10 @@ def interviews(request):
 def posts(request):
     # for now we will only have 1 social page and it will return all posts
     if request.method == "GET":
-        company = request.data['company_name']
+        company = 'Google'
         #current = Post.objects.filter(company_name = company)
-        all_posts = Posts.objects.all()
-        return Response(list(all_posts))
+        all_posts = Posts.objects.all().values()
+        return JsonResponse(list(all_posts), safe=False)
     if request.method == "POST":
         try:
             title = request.data['title']
@@ -203,14 +203,15 @@ def posts(request):
 
 @api_view(['PUT', 'DELETE'])
 def update_post(request, postId):
-    post = Posts.objects.get(id=postId)
     if(request.method == 'DELETE'):
-        try:
+        try: 
+            post = Posts.objects.filter(id=request.data['postId'])
             post.delete()
             posts = Posts.objects.all().values()
-            return Response(list(posts))
-        except:
-            return Response({"msg": "Post NOT deleted"})
+            print(list(posts))
+            return JsonResponse(list(posts), safe=False)
+        except Exception as e:
+            print('error', e)
     if request.method == 'PUT':
 #        if request.data['title']:
 #            post.title = request.data['title']

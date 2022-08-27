@@ -55,29 +55,28 @@ export default function Comment({
 
   const handleDeleteClick = async(e) => {
     setActivePost(post.id);
-    setIsDeleting(true)
+    setIsDeleting(true);
   }
 
   useEffect(() => {
-    isDeleting ? deletePost() : console.log('useState not deleting');
+    console.log(isDeleting, activePost === id);
+    if(isDeleting && activePost === id) {
+      const deleteAtId = async() => {
+          console.log('delete state var changed, hook calling deletePost');
+          let postId = activePost;
+          let { data: remaining } = await axios.delete(`posts/${postId}`, { data: {postId: postId}});
+          console.log('remaining:', remaining);
+          setPostsList(remaining);
+        }
+        deleteAtId();
+        setIsDeleting(false);
+    }
   }, [isDeleting])
 
-  const deletePost = async(e) => {
-    console.log(activePost);
-    if(window.confirm('are you sure you want to delete?')) {
-      let postId = activePost;
-      console.log('postslist', postsList);
-      let remaining = await axios.delete(`posts/${postId}`);
-      setPostsList(postsList.filter((post) => {
-        return post.id !== postId ;
-      }))
-    }
-    setIsDeleting(false);
-  }
 
   return( 
     <div className="comment">
-      <MDBCard >
+      <MDBCard className="card">
         <MDBCardBody>
           <MDBCardGroup className="top d-flex-column align-items-center">
             <MDBCardGroup className="meta">
@@ -108,7 +107,7 @@ export default function Comment({
           </MDBCardText>
           <span class="post-reply">Reply</span>
             <span class="post-edit" onClick={handleEditClick}>Edit</span>
-          <span id="post-delete" onClick={handleDeleteClick}>Delete</span>
+            <span id="post-delete" onClick={handleDeleteClick}>Delete</span>
           <MDBCardGroup>
           
             <i class="bi bi-heart" style={{ fontSize: 18 }}></i>

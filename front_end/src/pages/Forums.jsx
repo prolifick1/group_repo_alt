@@ -68,6 +68,12 @@ export default function Forums({user}) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [activePost, setActivePost] = useState(null);
   const [postsList, setPostsList] = useState([]);
+  const [lgShow, setLgShow] = useState(false); 
+  const [loading, setLoading] = useState(true);
+
+  const toggleCommentModal = () => {
+    setLgShow(!lgShow);
+  };
 
   //only used for mocking data
   //  const getReplies = commentId => {
@@ -81,7 +87,24 @@ export default function Forums({user}) {
 
   useEffect(() => {
     console.log('postsList updated', postsList);
+    renderPosts();
   }, [postsList] );
+
+  useEffect(() => {
+    const fetchData = async () =>{
+      setLoading(true);
+      try {
+        const {data: response} = await axios.get('posts');
+        setPostsList(response);
+      } catch (error) {
+        console.error(error.message);
+      }
+      setLoading(false);
+    }
+
+    fetchData();
+  }, []);
+
 
   useEffect(() => {
     //setPostsList(commentsMocks);
@@ -142,58 +165,59 @@ export default function Forums({user}) {
     setText(e.target.value);
   }
 
-  // function renderPosts() {
-  //   postsList.map((post) => {
-  //     return <Comment text={text} comment={post} handleTextEntry={handleTextEntry} />
-  //   })
-  // }
+  function renderPosts() {
+     return  [...postsList].reverse().map((post) => {
+        return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
+        isDeleting={isDeleting} setIsDeleting={setIsDeleting}
+        onChange={handleTextEntry} text={text} setText={setText} 
+        post={post} setActivePost={setActivePost}
+        postsList={postsList} setPostsList={setPostsList}
+        activePost={activePost} 
+        user={user} id={post.id} key={post.id} 
+        editText={editText} setEditText={setEditText}
+        />
+        })
+      
+   }
 
-  return(
-  <body class="HolyGrail">
-    <NavBar />
-    <header>…</header>
-    <div class="HolyGrail-body">
-      <main class="HolyGrail-content">
-       <div className="comments">
-          <h3 className="comments-title">Raytheon Forums</h3>
-          <div className="comment-form-title">Write a comment</div>
-          <input id="comment-title" value={title} onChange={handleTitleEntry} ></input>
-          <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
-          <div className="comments-container d-flex flex-column-reverse">
-            { [...postsList].reverse().map((post) => {
-              return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
-              isDeleting={isDeleting} setIsDeleting={setIsDeleting}
-              onChange={handleTextEntry} text={text} setText={setText} 
-              post={post} setActivePost={setActivePost}
-              postsList={postsList} setPostsList={setPostsList}
-              activePost={activePost} 
-              user={user} id={post.id} key={post.id} 
-              editText={editText} setEditText={setEditText}
-              />
-              })
-            }
-          </div>
-        </div>
-      </main>
-      <nav class="HolyGrail-nav">
-        <div class="sticky top-[var(--c-top-bar-height)] max-h-[calc(100vh-var(--c-top-bar-height)-var(--frame-top-offset))] scrollbar-hide overscroll-contain w-[var(--frame-navigation-width)] shrink-0 mr-4 pr-1 hidden lg:block">
-          <div class="flex flex-col space-y-8 isolate w-full block-main-menu">
-            <div class="space-y-1" role="group">
-              <a class="cursor-pointer transition duration-100 ease-in-out group flex items-center leading-5 rounded-md w-full bg-main-200 text-basicMain-900 px-3 py-2">
-                <span className="flex-grow truncate">
-                  Home
-                </span>
-              </a>
+  return( 
+  <div class="overall-container min-h-screen flex flex-col layout layout-default ml-[calc(env(safe-area-inset-left))] mr-[calc(env(safe-area-inset-right))]">
+    <body class="HolyGrail">
+      <NavBar />
+      <header>…</header>
+      <div class="HolyGrail-body">
+        <main class="HolyGrail-content">
+         <div className="comments">
+            <h3 className="comments-title">Social Page</h3>
+            <div className="comment-form-title">Write a comment</div>
+            <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" 
+              title={title} setTitle={setTitle} handleTitleEntry={handleTitleEntry} 
+              handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
+            <div className="comments-container d-flex flex-column-reverse">
+              { renderPosts() }
             </div>
           </div>
-        </div>
-      </nav>
-      <aside class="HolyGrail-ads">
-        <ProfileSidebar user={user} />
-      </aside>
-    </div>
-    <footer>…</footer>
-  </body>
+        </main>
+        <nav class="HolyGrail-nav">
+          <div class="sticky top-[var(--c-top-bar-height)] max-h-[calc(100vh-var(--c-top-bar-height)-var(--frame-top-offset))] scrollbar-hide overscroll-contain w-[var(--frame-navigation-width)] shrink-0 mr-4 pr-1 hidden lg:block">
+            <div class="flex flex-col space-y-8 isolate w-full block-main-menu">
+              <div class="space-y-1" role="group">
+                <a class="cursor-pointer transition duration-100 ease-in-out group flex items-center leading-5 rounded-md w-full bg-main-200 text-basicMain-900 px-3 py-2">
+                  <span className="flex-grow truncate">
+                    Home
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <aside class="HolyGrail-ads">
+          <ProfileSidebar user={user} />
+        </aside>
+      </div>
+      <footer>…</footer>
+    </body>
+  </div>
 
   )
 }
