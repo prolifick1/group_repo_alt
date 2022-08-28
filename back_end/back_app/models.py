@@ -40,6 +40,8 @@ class AppliedJobs(models.Model):
     description = models.TextField()
     company_link = models.CharField(max_length=255)
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    interview_scheduled = models.BooleanField(default=False)
+    job_offer = models.BooleanField(default=False)
 
 
 class Interview(models.Model):

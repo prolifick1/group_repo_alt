@@ -31,7 +31,7 @@ function Dashboard(props) {
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
   const [activeCard, setActiveCard] = useState(null);
-
+  // const [cardToChange, setCardToChange] = useState(null)
   const [cardModalIsOpen, setCardModalIsOpen] = useState(false);
 
   // sets state of current jobs to empty list
@@ -44,7 +44,6 @@ function Dashboard(props) {
   const [addedJob, setAddedJob] = useState(false);
   console.log(currentJobs);
   //sets state of current jobs to current list based on back end request
-
   const getJobs = () => {
     axios.get("jobs").then((response) =>
       setCurrentJobs(
@@ -53,6 +52,8 @@ function Dashboard(props) {
             id: job.id,
             title: job.company_name,
             description: job.job_title,
+            salary: job.salary,
+            location: job.location,
             label: (
               <a href={job.company_link} target="_blank">
                 <button type="button" class="btn-sm btn-primary btn-rounded">
@@ -143,6 +144,9 @@ function Dashboard(props) {
       job_title: jobTitle,
       salary: salary,
       location: location,
+      interview_sheduled: false,
+      job_offer: false,
+      completed: false,
     };
     console.log(jobToEdit);
     axios.put(`jobs/${activeCard}`, jobToEdit).then((response) => {
@@ -155,16 +159,50 @@ function Dashboard(props) {
     });
   };
   const onCardMoveAcrossLanes = (fromLaneId, toLaneId, cardId, index) => {
-    console.log(fromLaneId, toLaneId, cardId, index);
-    if(toLaneId === 'lane2'){
-      console.log(`${cardId} is now Applied`)
-    }else if(toLaneId === 'lane3'){
-    console.log(`${cardId} is now in Interview Scheduled`);
-    }else if(toLaneId === 'lane4'){
-    console.log(`${cardId} is has now Received Offer`);
+    let cardToChange = currentJobs.filter((job) => job.id == cardId);
+    console.log(cardToChange[0]);
+    if (toLaneId === "lane2") {
+      let appliedJob = {
+        company_name: cardToChange[0]["title"],
+        job_title: cardToChange[0]["description"],
+        salary: cardToChange[0]["salary"],
+        location: cardToChange[0]["location"],
+        interview_sheduled: false,
+        job_offer: false,
+        completed: false,
+      };
+      console.log(appliedJob);
+      axios
+        .put(`jobs/${cardId}`, appliedJob)
+        .then((response) => console.log(response.data["msg"]));
+    } else if (toLaneId === "lane3") {
+      let interviewJob = {
+        company_name: cardToChange[0]["title"],
+        job_title: cardToChange[0]["description"],
+        salary: cardToChange[0]["salary"],
+        location: cardToChange[0]["location"],
+        interview_sheduled: true,
+        job_offer: false,
+        completed: false,
+      };
+      console.log(interviewJob);
+      axios.put(`jobs/${cardId}`, interviewJob)
+      .then((response) => console.log(response.data["msg"]));
+    } else if (toLaneId === "lane4") {
+      let jobOffer = {
+        company_name: cardToChange[0]["title"],
+        job_title: cardToChange[0]["description"],
+        salary: cardToChange[0]["salary"],
+        location: cardToChange[0]["location"],
+        interview_sheduled: true,
+        job_offer: true,
+        completed: true,
+      };
+      console.log(jobOffer);
+        axios.put(`jobs/${cardId}`, jobOffer)
+        .then((response) => console.log(response.data["msg"])); 
     }
   };
-
 
   return (
     <div>
@@ -262,7 +300,6 @@ function Dashboard(props) {
           onCardClick={onCardClick}
           onCardDelete={deleteJob}
           onCardMoveAcrossLanes={onCardMoveAcrossLanes}
-
         ></Board>
       </React.Fragment>
     </div>

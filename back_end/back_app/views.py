@@ -137,6 +137,15 @@ def update_job(request, jobId):
         try:
             job.update(
                 company_name=request.data['company_name'], job_title=request.data['job_title'], salary=request.data['salary'], location=request.data['location'])
+            if request.data['interview_sheduled'] == True:
+                job.interview_scheduled = True
+                job.save()
+            if request.data['job_offer'] == True:
+                job.job_offer = True
+                job.save()
+            if request.data['completed'] == True:
+                job.completed = True
+                job.save()
             return Response({'msg': 'Job updated'})
         except:
             return Response({'msg': 'Job NOT updated'})
