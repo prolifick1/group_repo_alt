@@ -29,7 +29,6 @@ def sign_up(request):
         username=request.data['email'],
         password=request.data['password'],
         email=request.data['email'])
-    print(user)
     return Response({"message": "success"})
   #  except:
   #      return Response({"message": "Failed to sign up user"})
@@ -149,15 +148,6 @@ def update_job(request, jobId):
                        location=request.data['location'],
                        date_completed=request.data['date']
                        )
-            if request.data['interview_sheduled'] == True:
-                job.interview_scheduled = True
-                job.save()
-            if request.data['job_offer'] == True:
-                job.job_offer = True
-                job.save()
-            if request.data['completed'] == True:
-                job.completed = True
-                job.save()
             return Response({'msg': 'Job updated'})
         except:
             return Response({'msg': 'Job NOT updated'})
@@ -166,13 +156,24 @@ def update_job(request, jobId):
 @api_view(["PUT"])
 def update_card_job(request, jobId):
     try:
-        print(request.data)
         job = AppliedJobs.objects.filter(id=jobId)
         job.update(company_name=request.data['company_name'],
                    job_title=request.data['job_title'],
                    salary=request.data['salary'],
                    location=request.data['location'],
                    interview_scheduled=request.data['interview_scheduled'],
+                   job_offer=request.data['job_offer'],
+                   completed=request.data['completed'])
+        return Response({'msg': "success"})
+    except:
+        return Response({'msg': "failed to save job"})
+
+
+@api_view(["PUT"])
+def apply_clicked(request, jobId):
+    try:
+        job = AppliedJobs.objects.filter(id=jobId)
+        job.update(interview_scheduled=request.data['interview_scheduled'],
                    job_offer=request.data['job_offer'],
                    completed=request.data['completed'])
         return Response({'msg': "success"})
@@ -237,20 +238,10 @@ def update_post(request, postId):
             post = Posts.objects.filter(id=request.data['postId'])
             post.delete()
             posts = Posts.objects.all().values()
-            print(list(posts))
             return JsonResponse(list(posts), safe=False)
         except Exception as e:
             print('error', e)
     if request.method == 'PUT':
-        #        if request.data['title']:
-        #            post.title = request.data['title']
-        #        if request.data['company_name']:
-        #            post.company_name = request.data['company_name']
-        #        if request.data['job_title']:
-        #            post.job_title = request.data['job_title']
-        #       post.description = request.data['description']
-        #       edited_post = Posts.objects.get(id=postId).values()
-        #       return Response(list(edited_post)[0])
         try:
             post = Posts.objects.filter(id=request.data['postId'])
             post.update(description=request.data['description'])

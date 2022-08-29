@@ -2,13 +2,13 @@ import React from 'react';
 import { MDBModal, MDBModalHeader, MDBBtn, MDBModalBody, MDBInput, MDBModalFooter } from "mdbreact";
 import axios from 'axios';
 
-export default function AddJobModal({ getJobs, modal, toggleModal, companyName, jobTitle, description, companyLink, setCompanyLink, setCompanyName, setDescription, setTitle, setAddedJob, addedJob }) {
+export default function AddJobModal({ getJobs, modal, toggleModal }) {
     function addJob() {
         let job = {
-            company_name: companyName,
-            job_title: jobTitle,
-            description: description,
-            link: companyLink,
+            company_name: document.querySelector('#aCompany').value,
+            job_title: document.querySelector('#aTitle').value,
+            description: document.querySelector('#aDescription').value,
+            link: document.querySelector('#aLink').value,
         }
         axios.post('jobs', job)
             .then(res => {
@@ -29,10 +29,43 @@ export default function AddJobModal({ getJobs, modal, toggleModal, companyName, 
                 </MDBModalHeader>
                 <MDBModalBody>
                     <form className="mx-3 grey-text">
-                        <MDBInput type="text" label="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
-                        <MDBInput type="text" label="Job Title" value={jobTitle} onChange={(e) => setTitle(e.target.value)} />
-                        <MDBInput type="text" label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-                        <MDBInput type="text" label="Company Link" value={companyLink} onChange={(e) => setCompanyLink(e.target.value)} />
+                        <div class="form-outline">
+                            <label class="form-label" for="aCompany">Company Name</label>
+                            <input
+                                type="text"
+                                id="aCompany"
+                                class="form-control"
+                            />
+                        </div>
+                        <br></br>
+                        <div class="form-outline">
+                            <label class="form-label" for="aTitle">Job Title</label>
+                            <input
+                                type="text"
+                                id="aTitle"
+                                class="form-control"
+                            />
+                        </div>
+                        <br></br>
+                        <div class="form-outline">
+                            <label class="form-label" for="aDescription">Description</label>
+                            <input
+                                type="text"
+                                id="aDescription"
+                                class="form-control"
+                            />
+                        </div>
+                        <br></br>
+                        <div class="form-outline">
+                            <label class="form-label" for="aLink">Company Link</label>
+                            <input
+                                type="text"
+                                id="aLink"
+                                class="form-control"
+                                defaultValue={'http://www.'}
+                            />
+                        </div>
+                        <br></br>
                     </form>
                 </MDBModalBody>
                 <MDBModalFooter className="justify-content-center">
@@ -41,11 +74,8 @@ export default function AddJobModal({ getJobs, modal, toggleModal, companyName, 
                         onClick={() => {
                             toggleModal();
                             addJob();
-                            setAddedJob(!addedJob)
                         }}
-                    >
-                        Add
-                    </MDBBtn>
+                    >Add</MDBBtn>
                 </MDBModalFooter>
             </MDBModal>
 

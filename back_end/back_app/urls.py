@@ -16,6 +16,7 @@ urlpatterns = [
     path('jobsInterested', views.job_interested),
     path('jobsInterviewed', views.job_interviewed),
     path('jobsOffered', views.job_offered),
+    path('job/applyClicked/<int:jobId>', views.apply_clicked),
     path('interviews', views.interviews, name='interviews_of_user'),
     path('forums', views.posts, name='forums_for_user'),
     path('posts', views.posts, name='all_posts_on_forum'),

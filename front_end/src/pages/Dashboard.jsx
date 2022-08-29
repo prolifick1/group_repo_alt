@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import NavBar from "../components/NavBar";
@@ -23,19 +23,11 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function Dashboard(props) {
-  const [companyName, setCompanyName] = useState("");
-  const [companyLink, setCompanyLink] = useState("");
-  const [jobTitle, setTitle] = useState("");
-  const [salary, setSalary] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [date, setDate] = useState("");
   const [activeCard, setActiveCard] = useState(null);
-  // const [cardToChange, setCardToChange] = useState(null)
   const [cardModalIsOpen, setCardModalIsOpen] = useState(false);
 
   // sets state of current jobs to empty list
-  const [currentJobs, setCurrentJobs] = useState([]);
+  const [interestedJobs, setInterestedJobs] = useState([]);
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [interviewedJobs, setInterviewedJobs] = useState([]);
   const [offerJobs, setOfferJobs] = useState([]);
@@ -52,8 +44,8 @@ function Dashboard(props) {
       {
         id: "lane1",
         title: "Interested",
-        label: currentJobs.length,
-        cards: currentJobs,
+        label: interestedJobs.length,
+        cards: interestedJobs,
         disallowAddingCard: true,
       },
       {
@@ -83,7 +75,7 @@ function Dashboard(props) {
   //sets state of current jobs to current list based on back end request
   const getJobs = () => {
     axios.get("jobsInterested").then((response) => {
-      setCurrentJobs(
+      setInterestedJobs(
         response.data.map((job) => {
           return {
             id: job.id,
@@ -92,8 +84,19 @@ function Dashboard(props) {
             salary: job.salary,
             location: job.location,
             label: (
-              <a href={job.company_link} target="_blank">
-                <button type="button" class="btn-sm btn-primary btn-rounded">
+              <a href={job.company_link} target="blank">
+                <button type="button" class="btn-sm btn-primary btn-rounded"
+                  onClick={() => axios.put(`job/applyClicked/${job.id}`, {
+                    interview_scheduled: false,
+                    job_offer: false,
+                    completed: true
+                  }).then(res => {
+                    reset()
+                    setTimeout(
+                      () => (setLgShow(false)),
+                      1000
+                    );
+                  })}>
                   apply
                 </button>
               </a>
@@ -170,18 +173,14 @@ function Dashboard(props) {
     reset()
   }, []);
 
-  useEffect(() => {
-    getOfferJobs()
-  }, [addedJob])
-
   const updateData = () => {
     data = {
       lanes: [
         {
           id: "lane1",
           title: "Interested",
-          label: currentJobs.length,
-          cards: currentJobs,
+          label: interestedJobs.length,
+          cards: interestedJobs,
           disallowAddingCard: true,
         },
         {
@@ -235,24 +234,20 @@ function Dashboard(props) {
   const deleteJob = (jobId) => {
     axios
       .delete(`jobs/${jobId}`)
-      .then(setCurrentJobs(currentJobs.filter((job) => job.id != jobId)))
+      .then(res => reset())
   };
 
   const editJob = () => {
-    console.log(document.querySelector('#eDate').value)
     let jobToEdit = {
-      company_name: companyName,
-      job_title: jobTitle,
-      salary: salary,
-      location: location,
-      date: date,
-      interview_scheduled: false,
-      job_offer: false,
-      completed: false,
+      company_name: document.querySelector('#eCompany').value,
+      job_title: document.querySelector('#eTitle').value,
+      salary: document.querySelector('#eSalary').value,
+      location: document.querySelector('#eLocation').value,
+      date: document.querySelector('#eDate').value,
     };
 
     axios.put(`jobs/${activeCard}`, jobToEdit).then((response) => {
-      getJobs();
+      reset();
     });
   };
 
@@ -366,41 +361,56 @@ function Dashboard(props) {
                   editJob();
                 }}
               >
-                <MDBInput
-                  type="text"
-                  id="eCompany"
-                  label="Company"
-                  // value={selectedJob.company_name || ""}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                />
-                <MDBInput
-                  type="text"
-                  label="Title"
-                  id="eTitle"
-                  // value={selectedJob.job_title || ""}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                <MDBInput
-                  type="text"
-                  label="Salary"
-                  id="eSalary"
-                  // value={selectedJob.salary || ""}
-                  onChange={(e) => setSalary(e.target.value)}
-                />
-                <MDBInput
-                  type="text"
-                  label="Location"
-                  id="eLocation"
-                  // value={selectedJob.location || ""}
-                  onChange={(e) => setLocation(e.target.value)}
-                />
-                <MDBInput
-                  type="text"
-                  label="Date Applied"
-                  id="eDate"
-                  // value={selectedJob.date_completed || ""}
-                  onChange={(e) => setDate(e.target.value)}
-                />
+                <div class="form-outline">
+                  <label class="form-label" for="eCompany">Company</label>
+                  <input
+                    type="text"
+                    id="eCompany"
+                    class="form-control"
+                    defaultValue={selectedJob.company_name || ""}
+                  />
+                </div>
+                <br></br>
+                <div class="form-outline">
+                  <label class="form-label" for="eTitle">Title</label>
+                  <input
+                    type="text"
+                    id="eTitle"
+                    class="form-control"
+                    defaultValue={selectedJob.job_title || ""}
+                  />
+                </div>
+                <br></br>
+                <div class="form-outline">
+                  <label class="form-label" for="eSalary">Salary</label>
+                  <input
+                    type="text"
+                    id="eSalary"
+                    class="form-control"
+                    defaultValue={selectedJob.salary || ""}
+                  />
+                </div>
+                <br></br>
+                <div class="form-outline">
+                  <label class="form-label" for="eLocation">Location</label>
+                  <input
+                    type="text"
+                    id="eLocation"
+                    class="form-control"
+                    defaultValue={selectedJob.location || ""}
+                  />
+                </div>
+                <br></br>
+                <div class="form-outline">
+                  <label class="form-label" for="eDate">Date Applied</label>
+                  <input
+                    type="text"
+                    id="eDate"
+                    class="form-control"
+                    defaultValue={selectedJob.date_completed || ""}
+                  />
+                </div>
+                <br></br>
                 <MDBBtn color="info" type="submit">
                   Save
                 </MDBBtn>
@@ -416,16 +426,6 @@ function Dashboard(props) {
           getJobs={getJobs}
           modal={modal}
           toggleModal={toggleModal}
-          companyName={companyName}
-          jobTitle={jobTitle}
-          description={description}
-          companyLink={companyLink}
-          setCompanyLink={setCompanyLink}
-          setCompanyName={setCompanyName}
-          setDescription={setDescription}
-          setTitle={setTitle}
-          setAddedJob={setAddedJob}
-          addedJob={addedJob}
         />
         <Board
           components={components}
