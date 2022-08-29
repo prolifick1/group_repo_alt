@@ -115,9 +115,9 @@ function App() {
             element={<Dashboard user={user} />} />
           <Route path='/forums'
             element={<Forums user={user} />} />
-          <Route path='*' element={<NotFound />} />
           <Route path='/test' element={<TestPage />} />
           <Route path='/profile' element={<ProfilePage user={user} />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </HashRouter>
     </div>

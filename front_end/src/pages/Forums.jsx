@@ -117,6 +117,7 @@ export default function Forums({user}) {
   const [postsList, setPostsList] = useState([]);
   const [lgShow, setLgShow] = useState(false); 
   const [loading, setLoading] = useState(true);
+  const [commentsOrder, setCommentsOrder] = useState('flex-column-reverse');
 
   const toggleCommentModal = () => {
     setLgShow(!lgShow);
@@ -220,7 +221,7 @@ export default function Forums({user}) {
   }
 
   function renderPosts() {
-     return  [...postsList].reverse().map((post) => {
+     return  [...postsList].map((post) => {
        return <Comment className="shadow-sm" 
          isEditing={isEditing} setIsEditing={setIsEditing} 
         isDeleting={isDeleting} setIsDeleting={setIsDeleting}
@@ -231,9 +232,10 @@ export default function Forums({user}) {
         user={user} id={post.id} key={post.id} 
         editText={editText} setEditText={setEditText}
         />
-        })
+        }).reverse();
       
    }
+
 
   return( 
   <div class="overall-container min-h-screen flex flex-col layout layout-default ml-[calc(env(safe-area-inset-left))] mr-[calc(env(safe-area-inset-right))]">
@@ -241,11 +243,31 @@ export default function Forums({user}) {
       <NavBar />
       <div class="HolyGrail-body bg-light">
         <main class="HolyGrail-content my-5">
-         <div className="comments">
-            <CommentForm className="d-flex flex-column-reverse" submitLabel="Write" 
+         <div class="comments">
+            <CommentForm className="d-flex" submitLabel="Write" 
               title={title} setTitle={setTitle} handleTitleEntry={handleTitleEntry} 
               handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
-            <div className="comments-container d-flex flex-column-reverse">
+            <div>
+
+                <div class="dropdown align-self-center d-flex justify-content-end">
+                  <button
+                    class="btn bg-light align-self-center dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Sort By: 
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li onClick={() => setCommentsOrder('flex-column') }><div class="dropdown-item" >Oldest</div></li>
+                    <li onClick={() => setCommentsOrder('flex-column-reverse') }><div class="dropdown-item" >Newest</div></li>
+                    <li><div class="dropdown-item disabled" >Popular</div></li>
+                  </ul>
+                </div>
+
+            </div>
+            <div className={`comments-container d-flex ${commentsOrder}`}>
               { renderPosts() }
             </div>
           </div>

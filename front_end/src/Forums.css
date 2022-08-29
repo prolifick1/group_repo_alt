@@ -42,9 +42,10 @@ textarea:focus {
   flex: 1;
 }
 
-.comment {
+.comments-container:not(:first-child) {
   margin-top: 1em;
 }
+
 
 ul.dropdown-menu {
   position: absolute;
