@@ -117,7 +117,7 @@ export default function Forums({user}) {
   const [postsList, setPostsList] = useState([]);
   const [lgShow, setLgShow] = useState(false); 
   const [loading, setLoading] = useState(true);
-  const [commentsOrder, setCommentsOrder] = useState('flex-column-reverse');
+  const [isReversed, setIsReversed] = useState(true);
 
   const toggleCommentModal = () => {
     setLgShow(!lgShow);
@@ -143,7 +143,7 @@ export default function Forums({user}) {
       setLoading(true);
       try {
         const {data: response} = await axios.get('posts');
-        setPostsList(response).reverse();
+        setPostsList(response);
       } catch (error) {
         console.error(error.message);
       }
@@ -210,18 +210,35 @@ export default function Forums({user}) {
     }
   }
 
+  useEffect(() => {
+    renderPosts();
+  }, [postsList, isReversed])
+
 
   const handleTitleEntry = (e) => {
     setTitle(e.target.value);
   }
 
   const handleTextEntry = (e) => {
-    console.log('click clack');
     setText(e.target.value);
   }
 
   function renderPosts() {
-     return  [...postsList].map((post) => {
+    postsList.sort((a, b) => {
+       if(postsList.length < 2) {
+         return a;
+       }
+       if(!isReversed && (postsList.length >= 2)) {
+        return new Date(a.date_created) - new Date(b.date_created);
+       } 
+       if(isReversed && (postsList.length >= 2)) {
+        return new Date(b.date_created) - new Date(a.date_created);
+       } 
+    })
+
+    console.log(postsList);
+
+     return [...postsList].map((post) => {
        return <Comment className="shadow-sm" 
          isEditing={isEditing} setIsEditing={setIsEditing} 
         isDeleting={isDeleting} setIsDeleting={setIsDeleting}
@@ -232,10 +249,8 @@ export default function Forums({user}) {
         user={user} id={post.id} key={post.id} 
         editText={editText} setEditText={setEditText}
         />
-        }).reverse();
-      
+     })
    }
-
 
   return( 
   <div class="overall-container min-h-screen flex flex-col layout layout-default ml-[calc(env(safe-area-inset-left))] mr-[calc(env(safe-area-inset-right))]">
@@ -260,14 +275,14 @@ export default function Forums({user}) {
                     Sort By: 
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                    <li onClick={() => setCommentsOrder('flex-column') }><div class="dropdown-item" >Oldest</div></li>
-                    <li onClick={() => setCommentsOrder('flex-column-reverse') }><div class="dropdown-item" >Newest</div></li>
+                    <li onClick={() => setIsReversed(false) }><div class="dropdown-item" >Oldest</div></li>
+                    <li onClick={() => setIsReversed(true) }><div class="dropdown-item" >Newest</div></li>
                     <li><div class="dropdown-item disabled" >Popular</div></li>
                   </ul>
                 </div>
 
             </div>
-            <div className={`comments-container d-flex ${commentsOrder}`}>
+            <div className={`comments-container d-flex flex-column`}>
               { renderPosts() }
             </div>
           </div>
