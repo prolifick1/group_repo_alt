@@ -30,7 +30,7 @@ class AppUser(AbstractUser):
 class AppliedJobs(models.Model):
     completed = models.BooleanField(default=False)
     date_created = models.DateTimeField(default=datetime.now())
-    date_completed = models.DateField(null=True)
+    date_completed = models.CharField(max_length=100, null=True)
     deadline = models.DateField(null=True)
     color = models.CharField(max_length=250, null=True)
     salary = models.CharField(max_length=250, null=True)

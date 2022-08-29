@@ -11,9 +11,6 @@ import requests
 import os
 
 
-# Create your views here.
-
-
 def send_the_homepage(request):
     theIndex = open('static/index.html').read()
     return HttpResponse(theIndex)
@@ -58,7 +55,6 @@ def log_in(request):
 
 @api_view(['POST'])
 def log_out(request):
-    print('here')
     logout(request)
     return HttpResponse('Logged Out')
 
@@ -94,33 +90,45 @@ def jobs_applied_for(request):
             new_job = AppliedJobs.objects.create(
                 user=user, company_link=company_link, description=job_description, company_name=company_name, job_title=job_title)
             new_job.save()
-            if request.data['deadline']:
-                deadline = request.data['deadline']
-                new_job(deadline=deadline)
-                new_job.save()
-            if request.data['date_completed']:
-                date_comp = request.data['date_completed']
-                new_job(date_completed=date_comp)
-                new_job.save()
-            if request.data['completed']:
-                completed = request.data['completed']
-                new_job(completed=completed)
-                new_job.save()
-            if request.data['salry']:
-                salary = request.data['salry']
-                new_job(salary=salary)
-                new_job.save()
-            if request.data['color']:
-                color = request.data['color']
-                new_job(color=color)
-                new_job.save()
-            if request.data['location']:
-                location = request.data['location']
-                new_job(location=location)
-                new_job.save()
             return Response({"message": "success"})
         except:
             return Response({"message": "failed to post new job application"})
+
+
+@api_view(['GET'])
+def job_applied(request):
+    curr = AppliedJobs.objects.filter(user=request.user.id,
+                                      completed=True,
+                                      interview_scheduled=False,
+                                      job_offer=False).values()
+    return Response(list(curr))
+
+
+@api_view(['GET'])
+def job_interested(request):
+    curr = AppliedJobs.objects.filter(user=request.user.id,
+                                      completed=False,
+                                      interview_scheduled=False,
+                                      job_offer=False).values()
+    return Response(list(curr))
+
+
+@api_view(['GET'])
+def job_interviewed(request):
+    curr = AppliedJobs.objects.filter(user=request.user.id,
+                                      completed=True,
+                                      interview_scheduled=True,
+                                      job_offer=False).values()
+    return Response(list(curr))
+
+
+@api_view(['GET'])
+def job_offered(request):
+    curr = AppliedJobs.objects.filter(user=request.user.id,
+                                      completed=True,
+                                      interview_scheduled=True,
+                                      job_offer=True).values()
+    return Response(list(curr))
 
 
 @api_view(["DELETE", "PUT"])
@@ -135,8 +143,12 @@ def update_job(request, jobId):
 
     if request.method == "PUT":
         try:
-            job.update(
-                company_name=request.data['company_name'], job_title=request.data['job_title'], salary=request.data['salary'], location=request.data['location'])
+            job.update(company_name=request.data['company_name'],
+                       job_title=request.data['job_title'],
+                       salary=request.data['salary'],
+                       location=request.data['location'],
+                       date_completed=request.data['date']
+                       )
             if request.data['interview_sheduled'] == True:
                 job.interview_scheduled = True
                 job.save()
@@ -149,6 +161,23 @@ def update_job(request, jobId):
             return Response({'msg': 'Job updated'})
         except:
             return Response({'msg': 'Job NOT updated'})
+
+
+@api_view(["PUT"])
+def update_card_job(request, jobId):
+    try:
+        print(request.data)
+        job = AppliedJobs.objects.filter(id=jobId)
+        job.update(company_name=request.data['company_name'],
+                   job_title=request.data['job_title'],
+                   salary=request.data['salary'],
+                   location=request.data['location'],
+                   interview_scheduled=request.data['interview_scheduled'],
+                   job_offer=request.data['job_offer'],
+                   completed=request.data['completed'])
+        return Response({'msg': "success"})
+    except:
+        return Response({'msg': "failed to save job"})
 
 
 @api_view(["GET", "POST"])
@@ -204,7 +233,7 @@ def posts(request):
 @api_view(['PUT', 'DELETE'])
 def update_post(request, postId):
     if(request.method == 'DELETE'):
-        try: 
+        try:
             post = Posts.objects.filter(id=request.data['postId'])
             post.delete()
             posts = Posts.objects.all().values()
@@ -213,22 +242,22 @@ def update_post(request, postId):
         except Exception as e:
             print('error', e)
     if request.method == 'PUT':
-#        if request.data['title']:
-#            post.title = request.data['title']
-#        if request.data['company_name']:
-#            post.company_name = request.data['company_name']
-#        if request.data['job_title']:
-#            post.job_title = request.data['job_title']
-#       post.description = request.data['description']
-#       edited_post = Posts.objects.get(id=postId).values()
-#       return Response(list(edited_post)[0])
+        #        if request.data['title']:
+        #            post.title = request.data['title']
+        #        if request.data['company_name']:
+        #            post.company_name = request.data['company_name']
+        #        if request.data['job_title']:
+        #            post.job_title = request.data['job_title']
+        #       post.description = request.data['description']
+        #       edited_post = Posts.objects.get(id=postId).values()
+        #       return Response(list(edited_post)[0])
         try:
             post = Posts.objects.filter(id=request.data['postId'])
             post.update(description=request.data['description'])
             data = list(post.values())[0]
             return JsonResponse(data)
         except Exception as e:
-            print(e);
+            print(e)
 
 
 @api_view(['GET'])
