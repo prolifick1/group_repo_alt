@@ -4,7 +4,7 @@ import CommentForm from '../components/CommentForm';
 import axios from 'axios';
 import '../Forums.css';
 import NavBar from '../components/NavBar';
-import {HiHome, HiOutlineUserGroup, HiOutlineViewGrid, HiChevronDown} from 'react-icons/hi';
+import {HiHome, HiChevronDown, HiOutlineViewGrid, HiOutlineUserGroup } from 'react-icons/hi';
 
 let commentsMocks = [
   {
@@ -94,7 +94,7 @@ function ProfileSidebar({user}) {
             Change
           </div>
         </div>
-            </div></div><div class="flex-1 px-4 py-5 sm:p-6 overflow-hidden text-center"><div class="text-sm mb-5 text-basicSurface-400">Good afternoon,</div><div class="text-xl mb-1 text-basicSurface-900 font-medium truncate"><a class="text-decoration-none" href="#">{user && `${user.first_name} ${user.last_name}`}</a></div><div class="text-base mb-5 text-basicSurface-400 truncate"><a class="cursor-pointer transition duration-100 ease-in-out text-actionAccent-600 hover:text-actionAccentHover-500">Add tagline</a></div>
+            </div></div><div class="flex-1 px-4 py-5 sm:p-6 overflow-hidden text-center"><div class="text-sm mb-5 text-basicSurface-400">Good afternoon,</div><div class="text-xl mb-1 text-basicSurface-900 font-medium truncate"><a class="text-decoration-none" href="#">{user && `${user.first_name} ${user.last_name}`}</a></div>
 
                 <a class="text-decoration-none items-center relative focus:outline-none focus-visible:ring text-basicSurface-500 bg-surface-50 hover:bg-surface-100 font-medium shadow-sm px-4 py-2 text-base rounded-md border border-basicSurface-300/25 w-full flex justify-center mt-8" href="/#/profile">
                   <span class="flex"><span class="inline-flex items-center">View profile</span></span>
@@ -106,6 +106,7 @@ function ProfileSidebar({user}) {
     </ul>
   )
 }
+
 
 export default function Forums({user}) {
   const [title, setTitle] = useState('');
@@ -172,18 +173,17 @@ export default function Forums({user}) {
 
 
   const addComment = async(text) => {
-    let date = new Date();
-    console.log(user.first_name, user.last_name)
+    let date_created = new Date();
     let newPost = {
       'first_name': user.first_name,
       'last_name': user.last_name,
       'description': text,
       'title': title,
       'job_title': user.job_title,
+      'date_created': date_created,
       //parent id might be used for later iterations for nesting
       //'parentId': parentId,
       'company_name': "Google",
-      'date_created': date
     };
     try {
       let serializedPost = await axios.post('forums', newPost);
@@ -191,17 +191,17 @@ export default function Forums({user}) {
       let fields = post[0].fields;
       let first_name = fields['first_name'];
       let last_name = fields['last_name'];
-      let company_name = fields['company_name'];
+      let companyName = fields['company_name'];
       let date_created = fields['date_created'];
       let description = fields['description'];
-      let job_title = fields['job_title'];
+      let jobTitle = fields['job_title'];
       let title = fields['title'];
       let userId = String(fields['user']);
       let parentId = null;
       let id = post[0]['pk'];
       console.log(id);
-      post =  {first_name, last_name, id, company_name, description, date_created, job_title, title, userId, parentId}
-      setPostsList([post, ...postsList]);
+       post =  {date_created, first_name, last_name, id, companyName, description, jobTitle, title, userId, parentId}
+       setPostsList([post, ...postsList]);
       //need response object to include this data + timeCreated, photo and user 
       //(or first and last name)
     }
@@ -214,16 +214,17 @@ export default function Forums({user}) {
     renderPosts();
   }, [postsList, isReversed])
 
-
   const handleTitleEntry = (e) => {
     setTitle(e.target.value);
   }
 
   const handleTextEntry = (e) => {
+    console.log('click clack');
     setText(e.target.value);
   }
 
   function renderPosts() {
+
     postsList.sort((a, b) => {
        if(postsList.length < 2) {
          return a;
@@ -236,11 +237,8 @@ export default function Forums({user}) {
        } 
     })
 
-    console.log(postsList);
-
-     return [...postsList].map((post) => {
-       return <Comment className="shadow-sm" 
-         isEditing={isEditing} setIsEditing={setIsEditing} 
+     return  [...postsList].reverse().map((post) => {
+        return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
         isDeleting={isDeleting} setIsDeleting={setIsDeleting}
         onChange={handleTextEntry} text={text} setText={setText} 
         post={post} setActivePost={setActivePost}
@@ -249,50 +247,55 @@ export default function Forums({user}) {
         user={user} id={post.id} key={post.id} 
         editText={editText} setEditText={setEditText}
         />
-     })
+        })
+      
    }
 
   return( 
   <div class="overall-container min-h-screen flex flex-col layout layout-default ml-[calc(env(safe-area-inset-left))] mr-[calc(env(safe-area-inset-right))]">
     <body class="HolyGrail">
       <NavBar />
-      <div class="HolyGrail-body bg-light">
-        <main class="HolyGrail-content my-5">
-         <div class="comments">
-            <CommentForm className="d-flex" submitLabel="Write" 
+      <div class="HolyGrail-body">
+        <main class="HolyGrail-content">
+         <div className="comments">
+            <h3 className="comments-title">Careers Forum</h3>
+            <div className="comment-form-title">Write a comment</div>
+            <CommentForm className="comment-form-body d-flex flex-column-reverse" submitLabel="Write" 
               title={title} setTitle={setTitle} handleTitleEntry={handleTitleEntry} 
               handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
-            <div>
+              <div>
 
-                <div class="dropdown align-self-center d-flex justify-content-end">
-                  <button
-                    class="btn bg-light align-self-center dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Sort By: 
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                    <li onClick={() => setIsReversed(false) }><div class="dropdown-item" >Oldest</div></li>
-                    <li onClick={() => setIsReversed(true) }><div class="dropdown-item" >Newest</div></li>
-                    <li><div class="dropdown-item disabled" >Popular</div></li>
-                  </ul>
+                    <div class="dropdown align-self-center d-flex justify-content-end">
+                      <button
+                        class="btn bg-light align-self-center dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Sort By: 
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li onClick={() => setIsReversed(false) }><div class="dropdown-item" >Oldest</div></li>
+                        <li onClick={() => setIsReversed(true) }><div class="dropdown-item" >Newest</div></li>
+                        <li><div class="dropdown-item disabled" >Popular</div></li>
+                      </ul>
+                    </div>
+
                 </div>
-
-            </div>
-            <div className={`comments-container d-flex flex-column`}>
+            <div className="comments-container d-flex flex-column-reverse">
               { renderPosts() }
             </div>
           </div>
         </main>
         <LeftNavSidebar />
-        <ProfileSidebar user={user} />
+        <aside class="HolyGrail-ads">
+          <ProfileSidebar user={user} />
+        </aside>
       </div>
     </body>
+    <div style={{height: '1000px'}}></div>
   </div>
 
   )
 }
-

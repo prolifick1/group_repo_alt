@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios';
-import './App.css'
+import '../src/App.css';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
@@ -115,9 +115,9 @@ function App() {
             element={<Dashboard user={user} />} />
           <Route path='/forums'
             element={<Forums user={user} />} />
+          <Route path='*' element={<NotFound />} />
           <Route path='/test' element={<TestPage />} />
           <Route path='/profile' element={<ProfilePage user={user} />} />
-          <Route path='*' element={<NotFound />} />
         </Routes>
       </HashRouter>
     </div>

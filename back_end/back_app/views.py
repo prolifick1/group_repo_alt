@@ -11,9 +11,6 @@ import requests
 import os
 
 
-# Create your views here.
-
-
 def send_the_homepage(request):
     theIndex = open('static/index.html').read()
     return HttpResponse(theIndex)
@@ -123,6 +120,42 @@ def jobs_applied_for(request):
             return Response({"message": "failed to post new job application"})
 
 
+@api_view(['GET'])
+def job_applied(request):
+    curr = AppliedJobs.objects.filter(user=request.user.id,
+                                      completed=True,
+                                      interview_scheduled=False,
+                                      job_offer=False).values()
+    return Response(list(curr))
+
+
+@api_view(['GET'])
+def job_interested(request):
+    curr = AppliedJobs.objects.filter(user=request.user.id,
+                                      completed=False,
+                                      interview_scheduled=False,
+                                      job_offer=False).values()
+    return Response(list(curr))
+
+
+@api_view(['GET'])
+def job_interviewed(request):
+    curr = AppliedJobs.objects.filter(user=request.user.id,
+                                      completed=True,
+                                      interview_scheduled=True,
+                                      job_offer=False).values()
+    return Response(list(curr))
+
+
+@api_view(['GET'])
+def job_offered(request):
+    curr = AppliedJobs.objects.filter(user=request.user.id,
+                                      completed=True,
+                                      interview_scheduled=True,
+                                      job_offer=True).values()
+    return Response(list(curr))
+
+
 @api_view(["DELETE", "PUT"])
 def update_job(request, jobId):
     job = AppliedJobs.objects.filter(id=jobId)
@@ -140,6 +173,34 @@ def update_job(request, jobId):
             return Response({'msg': 'Job updated'})
         except:
             return Response({'msg': 'Job NOT updated'})
+
+
+@api_view(["PUT"])
+def update_card_job(request, jobId):
+    try:
+        job = AppliedJobs.objects.filter(id=jobId)
+        job.update(company_name=request.data['company_name'],
+                   job_title=request.data['job_title'],
+                   salary=request.data['salary'],
+                   location=request.data['location'],
+                   interview_scheduled=request.data['interview_scheduled'],
+                   job_offer=request.data['job_offer'],
+                   completed=request.data['completed'])
+        return Response({'msg': "success"})
+    except:
+        return Response({'msg': "failed to save job"})
+
+
+@api_view(["PUT"])
+def apply_clicked(request, jobId):
+    try:
+        job = AppliedJobs.objects.filter(id=jobId)
+        job.update(interview_scheduled=request.data['interview_scheduled'],
+                   job_offer=request.data['job_offer'],
+                   completed=request.data['completed'])
+        return Response({'msg': "success"})
+    except:
+        return Response({'msg': "failed to save job"})
 
 
 @api_view(["GET", "POST"])
@@ -191,9 +252,10 @@ def posts(request):
             post.save()
             print('views.py: post created ', post.date_created)
             db_post = Posts.objects.get(id=post.id)
+            print(db_post)
             json_post = serializers.serialize('json', {db_post})
             return JsonResponse(json_post, safe=False)
-        except(e):
+        except Exception as e:
             print('error:', e)
 
 
