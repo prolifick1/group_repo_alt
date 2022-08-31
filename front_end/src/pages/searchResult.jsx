@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import NavBar from "../components/NavBar"
 import Interested from "../components/Interested"
+import Spinner from 'react-bootstrap/Spinner';
 
 const SearchResult = () => {
 
@@ -60,13 +61,9 @@ const SearchResult = () => {
                         </tbody>
                     </table>
                 </div> :
-                <img src="https://media1.giphy.com/media/Qc8UoA7NJqx70SfiCL/giphy.gif"
-                    alt="loading"
-                    style={{
-                        height: "200px",
-                        width: "20%",
-                        marginLeft: "40%"
-                    }} />
+                <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"25vh"}}>
+                    <Spinner animation="border" />
+                </div>
             }
         </div>
     )
