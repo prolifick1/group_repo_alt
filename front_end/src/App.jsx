@@ -77,11 +77,6 @@ function App() {
   }, [])
 
 
-  console.log('hi');
-  // let user_ = (() => {
-  //   curr_user()
-  // }, [])
-
   return (
     <div>
       <HashRouter>
@@ -117,7 +112,7 @@ function App() {
             element={<Forums user={user} />} />
           <Route path='*' element={<NotFound />} />
           <Route path='/test' element={<TestPage />} />
-          <Route path='/profile' element={<ProfilePage user={user} />} />
+          <Route path='/profile' element={<ProfilePage user={user} curr_user={curr_user} />} />
         </Routes>
       </HashRouter>
     </div>

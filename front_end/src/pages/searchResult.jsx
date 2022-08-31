@@ -5,7 +5,7 @@ import NavBar from "../components/NavBar"
 import Interested from "../components/Interested"
 import Spinner from 'react-bootstrap/Spinner';
 
-const SearchResult = () => {
+const SearchResult = ({ user }) => {
 
     const [result, setResult] = useState([])
 
@@ -34,7 +34,7 @@ const SearchResult = () => {
 
     return (
         <div>
-            <NavBar />
+            <NavBar user={user} />
             {result.length > 0 ?
                 <div className="container-fluid">
                     <table className="table">
@@ -61,7 +61,7 @@ const SearchResult = () => {
                         </tbody>
                     </table>
                 </div> :
-                <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"25vh"}}>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "25vh" }}>
                     <Spinner animation="border" />
                 </div>
             }

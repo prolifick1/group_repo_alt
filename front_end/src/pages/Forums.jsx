@@ -4,7 +4,7 @@ import CommentForm from '../components/CommentForm';
 import axios from 'axios';
 import '../Forums.css';
 import NavBar from '../components/NavBar';
-import {HiHome, HiChevronDown, HiOutlineViewGrid, HiOutlineUserGroup } from 'react-icons/hi';
+import { HiHome, HiChevronDown, HiOutlineViewGrid, HiOutlineUserGroup } from 'react-icons/hi';
 
 let commentsMocks = [
   {
@@ -52,7 +52,7 @@ function LeftNavSidebar() {
               <span className="flex-grow truncate">
                 Home
               </span>
-                  <HiChevronDown /> 
+              <HiChevronDown />
             </a>
             <a class="cursor-pointer transition duration-100 ease-in-out group flex items-center leading-5 rounded-md w-full bg-main-200 text-basicMain-900 px-3 py-2">
               <HiOutlineUserGroup />
@@ -74,31 +74,31 @@ function LeftNavSidebar() {
   )
 }
 
-function ProfileSidebar({user}) {
+function ProfileSidebar({ user }) {
   return (
     <ul class="flex flex-col">
       <li>
         <div class="ml-auto my-5 mx-4 bg-white text-basicSurface-500 shadow flex flex-col justify-between sm:rounded-lg overflow-hidden block-welcome-member"><div class="h-20 w-full object-cover lg:h-28 group relative overflow-hidden">
-            <div class="h-32 w-full lg:h-48 bg-main-200">
-              .
-            </div>
-        </div>
-        <div class="-mt-16 flex justify-center"><div><div class="hover:bg-surface-200 rounded-full relative">
-              <span class="inline-flex relative items-center justify-center flex-shrink-0 bg-surface-200 rounded-full h-24 w-24 ring-2 bg-surface-50 ring-surface-50">
-                <span class="text-2xl font-medium leading-none text-basicSurface-500">
-                  G
-                </span>
-              </span>
-          <input type="file" class="hidden" />
-          <div class="flex items-center justify-center rounded-full text-white bg-black bg-opacity-50 opacity-0 hover:opacity-90 absolute top-0 bottom-0 left-0 right-0 cursor-pointer">
-            Change
+          <div class="h-32 w-full lg:h-48 bg-main-200">
+            .
           </div>
         </div>
-            </div></div><div class="flex-1 px-4 py-5 sm:p-6 overflow-hidden text-center"><div class="text-sm mb-5 text-basicSurface-400">Good afternoon,</div><div class="text-xl mb-1 text-basicSurface-900 font-medium truncate"><a class="text-decoration-none" href="#">{user && `${user.first_name} ${user.last_name}`}</a></div>
+          <div class="-mt-16 flex justify-center"><div><div class="hover:bg-surface-200 rounded-full relative">
+            <span class="inline-flex relative items-center justify-center flex-shrink-0 bg-surface-200 rounded-full h-24 w-24 ring-2 bg-surface-50 ring-surface-50">
+              <span class="text-2xl font-medium leading-none text-basicSurface-500">
+                {user && user.first_name.slice(0, 1).toUpperCase()}{user && user.last_name.slice(0, 1).toUpperCase()}
+              </span>
+            </span>
+            <input type="file" class="hidden" />
+            <div class="flex items-center justify-center rounded-full text-white bg-black bg-opacity-50 opacity-0 hover:opacity-90 absolute top-0 bottom-0 left-0 right-0 cursor-pointer">
+              Change
+            </div>
+          </div>
+          </div></div><div class="flex-1 px-4 py-5 sm:p-6 overflow-hidden text-center"><div class="text-sm mb-5 text-basicSurface-400">Good afternoon,</div><div class="text-xl mb-1 text-basicSurface-900 font-medium truncate"><a class="text-decoration-none" href="#">{user && `${user.first_name} ${user.last_name}`}</a></div>
 
-                <a class="text-decoration-none items-center relative focus:outline-none focus-visible:ring text-basicSurface-500 bg-surface-50 hover:bg-surface-100 font-medium shadow-sm px-4 py-2 text-base rounded-md border border-basicSurface-300/25 w-full flex justify-center mt-8" href="/#/profile">
-                  <span class="flex"><span class="inline-flex items-center">View profile</span></span>
-                </a>
+            <a class="text-decoration-none items-center relative focus:outline-none focus-visible:ring text-basicSurface-500 bg-surface-50 hover:bg-surface-100 font-medium shadow-sm px-4 py-2 text-base rounded-md border border-basicSurface-300/25 w-full flex justify-center mt-8" href="/#/profile">
+              <span class="flex"><span class="inline-flex items-center">View profile</span></span>
+            </a>
           </div>
         </div>
 
@@ -108,7 +108,7 @@ function ProfileSidebar({user}) {
 }
 
 
-export default function Forums({user}) {
+export default function Forums({ user }) {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [editText, setEditText] = useState('');
@@ -116,7 +116,7 @@ export default function Forums({user}) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [activePost, setActivePost] = useState(null);
   const [postsList, setPostsList] = useState([]);
-  const [lgShow, setLgShow] = useState(false); 
+  const [lgShow, setLgShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isReversed, setIsReversed] = useState(true);
 
@@ -137,13 +137,13 @@ export default function Forums({user}) {
   useEffect(() => {
     console.log('postsList updated', postsList);
     renderPosts();
-  }, [postsList] );
+  }, [postsList]);
 
   useEffect(() => {
-    const fetchData = async () =>{
+    const fetchData = async () => {
       setLoading(true);
       try {
-        const {data: response} = await axios.get('posts');
+        const { data: response } = await axios.get('posts');
         setPostsList(response);
       } catch (error) {
         console.error(error.message);
@@ -157,12 +157,12 @@ export default function Forums({user}) {
 
   useEffect(() => {
     //setPostsList(commentsMocks);
-    async() => {
+    async () => {
       let response = await axios.get('forums')
-      setPostsList(response); 
+      setPostsList(response);
       console.log('posts in db');
     }
-    console.log('Forum.jsx called useeffect w/ empty dependency array'); 
+    console.log('Forum.jsx called useeffect w/ empty dependency array');
   }, [])
 
 
@@ -172,7 +172,7 @@ export default function Forums({user}) {
   //  });
 
 
-  const addComment = async(text) => {
+  const addComment = async (text) => {
     let date_created = new Date();
     let newPost = {
       'first_name': user.first_name,
@@ -200,13 +200,13 @@ export default function Forums({user}) {
       let parentId = null;
       let id = post[0]['pk'];
       console.log(id);
-       post =  {date_created, first_name, last_name, id, companyName, description, jobTitle, title, userId, parentId}
-       setPostsList([post, ...postsList]);
+      post = { date_created, first_name, last_name, id, companyName, description, jobTitle, title, userId, parentId }
+      setPostsList([post, ...postsList]);
       //need response object to include this data + timeCreated, photo and user 
       //(or first and last name)
     }
-    catch(error) {
-        console.error(error);
+    catch (error) {
+      console.error(error);
     }
   }
 
@@ -226,76 +226,76 @@ export default function Forums({user}) {
   function renderPosts() {
 
     postsList.sort((a, b) => {
-       if(postsList.length < 2) {
-         return a;
-       }
-       if(!isReversed && (postsList.length >= 2)) {
+      if (postsList.length < 2) {
+        return a;
+      }
+      if (!isReversed && (postsList.length >= 2)) {
         return new Date(a.date_created) - new Date(b.date_created);
-       } 
-       if(isReversed && (postsList.length >= 2)) {
+      }
+      if (isReversed && (postsList.length >= 2)) {
         return new Date(b.date_created) - new Date(a.date_created);
-       } 
+      }
     })
 
-     return  [...postsList].reverse().map((post) => {
-        return <Comment isEditing={isEditing} setIsEditing={setIsEditing} 
+    return [...postsList].reverse().map((post) => {
+      return <Comment isEditing={isEditing} setIsEditing={setIsEditing}
         isDeleting={isDeleting} setIsDeleting={setIsDeleting}
-        onChange={handleTextEntry} text={text} setText={setText} 
+        onChange={handleTextEntry} text={text} setText={setText}
         post={post} setActivePost={setActivePost}
         postsList={postsList} setPostsList={setPostsList}
-        activePost={activePost} 
-        user={user} id={post.id} key={post.id} 
+        activePost={activePost}
+        user={user} id={post.id} key={post.id}
         editText={editText} setEditText={setEditText}
-        />
-        })
-      
-   }
+      />
+    })
 
-  return( 
-  <div class="overall-container min-h-screen flex flex-col layout layout-default ml-[calc(env(safe-area-inset-left))] mr-[calc(env(safe-area-inset-right))]">
-    <body class="HolyGrail">
-      <NavBar />
-      <div class="HolyGrail-body">
-        <main class="HolyGrail-content">
-         <div className="comments">
-            <h3 className="comments-title">Careers Forum</h3>
-            <div className="comment-form-title">Write a comment</div>
-            <CommentForm className="comment-form-body d-flex flex-column-reverse" submitLabel="Write" 
-              title={title} setTitle={setTitle} handleTitleEntry={handleTitleEntry} 
-              handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
+  }
+
+  return (
+    <div class="overall-container min-h-screen flex flex-col layout layout-default ml-[calc(env(safe-area-inset-left))] mr-[calc(env(safe-area-inset-right))]">
+      <body class="HolyGrail">
+        <NavBar user={user} />
+        <div class="HolyGrail-body">
+          <main class="HolyGrail-content">
+            <div className="comments">
+              <h3 className="comments-title">Careers Forum</h3>
+              <div className="comment-form-title">Write a comment</div>
+              <CommentForm className="comment-form-body d-flex flex-column-reverse" submitLabel="Write"
+                title={title} setTitle={setTitle} handleTitleEntry={handleTitleEntry} user={user}
+                handleSubmit={addComment} text={text} setText={setText} onChange={handleTextEntry} />
               <div>
 
-                    <div class="dropdown align-self-center d-flex justify-content-end">
-                      <button
-                        class="btn bg-light align-self-center dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        Sort By: 
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li onClick={() => setIsReversed(false) }><div class="dropdown-item" >Oldest</div></li>
-                        <li onClick={() => setIsReversed(true) }><div class="dropdown-item" >Newest</div></li>
-                        <li><div class="dropdown-item disabled" >Popular</div></li>
-                      </ul>
-                    </div>
-
+                <div class="dropdown align-self-center d-flex justify-content-end">
+                  <button
+                    class="btn bg-light align-self-center dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Sort By:
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li onClick={() => setIsReversed(false)}><div class="dropdown-item" >Oldest</div></li>
+                    <li onClick={() => setIsReversed(true)}><div class="dropdown-item" >Newest</div></li>
+                    <li><div class="dropdown-item disabled" >Popular</div></li>
+                  </ul>
                 </div>
-            <div className="comments-container d-flex flex-column-reverse">
-              { renderPosts() }
+
+              </div>
+              <div className="comments-container d-flex flex-column-reverse">
+                {renderPosts()}
+              </div>
             </div>
-          </div>
-        </main>
-        <LeftNavSidebar />
-        <aside class="HolyGrail-ads">
-          <ProfileSidebar user={user} />
-        </aside>
-      </div>
-    </body>
-    <div style={{height: '1000px'}}></div>
-  </div>
+          </main>
+          <LeftNavSidebar />
+          <aside class="HolyGrail-ads">
+            <ProfileSidebar user={user} />
+          </aside>
+        </div>
+      </body>
+      <div style={{ height: '1000px' }}></div>
+    </div>
 
   )
 }

@@ -23,7 +23,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { viewport } from "@popperjs/core";
 
-function Dashboard(props) {
+function Dashboard({ user }) {
   const [activeCard, setActiveCard] = useState(null);
   const [cardModalIsOpen, setCardModalIsOpen] = useState(false);
 
@@ -54,7 +54,7 @@ function Dashboard(props) {
         label: interestedJobs.length,
         cards: interestedJobs,
         disallowAddingCard: true,
-        laneStyle:{
+        laneStyle: {
           ...laneStyle
         }
       },
@@ -438,8 +438,8 @@ function Dashboard(props) {
           </Modal.Body>
         </Modal>
       </>
-      <React.Fragment>
-        <NavBar />
+      <React.Fragment className='board_div'>
+        <NavBar user={user} />
         <AddButton toggleModal={toggleModal} />
         <AddJobModal
           getJobs={getJobs}
@@ -447,9 +447,14 @@ function Dashboard(props) {
           toggleModal={toggleModal}
         />
         <Board
+          style={{
+            width: '700px !important',
+            marginInline: '0%',
+            backgroundColor: "white",
+            justifyContent: 'space-around'
+          }}
           components={components}
           data={data}
-          style={{ backgroundColor: "white" }}
           editable
           id="EditableBoard1"
           onCardClick={onCardClick}
