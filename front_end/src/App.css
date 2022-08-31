@@ -196,6 +196,40 @@ body {
   border: solid 1px black !important;
   color: black !important;
 }
+.login {
+  margin-block: 100px !important;
+  margin-inline: 30% !important;
+  padding: 100px !important;
+  background-color: whitesmoke;
+  border-radius: 10px !important;
+  box-shadow: 1px 3px 3px 0px grey;
+}
+.signin {
+  background-color: grey;
+  border-radius: 5px;
+  border: solid 1px black !important;
+  padding-block: 10px;
+  padding-inline: 20px;
+  width: 100px;
+  margin-bottom: 10px;
+}
+.signup {
+  margin-block: 100px !important;
+  margin-inline: 30% !important;
+  padding: 100px !important;
+  background-color: whitesmoke;
+  border-radius: 10px !important;
+  box-shadow: 1px 3px 3px 0px grey;
+}
+.signin1 {
+  background-color: grey;
+  border-radius: 5px;
+  border: solid 1px black !important;
+  padding-block: 10px;
+  padding-inline: 20px;
+  width: 105px;
+  margin-bottom: 10px;
+}
 
 /* .comments {
   padding: 50px !important;

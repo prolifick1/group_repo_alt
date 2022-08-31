@@ -16,29 +16,36 @@ function SignIn({ checkHomeRedirect, showForm }) {
   return (
     <div>
       {checkHomeRedirect()}
-      {showForm &&
+      {showForm && (
         <div className="login">
           <form onSubmit={signIn}>
             <label htmlFor="email">Email</label>
-            <input id='emailSignIn'
-              placeholder='Email'
+            <input
+              id="emailSignIn"
+              placeholder="Email"
               className="form-control"
-              required />
+              required
+            />
             <br />
             <label htmlFor="password">Password</label>
-            <input id='passwordSignIn'
-              type='password'
-              placeholder='Password'
-              className="form-control" required />
+            <input
+              id="passwordSignIn"
+              type="password"
+              placeholder="Password"
+              className="form-control"
+              required
+            />
             <br />
-            <button type="submit">Sign In</button>
+            <div className="signin">
+              <button type="submit">Sign In</button>
+            </div>
             <h6>Already have an account?</h6>
             <a href="#/SignUp">Create New Account</a>
           </form>
         </div>
-      }
+      )}
     </div>
-  )
+  );
 }
 
 export default SignIn;

@@ -39,12 +39,12 @@ function Dashboard({ user }) {
 
   const [modal, setModal] = useState(false);
   const [addedJob, setAddedJob] = useState(false);
-  const laneStyle = {
-    width: 400,
-    maxWidth: 400,
-    margin: "auto",
-    marginBottom: 5,
-  };
+  // const laneStyle = {
+  //   width: 400,
+  //   maxWidth: 400,
+  //   margin: "auto",
+  //   marginBottom: 5,
+  // };
 
   let data = {
     lanes: [
@@ -54,9 +54,9 @@ function Dashboard({ user }) {
         label: interestedJobs.length,
         cards: interestedJobs,
         disallowAddingCard: true,
-        laneStyle: {
-          ...laneStyle
-        }
+        // laneStyle: {
+        //   ...laneStyle
+        // }
       },
       {
         id: "lane2",
@@ -64,9 +64,9 @@ function Dashboard({ user }) {
         label: appliedJobs.length,
         cards: appliedJobs,
         disallowAddingCard: true,
-        style: {
-          width: 300,
-        },
+        // style: {
+        //   width: 300,
+        // },
       },
       {
         id: "lane3",
@@ -74,9 +74,9 @@ function Dashboard({ user }) {
         label: interviewedJobs.length,
         cards: interviewedJobs,
         disallowAddingCard: true,
-        style: {
-          width: 300,
-        },
+        // style: {
+        //   width: 300,
+        // },
       },
       {
         id: "lane4",
@@ -84,9 +84,9 @@ function Dashboard({ user }) {
         label: offerJobs.length,
         cards: offerJobs,
         disallowAddingCard: true,
-        style: {
-          width: 300,
-        },
+        // style: {
+        //   width: 300,
+        // },
       },
     ],
   };

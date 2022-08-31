@@ -24,47 +24,59 @@ function SignUp({ showForm, checkHomeRedirect }) {
   return (
     <div>
       {checkHomeRedirect()}
-      {showForm &&
+      {showForm && (
         <div className="signup">
           <form onSubmit={signUp}>
             <label htmlFor="firstName">First Name </label>
-            <input id='firstName'
-              placeholder='ex: pacho'
+            <input
+              id="firstName"
+              placeholder="ex: pacho"
               className="form-control"
-              required />
+              required
+            />
             <br />
             <label htmlFor="lastName">Last Name </label>
-            <input id='lastName'
-              placeholder='ex: villa'
+            <input
+              id="lastName"
+              placeholder="ex: villa"
               className="form-control"
-              required />
+              required
+            />
             <br />
             <label>Job Title: </label>
-            <input id='jobTitle'
-              placeholder='ex: engineer'
+            <input
+              id="jobTitle"
+              placeholder="ex: engineer"
               className="form-control"
-              required />
+              required
+            />
             <br />
             <label>Email: </label>
-            <input id='email'
-              placeholder='ex: pancho@gmail.com'
+            <input
+              id="email"
+              placeholder="ex: pancho@gmail.com"
               className="form-control"
-              required />
+              required
+            />
             <br />
             <label>Password: </label>
-            <input type="password"
-              id='password'
+            <input
+              type="password"
+              id="password"
               className="form-control"
-              required />
+              required
+            />
             <br />
-            <button type="submit">Sign Up</button>
+            <div className="signin1">
+              <button type="submit">Sign Up</button>
+            </div>
             <p>Already have an Account?</p>
             <a href="#/signin">LOG IN</a>
           </form>
         </div>
-      }
+      )}
     </div>
-  )
+  );
 }
 
 export default SignUp
