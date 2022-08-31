@@ -169,7 +169,7 @@ def update_job(request, jobId):
     if request.method == "PUT":
         try:
             job.update(
-                company_name=request.data['company_name'], job_title=request.data['job_title'], salary=request.data['salary'], location=request.data['location'])
+                company_name=request.data['company_name'], job_title=request.data['job_title'], salary=request.data['salary'], location=request.data['location'], date_completed=request.data['date'])
             return Response({'msg': 'Job updated'})
         except:
             return Response({'msg': 'Job NOT updated'})
@@ -262,7 +262,7 @@ def posts(request):
 @api_view(['PUT', 'DELETE'])
 def update_post(request, postId):
     if(request.method == 'DELETE'):
-        try: 
+        try:
             post = Posts.objects.filter(id=request.data['postId'])
             post.delete()
             posts = Posts.objects.all().values()
@@ -271,22 +271,22 @@ def update_post(request, postId):
         except Exception as e:
             print('error', e)
     if request.method == 'PUT':
-#        if request.data['title']:
-#            post.title = request.data['title']
-#        if request.data['company_name']:
-#            post.company_name = request.data['company_name']
-#        if request.data['job_title']:
-#            post.job_title = request.data['job_title']
-#       post.description = request.data['description']
-#       edited_post = Posts.objects.get(id=postId).values()
-#       return Response(list(edited_post)[0])
+        #        if request.data['title']:
+        #            post.title = request.data['title']
+        #        if request.data['company_name']:
+        #            post.company_name = request.data['company_name']
+        #        if request.data['job_title']:
+        #            post.job_title = request.data['job_title']
+        #       post.description = request.data['description']
+        #       edited_post = Posts.objects.get(id=postId).values()
+        #       return Response(list(edited_post)[0])
         try:
             post = Posts.objects.filter(id=request.data['postId'])
             post.update(description=request.data['description'])
             data = list(post.values())[0]
             return JsonResponse(data)
         except Exception as e:
-            print(e);
+            print(e)
 
 
 @api_view(['GET'])
@@ -351,3 +351,17 @@ def replies_to_comments(request):
         comment = request.data['comment']
         replies = Replies_To_Comment.objects.filter(comment=comment)
         return Response(list(replies))
+
+
+@api_view(["PUT"])
+def edit_user(request):
+    try:
+        current_user = AppUser.objects.get(id=request.user.id)
+        current_user.first_name = request.data['first_name']
+        current_user.last_name = request.data['last_name']
+        current_user.job_title = request.data['job_title']
+        current_user.profile_picture = request.data['profile_picture']
+        current_user.save()
+        return Response("success")
+    except:
+        return Response("Failed to update user information")
