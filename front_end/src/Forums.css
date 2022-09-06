@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .btn {
   text-transform: unset !important;
   box-shadow: none !important;

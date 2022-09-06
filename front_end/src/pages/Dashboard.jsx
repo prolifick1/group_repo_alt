@@ -23,7 +23,34 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { viewport } from "@popperjs/core";
 
-function Dashboard({ user }) {
+
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
+
+function WelcomeToast({user}) {
+  const [show, setShow] = useState(true);
+
+  return (
+    <>
+        <ToastContainer className="p-3" position="top-end">
+          <Toast show={show} onClose={() => setShow(false)} delay={5000} autohide>
+            <Toast.Header closeButton={true}>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">Welcome</strong>
+              <small>Just now</small>
+            </Toast.Header>
+            <Toast.Body>{`Login success. Welcome ${user.first_name}!`}</Toast.Body>
+          </Toast>
+        </ToastContainer>
+    </>
+  );
+}
+
+function Dashboard({ user, checkLoginRedirect, proceed }) {
   const [activeCard, setActiveCard] = useState(null);
   const [cardModalIsOpen, setCardModalIsOpen] = useState(false);
 
@@ -90,6 +117,8 @@ function Dashboard({ user }) {
       },
     ],
   };
+
+
 
   //sets state of current jobs to current list based on back end request
   const getJobs = () => {
@@ -440,6 +469,12 @@ function Dashboard({ user }) {
       </>
       <React.Fragment className='board_div'>
         <NavBar user={user} />
+        <div className="welcome">
+          {checkLoginRedirect()}
+          {proceed && user &&
+            <WelcomeToast user={user} />
+          }
+        </div>
         <AddButton toggleModal={toggleModal} />
         <AddJobModal
           getJobs={getJobs}
@@ -450,8 +485,9 @@ function Dashboard({ user }) {
           style={{
             width: '700px !important',
             marginInline: '0%',
-            backgroundColor: "white",
-            justifyContent: 'space-around'
+            height: 'auto',
+            backgroundColor: "#f3f3f3",
+            justifyContent: 'space-around',
           }}
           components={components}
           data={data}

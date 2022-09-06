@@ -11,13 +11,7 @@ export default function Home({ user, checkLoginRedirect, proceed }) {
   return (
     <div
       className='board_div'>
-      <div className="welcome">
-        {checkLoginRedirect()}
-        {proceed &&
-          <h4>{user && <h4>Welcome, {user.first_name}</h4>}</h4>
-        }
-        <Dashboard user={user} />
-      </div>
+        <Dashboard user={user} checkLoginRedirect={checkLoginRedirect} proceed={proceed} />
     </div>
 
   );

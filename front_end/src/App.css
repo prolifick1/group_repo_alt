@@ -1,15 +1,20 @@
 .navbar_brand_image {
-  height: 80px;
+  height: 50px;
+  width: 90px;
   margin-right: 20px;
-  border-radius: 100%;
+  border-radius: 10%;
+}
+
+.react-trello-board>div {
+  height: 70vh;
+  overflow-x: scroll;
+
 }
 
 .navbar_profile_image {
   height: 50px !important;
   width: 50px;
   border-radius: 100px;
-  margin-top: 30px;
-  margin-bottom: 5px;
 }
 
 .container {
@@ -95,14 +100,15 @@ h3 {
 }
 
 .react-trello-board {
-  background-color: rgb(211, 249, 230) !important;
   width: 100% !important;
   margin-top: 40px !important;
+  height: auto;
 }
 
 .react-trello-lane {
-  min-height: 200px !important;
+  height: 100%;
 }
+
 
 .dtXYJt {
   margin: 2vw !important;
@@ -119,12 +125,13 @@ h3 {
 }
 
 .navbar {
-  padding-inline: 50px !important;
-  height: 100px !important;
+  padding: 0 1em !important;
+  height: 70px !important;
 }
 
-.nav-item {
-  border: solid 0px black;
+
+#basic-nav-dropdown:after {
+  display: none;
 }
 
 /* .navbar_brand {
@@ -134,26 +141,23 @@ h3 {
 } */
 
 section {
-  background-color: whitesmoke !important;
-  border-radius: 10px !important;
-  border: solid 2px black;
+  background-color: white !important;
+  border: solid 2px #f3f3f3;
   width: 400px;
   padding-inline: 0px !important;
-  min-height: 150px !important;
+  height: 100% !important;
 }
 
 article {
-  background-color: rgba(141, 221, 141, 0.929) !important;
+  background-color: white !important;
   border: solid 1px black !important;
-  border-radius: 5px !important;
   margin: 10px !important;
   width: 380px !important;
   max-width: 400px !important;
 }
 
 body {
-  background-color: rgb(211, 249, 230) !important;
-  padding-bottom: 200px !important;
+  background-color: whitesmoke !important;
   /* padding-inline: 20px !important; */
 }
 
@@ -166,7 +170,6 @@ body {
 
 .welcome {
   margin-top: 20px;
-  margin-left: 50px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
 }

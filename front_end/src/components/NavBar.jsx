@@ -22,7 +22,7 @@ function NavBar({ user }) {
     }
 
     return (
-        <Navbar className="brokenNavbar" bg="light" expand="lg">
+        <Navbar className="brokenNavbar" bg="white" expand="lg">
             <a href="/"><Image className="navbar_brand_image" src="https://cdn.dribbble.com/users/1874602/screenshots/7242868/media/5162ea1d37b188dc55932161f90d5573.png?compress=1&resize=400x300&vertical=top" alt="Jobify Logo"></Image></a>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -35,6 +35,7 @@ function NavBar({ user }) {
                 </Nav>
                 <Nav>
                     <NavDropdown
+                        align="end"
                         title={
                             <div className="pull-left">
                                 <img className="navbar_profile_image thumbnail-image"
@@ -47,13 +48,10 @@ function NavBar({ user }) {
                         <NavDropdown.Item href="#/forums">Forums</NavDropdown.Item>
                         <NavDropdown.Item href="#/dashboard">Dashboard</NavDropdown.Item>
                         <NavDropdown.Item href="#/profile">My Profile</NavDropdown.Item>
+                        <NavDropdown.Item onClick={signOut}>Logout</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
             </Navbar.Collapse>
-            <Navbar.Brand>
-                <Button variant="outline-dark" onClick={signOut} >Logout</Button>
-            </Navbar.Brand>
-
         </Navbar>
     );
 }

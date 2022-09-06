@@ -7,7 +7,7 @@ export default function AddButton({ toggleModal }) {
             <MDBCol md="9" className="mb-r">
                 <MDBRow className="mb-4">
                     <MDBCol xl="3" md="6" className="mx-auto text-center"> */}
-            <MDBBtn className="add_job_button" color='light' rounded onClick={toggleModal}>
+            <MDBBtn className="add_job_button" color='success' rounded onClick={toggleModal}>
                 ADD A JOB
             </MDBBtn>
             {/* </MDBCol>
